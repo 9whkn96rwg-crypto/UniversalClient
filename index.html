@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d18">
+  <title>NoRisk Universal</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #080d18;
+      color: #f3f6ff;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      padding: 22px;
+      border-bottom: 1px solid #1d2b43;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { font-size: 23px; font-weight: bold; }
+    .logo span { color: #3987ff; }
+    .hero {
+      text-align: center;
+      padding: 65px 20px 35px;
+    }
+    .hero h1 { font-size: 38px; margin-bottom: 12px; }
+    .hero p { color: #9eabc2; line-height: 1.6; }
+    .cards {
+      max-width: 850px;
+      margin: 25px auto;
+      padding: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: #101b2d;
+      border: 1px solid #263b5b;
+      border-radius: 17px;
+      padding: 25px;
+    }
+    .card h2 { color: #65a2ff; }
+    .card p { color: #aab6ca; line-height: 1.6; }
+    button {
+      background: #2879ee;
+      color: white;
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: bold;
+    }
+    footer {
+      text-align: center;
+      padding: 35px 15px;
+      color: #74839b;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">NoRisk <span>Universal</span></div>
+    <div>☰</div>
+  </header>
+
+  <section class="hero">
+    <h1>One Client. Two Editions.</h1>
+    <p>Willkommen bei NoRisk Universal.<br>
+    Deine zentrale Oberfläche für Minecraft.</p>
+  </section>
+
+  <main class="cards">
+    <section class="card">
+      <h2>Java Edition</h2>
+      <p>Informationen und Einstellungen rund um Minecraft Java.</p>
+      <button onclick="alert('Java-Unterstützung ist noch in Entwicklung.')">
+        Java öffnen
+      </button>
+    </section>
+
+    <section class="card">
+      <h2>Bedrock Edition</h2>
+      <p>Informationen und Einstellungen rund um Minecraft Bedrock.</p>
+      <button onclick="alert('Bedrock-Verknüpfung ist noch in Entwicklung.')">
+        Bedrock öffnen
+      </button>
+    </section>
+  </main>
+
+  <footer>NoRisk Universal · Community-Projekt · Nicht offiziell mit Mojang verbunden</footer>
+</body>
+</html>
