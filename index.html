@@ -2,104 +2,1097 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080d18">
-  <title>UniversalClient</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #080d18;
-      color: #f3f6ff;
-      font-family: Arial, sans-serif;
-    }
-    header {
-      padding: 22px;
-      border-bottom: 1px solid #1d2b43;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo { font-size: 23px; font-weight: bold; }
-    .logo span { color: #3987ff; }
-    .hero {
-      text-align: center;
-      padding: 65px 20px 35px;
-    }
-    .hero h1 { font-size: 38px; margin-bottom: 12px; }
-    .hero p { color: #9eabc2; line-height: 1.6; }
-    .cards {
-      max-width: 850px;
-      margin: 25px auto;
-      padding: 15px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 18px;
-    }
-    .card {
-      background: #101b2d;
-      border: 1px solid #263b5b;
-      border-radius: 17px;
-      padding: 25px;
-    }
-    .card h2 { color: #65a2ff; }
-    .card p { color: #aab6ca; line-height: 1.6; }
-    button {
-      background: #2879ee;
-      color: white;
-      border: 0;
-      border-radius: 9px;
-      padding: 12px 18px;
-      font-size: 15px;
-      font-weight: bold;
-    }
-    footer {
-      text-align: center;
-      padding: 35px 15px;
-      color: #74839b;
-      font-size: 13px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d19">
+<title>UniversalClient</title>
+
+<style>
+:root {
+  --bg: #080d19;
+  --panel: #101a2c;
+  --panel2: #14223a;
+  --blue: #168cff;
+  --cyan: #00d9ff;
+  --text: #edf6ff;
+  --muted: #91a7c2;
+  --border: #203653;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at top, #102b4d 0%, transparent 48%),
+    var(--bg);
+  font-family: Arial, sans-serif;
+  transition: background .3s;
+}
+
+body.no-animations * {
+  animation: none !important;
+  transition: none !important;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px 5%;
+  background: rgba(8,13,25,.95);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--cyan);
+  letter-spacing: .5px;
+  text-shadow: 0 0 15px #168cff88;
+}
+
+.logo span { color: white; }
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+}
+
+button, input, select { font: inherit; }
+
+button {
+  padding: 10px 14px;
+  color: var(--text);
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+button:hover {
+  border-color: var(--cyan);
+  transform: translateY(-1px);
+}
+
+button.primary {
+  color: white;
+  border: 0;
+  background: linear-gradient(110deg, var(--blue), #00bce9);
+  font-weight: bold;
+}
+
+button.active {
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+
+button.danger {
+  color: #ffb8c1;
+  border-color: #713442;
+  background: #351923;
+}
+
+main {
+  width: min(1100px, 92%);
+  margin: 30px auto 70px;
+}
+
+.page { display: none; }
+.page.active { display: block; animation: appear .25s ease; }
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: linear-gradient(145deg, var(--panel), #0c1525);
+  box-shadow: 0 8px 25px #0003;
+  min-width: 0;
+}
+
+.card p, .muted {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.card h3 { margin-top: 0; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 15px;
+}
+
+.section-title {
+  margin: 30px 0 15px;
+  color: var(--cyan);
+}
+
+form { display: grid; gap: 12px; }
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  color: var(--text);
+  background: #081321;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  outline: none;
+}
+
+input:focus, select:focus { border-color: var(--cyan); }
+
+.field { min-width: 0; }
+
+.notice {
+  padding: 13px 15px;
+  margin: 15px 0;
+  border: 1px solid #285477;
+  border-radius: 10px;
+  color: #c6eaff;
+  background: #10243a;
+  line-height: 1.5;
+}
+
+.tag {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 20px;
+  color: var(--cyan);
+  background: #12314a;
+  font-size: 12px;
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.server-card { border-left: 3px solid var(--cyan); }
+
+.server-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.home-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+  padding: 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid #17619a;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 85% 30%, #087ee955, transparent 35%),
+    linear-gradient(120deg, #102b4c, #091321 75%);
+}
+
+.home-hero:after {
+  content: "UC";
+  position: absolute;
+  right: 20px;
+  bottom: -40px;
+  font-size: 190px;
+  font-weight: 900;
+  color: #168cff13;
+  pointer-events: none;
+}
+
+.home-label {
+  color: var(--cyan);
+  font-size: 12px;
+  letter-spacing: 3px;
+  font-weight: bold;
+}
+
+.home-hero h1 {
+  max-width: 600px;
+  margin: 15px 0;
+  font-size: clamp(35px, 7vw, 58px);
+  line-height: 1.05;
+  color: white;
+}
+
+.home-hero p {
+  max-width: 470px;
+  color: #a9c1dc;
+  line-height: 1.7;
+}
+
+.home-section { margin-top: 32px; }
+
+.home-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.home-heading h2 { margin: 0; }
+
+.home-heading span {
+  color: var(--cyan);
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.home-quick {
+  min-height: 125px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.home-quick:hover {
+  border-color: var(--cyan);
+  transform: translateY(-3px);
+}
+
+.home-quick .symbol, .symbol {
+  font-size: 27px;
+  margin-bottom: 12px;
+}
+
+.home-quick h3 { margin-bottom: 6px; }
+.home-quick p { margin: 0; font-size: 13px; }
+
+.home-feature {
+  min-height: 165px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background:
+    radial-gradient(circle at 90% 20%, #00cfff22, transparent 40%),
+    linear-gradient(140deg, #132c49, #101a2c);
+}
+
+.home-update { border-left: 3px solid var(--blue); }
+
+.home-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.home-status-item {
+  flex: 1;
+  min-width: 130px;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+}
+
+.home-status-item strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--cyan);
+}
+
+.home-status-item small { color: var(--muted); }
+
+footer {
+  padding: 25px;
+  color: var(--muted);
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 25px;
+  z-index: 30;
+  max-width: 90%;
+  padding: 13px 18px;
+  border: 1px solid var(--cyan);
+  border-radius: 12px;
+  color: white;
+  background: #10243a;
+  box-shadow: 0 5px 25px #0008;
+  transform: translate(-50%, 150px);
+  transition: .3s;
+}
+
+#toast.show { transform: translate(-50%, 0); }
+
+@media(max-width:650px) {
+  header {
+    flex-direction: column;
+    padding: 14px 3%;
+  }
+  nav { width: 100%; }
+  nav button {
+    flex: 1 1 auto;
+    padding: 9px;
+    font-size: 13px;
+  }
+  main { margin-top: 20px; }
+  .home-hero { padding: 28px 20px; }
+}
+</style>
 </head>
+
 <body>
-  <header>
-    <div class="logo">Universal<span>Client</span></div>
-    <div>☰</div>
-  </header>
 
-  <section class="hero">
-    <h1>One Client. Two Editions.</h1>
-    <p>Willkommen bei UniversalClient.<br>
-    Deine zentrale Oberfläche für Minecraft.</p>
-  </section>
+<header>
+  <div class="logo">Universal<span>Client</span></div>
 
-  <main class="cards">
-    <section class="card">
-      <h2>Java Edition</h2>
-      <p>Informationen und Einstellungen rund um Minecraft Java.</p>
-      <button onclick="alert('Java-Unterstützung ist noch in Entwicklung.')">
-        Java öffnen
+  <nav>
+    <button class="active" data-page="home">Home</button>
+    <button data-page="java">Java</button>
+    <button data-page="bedrock">Bedrock</button>
+    <button data-page="servers">Server</button>
+    <button data-page="profiles">Profile</button>
+    <button data-page="settings">Settings</button>
+    <button data-page="about">About</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+  <div class="home-hero">
+    <div class="home-label">YOUR MINECRAFT EXPERIENCE</div>
+    <h1>Welcome to<br>UniversalClient.</h1>
+    <p>
+      Eine zentrale Plattform für dein Minecraft-Erlebnis.
+      Entdecke deine Bereiche, verwalte deine Einstellungen
+      und behalte kommende Funktionen im Blick.
+    </p>
+    <div>
+      <button class="primary" onclick="showPage('java')">
+        Explore UniversalClient
       </button>
-    </section>
+    </div>
+  </div>
 
-    <section class="card">
-      <h2>Bedrock Edition</h2>
-      <p>Informationen und Einstellungen rund um Minecraft Bedrock.</p>
-      <a href="minecraft://" style="
-        display: inline-block;
-        background: #2879ee;
-        color: white;
-        text-decoration: none;
-        border-radius: 9px;
-        padding: 12px 18px;
-        font-size: 15px;
-        font-weight: bold;
-      ">Bedrock öffnen</a>
-    </section>
-  </main>
+  <div class="home-section">
+    <div class="home-heading">
+      <h2>Quick Access</h2>
+      <span>SHORTCUTS</span>
+    </div>
 
-  <footer>UniversalClient · Community-Projekt · Nicht offiziell mit Mojang verbunden</footer>
+    <div class="grid">
+      <div class="card home-quick" onclick="showPage('java')">
+        <div class="symbol">☕</div>
+        <h3>Java Edition</h3>
+        <p>Dein Java-Bereich</p>
+      </div>
+
+      <div class="card home-quick" onclick="showPage('bedrock')">
+        <div class="symbol">🟩</div>
+        <h3>Bedrock Edition</h3>
+        <p>Dein Bedrock-Bereich</p>
+      </div>
+
+      <div class="card home-quick" onclick="showPage('servers')">
+        <div class="symbol">🌐</div>
+        <h3>Servers</h3>
+        <p>Deine Serververwaltung</p>
+      </div>
+
+      <div class="card home-quick" onclick="showPage('profiles')">
+        <div class="symbol">👤</div>
+        <h3>Profiles</h3>
+        <p>Deine Profile</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-section">
+    <div class="home-heading">
+      <h2>Featured</h2>
+      <span>HIGHLIGHT</span>
+    </div>
+
+    <div class="card home-feature">
+      <div>
+        <div class="symbol">⚡</div>
+        <h2>One Client. Two Editions.</h2>
+        <p>
+          Java und Bedrock in einer übersichtlichen Oberfläche.
+          Wähle deinen Bereich und entdecke die Funktionen.
+        </p>
+      </div>
+      <div>
+        <button class="primary" onclick="showPage('bedrock')">
+          Discover more
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-section">
+    <div class="home-heading">
+      <h2>News & Updates</h2>
+      <span>WHAT'S NEW</span>
+    </div>
+
+    <div class="grid">
+      <div class="card home-update">
+        <span class="tag">CURRENT</span>
+        <h3>New Home Experience</h3>
+        <p>
+          Das Home-Dashboard bekommt ein neues Design
+          mit Schnellzugriffen und Highlights.
+        </p>
+      </div>
+
+      <div class="card home-update">
+        <span class="tag">AVAILABLE</span>
+        <h3>Server Management</h3>
+        <p>
+          Speichere deine Minecraft-Server und verwalte
+          ihre Informationen.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-section">
+    <div class="home-heading">
+      <h2>Coming Soon</h2>
+      <span>ROADMAP</span>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="symbol">🎨</div>
+        <h3>More Themes</h3>
+        <p>Weitere Designs und Anpassungsmöglichkeiten.</p>
+        <span class="tag">PLANNED</span>
+      </div>
+
+      <div class="card">
+        <div class="symbol">✨</div>
+        <h3>More Customization</h3>
+        <p>Mehr Möglichkeiten, UniversalClient anzupassen.</p>
+        <span class="tag">PLANNED</span>
+      </div>
+
+      <div class="card">
+        <div class="symbol">🚀</div>
+        <h3>New Features</h3>
+        <p>Weitere Funktionen für die Plattform.</p>
+        <span class="tag">IN DEVELOPMENT</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-section">
+    <div class="home-heading">
+      <h2>UniversalClient Status</h2>
+      <span>OVERVIEW</span>
+    </div>
+
+    <div class="home-status">
+      <div class="home-status-item">
+        <strong>Version 1.1</strong>
+        <small>Current Version</small>
+      </div>
+      <div class="home-status-item">
+        <strong>Web Edition</strong>
+        <small>Platform</small>
+      </div>
+      <div class="home-status-item">
+        <strong>In Development</strong>
+        <small>Project Status</small>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- JAVA -->
+<section id="java" class="page">
+  <h2>☕ Java Edition</h2>
+
+  <div class="card">
+    <h3>Java-Bereich</h3>
+    <p>
+      Hier kannst du deine Java-Server verwalten und
+      Informationen zu deinen Servern speichern.
+    </p>
+
+    <div class="notice">
+      Der Java-Spielstart ist auf dieser iPad-Webseite noch
+      nicht integriert. Zum Spielen werden eine kompatible
+      Java-Laufzeit und eine gültige Minecraft-Java-Lizenz benötigt.
+    </div>
+
+    <button class="primary" onclick="showPage('servers')">
+      Java-Server verwalten
+    </button>
+  </div>
+</section>
+
+<!-- BEDROCK -->
+<section id="bedrock" class="page">
+  <h2>🟩 Bedrock Edition</h2>
+
+  <div class="card">
+    <h3>Minecraft Bedrock öffnen</h3>
+    <p>
+      Öffne Minecraft direkt aus UniversalClient auf deinem iPad.
+    </p>
+
+    <button class="primary" onclick="openMinecraft()">
+      Minecraft öffnen
+    </button>
+
+    <div class="notice">
+      Die Webseite kann Minecraft öffnen, aber nicht automatisch
+      einen gespeicherten Server auswählen oder eine bestimmte
+      Spielversion einstellen. Wähle deinen Server anschließend
+      in Minecraft aus.
+    </div>
+
+    <button onclick="showPage('servers')">
+      Bedrock-Server verwalten
+    </button>
+  </div>
+</section>
+
+<!-- SERVERS -->
+<section id="servers" class="page">
+  <h2>🌐 Serververwaltung</h2>
+
+  <div class="card">
+    <h3>Neuen Server hinzufügen</h3>
+
+    <form id="serverForm">
+      <div class="field">
+        <label for="serverName">Servername</label>
+        <input id="serverName" placeholder="Mein Minecraft Server" required>
+      </div>
+
+      <div class="field">
+        <label for="serverEdition">Edition</label>
+        <select id="serverEdition">
+          <option value="Bedrock">Bedrock</option>
+          <option value="Java">Java</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="serverAddress">Serveradresse / IP</label>
+        <input id="serverAddress" placeholder="play.example.net" required>
+      </div>
+
+      <div class="field">
+        <label for="serverPort">Port</label>
+        <input id="serverPort" type="number" value="19132" required>
+      </div>
+
+      <div class="field">
+        <label for="serverVersion">Serverversion</label>
+        <select id="serverVersion">
+          <option value="Unbekannt">Unbekannt / automatisch</option>
+          <option value="1.21.x">1.21.x</option>
+          <option value="1.20.x">1.20.x</option>
+          <option value="1.19.x">1.19.x</option>
+          <option value="1.18.x">1.18.x</option>
+          <option value="Andere">Andere Version</option>
+        </select>
+      </div>
+
+      <div class="field" id="customVersionField" hidden>
+        <label for="customVersion">Eigene Version</label>
+        <input id="customVersion" placeholder="Version eintragen">
+      </div>
+
+      <button class="primary" type="submit">Server speichern</button>
+    </form>
+  </div>
+
+  <h3 class="section-title">Gespeicherte Server</h3>
+  <div id="serverList" class="grid"></div>
+</section>
+
+<!-- PROFILES -->
+<section id="profiles" class="page">
+  <h2>👤 Profiles</h2>
+
+  <div class="card">
+    <h3>Profil erstellen</h3>
+
+    <form id="profileForm">
+      <div class="field">
+        <label for="profileName">Profilname</label>
+        <input id="profileName" placeholder="Mein Profil" required>
+      </div>
+
+      <button class="primary" type="submit">Profil erstellen</button>
+    </form>
+  </div>
+
+  <h3 class="section-title">Deine Profile</h3>
+  <div id="profileList" class="grid"></div>
+</section>
+
+<!-- SETTINGS -->
+<section id="settings" class="page">
+  <h2>⚙ Einstellungen</h2>
+
+  <div class="card">
+    <h3>Darstellung</h3>
+
+    <label for="animationSetting">Animationen</label>
+    <select id="animationSetting">
+      <option value="on">Aktiviert</option>
+      <option value="off">Deaktiviert</option>
+    </select>
+
+    <label for="soundSetting" style="margin-top:16px">Sounds</label>
+    <select id="soundSetting">
+      <option value="on">Aktiviert</option>
+      <option value="off">Deaktiviert</option>
+    </select>
+
+    <label for="languageSetting" style="margin-top:16px">Sprache</label>
+    <select id="languageSetting">
+      <option value="de">Deutsch</option>
+      <option value="en">English (teilweise)</option>
+    </select>
+
+    <p class="muted">
+      Die Einstellungen werden in deinem Browser gespeichert.
+      Die englische Übersetzung ist noch nicht vollständig.
+    </p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="page">
+  <h2>ℹ About UniversalClient</h2>
+
+  <div class="card">
+    <h3>About the Project</h3>
+    <p>
+      UniversalClient ist ein unabhängiges Webprojekt,
+      das Java- und Bedrock-Bereiche in einer gemeinsamen
+      Oberfläche zusammenführt.
+    </p>
+    <p>
+      Das Projekt befindet sich in Entwicklung.
+      Weitere Funktionen und Verbesserungen sind geplant.
+    </p>
+    <div class="server-meta">
+      <span class="tag">Version 1.1</span>
+      <span class="tag">Web Edition</span>
+      <span class="tag">In Development</span>
+    </div>
+    <div class="notice">
+      UniversalClient ist kein offizielles Produkt von
+      Mojang oder Microsoft.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  UniversalClient · Your Minecraft Experience
+</footer>
+
+<div id="toast" role="status"></div>
+
+<script>
+const STORAGE = {
+  servers: "universalclient_servers",
+  profiles: "universalclient_profiles",
+  settings: "universalclient_settings",
+  theme: "universalclient_theme"
+};
+
+function load(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function save(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+let servers = load(STORAGE.servers, []);
+let profiles = load(STORAGE.profiles, []);
+
+let settings = load(STORAGE.settings, {
+  animations: "on",
+  sound: "on",
+  language: "de"
+});
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
+}
+
+function toast(message) {
+  const element = document.getElementById("toast");
+  element.textContent = message;
+  element.classList.add("show");
+
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => {
+    element.classList.remove("show");
+  }, 2600);
+
+  if (settings.sound === "on") {
+    try {
+      const audio = new AudioContext();
+      const oscillator = audio.createOscillator();
+      const gain = audio.createGain();
+
+      oscillator.connect(gain);
+      gain.connect(audio.destination);
+
+      oscillator.frequency.value = 550;
+      gain.gain.value = 0.035;
+
+      oscillator.start();
+      oscillator.stop(audio.currentTime + 0.07);
+      oscillator.onended = () => audio.close();
+    } catch {}
+  }
+}
+
+function showPage(page) {
+  document.querySelectorAll(".page").forEach(section => {
+    section.classList.remove("active");
+  });
+
+  document.querySelectorAll("nav button").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === page);
+  });
+
+  document.getElementById(page).classList.add("active");
+
+  if (page === "servers") renderServers();
+  if (page === "profiles") renderProfiles();
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll("nav button").forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.page));
+});
+
+function openMinecraft() {
+  toast("Minecraft wird geöffnet …");
+  window.location.href = "minecraft://";
+}
+
+// Serververwaltung
+
+const editionInput = document.getElementById("serverEdition");
+const portInput = document.getElementById("serverPort");
+
+editionInput.addEventListener("change", () => {
+  portInput.value = editionInput.value === "Bedrock"
+    ? "19132"
+    : "25565";
+});
+
+document.getElementById("serverVersion").addEventListener("change", event => {
+  document.getElementById("customVersionField").hidden =
+    event.target.value !== "Andere";
+});
+
+document.getElementById("serverForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const versionChoice = document.getElementById("serverVersion").value;
+
+  const version = versionChoice === "Andere"
+    ? document.getElementById("customVersion").value.trim() || "Unbekannt"
+    : versionChoice;
+
+  const server = {
+    id: Date.now(),
+    name: document.getElementById("serverName").value.trim(),
+    edition: editionInput.value,
+    address: document.getElementById("serverAddress").value.trim(),
+    port: portInput.value.trim(),
+    version
+  };
+
+  servers.push(server);
+  save(STORAGE.servers, servers);
+
+  event.target.reset();
+  portInput.value = "19132";
+  document.getElementById("customVersionField").hidden = true;
+
+  renderServers();
+  toast("Server wurde gespeichert!");
+});
+
+function renderServers() {
+  const list = document.getElementById("serverList");
+
+  if (!servers.length) {
+    list.innerHTML =
+      '<div class="card"><p>Noch keine Server gespeichert.</p></div>';
+    return;
+  }
+
+  list.innerHTML = servers.map(server => {
+    const edition = server.edition || "Bedrock";
+    const version = server.version || "Unbekannt";
+    const port = server.port || (edition === "Java" ? "25565" : "19132");
+
+    return `
+      <div class="card server-card">
+        <h3>${escapeHTML(server.name)}</h3>
+        <p>${escapeHTML(server.address)}:${escapeHTML(port)}</p>
+
+        <div class="server-meta">
+          <span class="tag">${escapeHTML(edition)}</span>
+          <span class="tag">Version ${escapeHTML(version)}</span>
+        </div>
+
+        <div class="card-actions">
+          <button class="primary" onclick="startServer(${server.id})">
+            ${edition === "Bedrock" ? "Minecraft öffnen" : "Java-Info"}
+          </button>
+          <button onclick="editServer(${server.id})">Bearbeiten</button>
+          <button class="danger" onclick="deleteServer(${server.id})">Löschen</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function startServer(id) {
+  const server = servers.find(item => item.id === id);
+  if (!server) return;
+
+  if ((server.edition || "Bedrock") === "Bedrock") {
+    toast("Minecraft wird geöffnet. Wähle dort deinen Server aus.");
+    setTimeout(openMinecraft, 350);
+  } else {
+    toast("Java-Start ist auf diesem iPad noch nicht verfügbar.");
+  }
+}
+
+function editServer(id) {
+  const server = servers.find(item => item.id === id);
+  if (!server) return;
+
+  const name = prompt("Servername:", server.name);
+  if (name === null) return;
+
+  const address = prompt("Serveradresse:", server.address);
+  if (address === null) return;
+
+  const port = prompt("Port:", server.port || "19132");
+  if (port === null) return;
+
+  const version = prompt("Version:", server.version || "Unbekannt");
+  if (version === null) return;
+
+  if (!name.trim() || !address.trim() || !port.trim()) {
+    toast("Bitte fülle die Pflichtfelder aus.");
+    return;
+  }
+
+  server.name = name.trim();
+  server.address = address.trim();
+  server.port = port.trim();
+  server.version = version.trim() || "Unbekannt";
+
+  save(STORAGE.servers, servers);
+  renderServers();
+  toast("Server aktualisiert!");
+}
+
+function deleteServer(id) {
+  if (!confirm("Diesen Server wirklich löschen?")) return;
+
+  servers = servers.filter(server => server.id !== id);
+  save(STORAGE.servers, servers);
+  renderServers();
+  toast("Server gelöscht.");
+}
+
+// Profile
+
+document.getElementById("profileForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const name = document.getElementById("profileName").value.trim();
+  if (!name) return;
+
+  profiles.push({ id: Date.now(), name });
+  save(STORAGE.profiles, profiles);
+
+  event.target.reset();
+  renderProfiles();
+  toast("Profil erstellt!");
+});
+
+function renderProfiles() {
+  const list = document.getElementById("profileList");
+
+  if (!profiles.length) {
+    list.innerHTML =
+      '<div class="card"><p>Noch keine Profile erstellt.</p></div>';
+    return;
+  }
+
+  list.innerHTML = profiles.map(profile => `
+    <div class="card">
+      <h3>👤 ${escapeHTML(profile.name)}</h3>
+      <button class="danger" onclick="deleteProfile(${profile.id})">
+        Löschen
+      </button>
+    </div>
+  `).join("");
+}
+
+function deleteProfile(id) {
+  profiles = profiles.filter(profile => profile.id !== id);
+  save(STORAGE.profiles, profiles);
+  renderProfiles();
+  toast("Profil gelöscht.");
+}
+
+// Einstellungen
+
+function applySettings() {
+  document.body.classList.toggle(
+    "no-animations",
+    settings.animations === "off"
+  );
+
+  document.getElementById("animationSetting").value = settings.animations;
+  document.getElementById("soundSetting").value = settings.sound;
+  document.getElementById("languageSetting").value = settings.language;
+}
+
+document.getElementById("animationSetting").addEventListener("change", event => {
+  settings.animations = event.target.value;
+  save(STORAGE.settings, settings);
+  applySettings();
+  toast("Animationseinstellung gespeichert.");
+});
+
+document.getElementById("soundSetting").addEventListener("change", event => {
+  settings.sound = event.target.value;
+  save(STORAGE.settings, settings);
+  toast("Soundeinstellung gespeichert.");
+});
+
+document.getElementById("languageSetting").addEventListener("change", event => {
+  settings.language = event.target.value;
+  save(STORAGE.settings, settings);
+  toast("Spracheinstellung gespeichert. Übersetzung teilweise verfügbar.");
+});
+
+// Designs
+
+const themes = {
+  blue: {
+    blue: "#168cff",
+    cyan: "#00d9ff",
+    panel: "#101a2c",
+    panel2: "#14223a",
+    border: "#203653"
+  },
+  purple: {
+    blue: "#945cff",
+    cyan: "#d18cff",
+    panel: "#1a1430",
+    panel2: "#292044",
+    border: "#49356b"
+  },
+  red: {
+    blue: "#e34b61",
+    cyan: "#ff8798",
+    panel: "#28151e",
+    panel2: "#3b202b",
+    border: "#633442"
+  },
+  green: {
+    blue: "#13a879",
+    cyan: "#5df0b9",
+    panel: "#10251f",
+    panel2: "#18382c",
+    border: "#285541"
+  }
+};
+
+function setTheme(name) {
+  const theme = themes[name];
+  if (!theme) return;
+
+  const root = document.documentElement;
+
+  root.style.setProperty("--blue", theme.blue);
+  root.style.setProperty("--cyan", theme.cyan);
+  root.style.setProperty("--panel", theme.panel);
+  root.style.setProperty("--panel2", theme.panel2);
+  root.style.setProperty("--border", theme.border);
+
+  save(STORAGE.theme, name);
+  toast("Design geändert!");
+}
+
+function loadTheme() {
+  const name = load(STORAGE.theme, "blue");
+  setTheme(name);
+}
+
+// Start
+
+applySettings();
+loadTheme();
+renderServers();
+renderProfiles();
+</script>
+
 </body>
 </html>
