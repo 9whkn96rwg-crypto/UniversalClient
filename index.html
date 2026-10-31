@@ -9,366 +9,412 @@
 
 <style>
 :root {
-  --bg: #080d19;
-  --panel: #101a2c;
-  --panel2: #14223a;
-  --blue: #168cff;
-  --cyan: #00d9ff;
-  --text: #edf6ff;
-  --muted: #91a7c2;
-  --border: #203653;
+  --bg:#080d19;
+  --panel:#101a2d;
+  --panel2:#14223a;
+  --accent:#28a9ff;
+  --accent-rgb:40,169,255;
+  --text:#edf5ff;
+  --muted:#91a6c2;
+  --border:rgba(130,180,255,.15);
+  --radius:18px;
+  --neon:1;
+  --font-size:15px;
 }
 
-* { box-sizing: border-box; }
+* { box-sizing:border-box; }
 
 body {
-  margin: 0;
-  min-height: 100vh;
-  color: var(--text);
+  margin:0;
   background:
-    radial-gradient(ellipse at top, #102b4d 0%, transparent 48%),
+    radial-gradient(ellipse at 80% 0%,rgba(var(--accent-rgb),.13),transparent 40%),
     var(--bg);
-  font-family: Arial, sans-serif;
-  transition: background .3s;
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+  font-size:var(--font-size);
+  min-height:100vh;
 }
 
-body.no-animations * {
-  animation: none !important;
-  transition: none !important;
-}
+body.no-effects { background:var(--bg); }
+body.no-animations * { animation:none!important; transition:none!important; }
+body.compact .card { padding:13px; }
+body.compact .content { gap:12px; }
 
-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 16px 5%;
-  background: rgba(8,13,25,.95);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(12px);
-}
-
-.logo {
-  font-size: 22px;
-  font-weight: 900;
-  color: var(--cyan);
-  letter-spacing: .5px;
-  text-shadow: 0 0 15px #168cff88;
-}
-
-.logo span { color: white; }
-
-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 7px;
-}
-
-button, input, select { font: inherit; }
+button,input,select,textarea { font:inherit; }
 
 button {
-  padding: 10px 14px;
-  color: var(--text);
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: .2s;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:11px 15px;
+  color:var(--text);
+  background:var(--panel2);
+  cursor:pointer;
+  transition:.2s;
 }
 
 button:hover {
-  border-color: var(--cyan);
-  transform: translateY(-1px);
+  border-color:var(--accent);
+  transform:translateY(-1px);
 }
 
 button.primary {
-  color: white;
-  border: 0;
-  background: linear-gradient(110deg, var(--blue), #00bce9);
-  font-weight: bold;
+  background:var(--accent);
+  color:#06111d;
+  border-color:var(--accent);
+  font-weight:800;
 }
 
-button.active {
-  color: var(--cyan);
-  border-color: var(--cyan);
+button.danger { color:#ff7d8c; }
+button.small { padding:7px 10px; font-size:12px; }
+
+input,select,textarea {
+  width:100%;
+  background:#091326;
+  border:1px solid var(--border);
+  border-radius:11px;
+  color:var(--text);
+  padding:12px;
+  outline:none;
 }
 
-button.danger {
-  color: #ffb8c1;
-  border-color: #713442;
-  background: #351923;
+input:focus,select:focus,textarea:focus {
+  border-color:var(--accent);
+}
+
+label {
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:7px;
+}
+
+h1,h2,h3,p { margin-top:0; }
+h1 { font-size:clamp(27px,5vw,42px); }
+h2 { font-size:22px; }
+h3 { font-size:16px; }
+small,.muted { color:var(--muted); }
+
+.topbar {
+  position:sticky;
+  top:0;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:14px 5%;
+  background:rgba(8,13,25,.91);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(18px);
+}
+
+.brand {
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:-.7px;
+}
+
+.brand span { color:var(--accent); }
+
+.nav {
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.nav button {
+  background:transparent;
+  border-color:transparent;
+  padding:9px 11px;
+  color:var(--muted);
+}
+
+.nav button.active {
+  color:var(--accent);
+  background:rgba(var(--accent-rgb),.1);
+  border-color:var(--border);
 }
 
 main {
-  width: min(1100px, 92%);
-  margin: 30px auto 70px;
+  width:min(1200px,92%);
+  margin:32px auto 80px;
 }
 
-.page { display: none; }
-.page.active { display: block; animation: appear .25s ease; }
+.page { display:none; }
+.page.active { display:block; animation:appear .3s ease; }
 
 @keyframes appear {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity:0; transform:translateY(7px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.content {
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:18px;
 }
 
 .card {
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: linear-gradient(145deg, var(--panel), #0c1525);
-  box-shadow: 0 8px 25px #0003;
-  min-width: 0;
+  background:linear-gradient(145deg,rgba(20,34,58,.95),rgba(12,21,38,.96));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;
+  min-width:0;
+  box-shadow:0 10px 35px rgba(0,0,0,.15);
 }
 
-.card p, .muted {
-  color: var(--muted);
-  line-height: 1.55;
-}
-
-.card h3 { margin-top: 0; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 15px;
-}
-
-.section-title {
-  margin: 30px 0 15px;
-  color: var(--cyan);
-}
-
-form { display: grid; gap: 12px; }
-
-label {
-  display: block;
-  margin-bottom: 6px;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-input, select {
-  width: 100%;
-  padding: 12px;
-  color: var(--text);
-  background: #081321;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  outline: none;
-}
-
-input:focus, select:focus { border-color: var(--cyan); }
-
-.field { min-width: 0; }
-
-.notice {
-  padding: 13px 15px;
-  margin: 15px 0;
-  border: 1px solid #285477;
-  border-radius: 10px;
-  color: #c6eaff;
-  background: #10243a;
-  line-height: 1.5;
-}
-
-.tag {
-  display: inline-block;
-  padding: 5px 9px;
-  border-radius: 20px;
-  color: var(--cyan);
-  background: #12314a;
-  font-size: 12px;
-}
-
-.card-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 15px;
-}
-
-.server-card { border-left: 3px solid var(--cyan); }
-
-.server-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 10px;
-}
-
-.home-hero {
-  position: relative;
-  overflow: hidden;
-  min-height: 300px;
-  padding: 38px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border: 1px solid #17619a;
-  border-radius: 22px;
+.hero {
+  grid-column:span 12;
+  padding:clamp(24px,5vw,48px);
   background:
-    radial-gradient(circle at 85% 30%, #087ee955, transparent 35%),
-    linear-gradient(120deg, #102b4c, #091321 75%);
+    radial-gradient(circle at 85% 40%,rgba(var(--accent-rgb),.24),transparent 35%),
+    linear-gradient(120deg,#101c32,#0d1425);
 }
 
-.home-hero:after {
-  content: "UC";
-  position: absolute;
-  right: 20px;
-  bottom: -40px;
-  font-size: 190px;
-  font-weight: 900;
-  color: #168cff13;
-  pointer-events: none;
+.hero p { max-width:600px; line-height:1.7; color:var(--muted); }
+
+.tile {
+  grid-column:span 4;
+  min-height:145px;
+  cursor:pointer;
 }
 
-.home-label {
-  color: var(--cyan);
-  font-size: 12px;
-  letter-spacing: 3px;
-  font-weight: bold;
+.tile:hover { border-color:var(--accent); }
+
+.wide { grid-column:span 8; }
+.half { grid-column:span 6; }
+.third { grid-column:span 4; }
+.full { grid-column:span 12; }
+
+.eyebrow {
+  color:var(--accent);
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-size:11px;
+  font-weight:800;
 }
 
-.home-hero h1 {
-  max-width: 600px;
-  margin: 15px 0;
-  font-size: clamp(35px, 7vw, 58px);
-  line-height: 1.05;
-  color: white;
+.big-icon { font-size:28px; margin-bottom:12px; }
+
+.status {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:#76e4ad;
+  font-size:12px;
 }
 
-.home-hero p {
-  max-width: 470px;
-  color: #a9c1dc;
-  line-height: 1.7;
+.dot {
+  width:8px;
+  height:8px;
+  background:#56db99;
+  border-radius:50%;
 }
 
-.home-section { margin-top: 32px; }
-
-.home-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 15px;
+.form-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
 }
 
-.home-heading h2 { margin: 0; }
+.field { margin-bottom:14px; }
 
-.home-heading span {
-  color: var(--cyan);
-  font-size: 12px;
-  letter-spacing: 1px;
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:12px;
 }
 
-.home-quick {
-  min-height: 125px;
-  cursor: pointer;
-  transition: .2s;
+.server-item,.profile-item,.info-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
 }
 
-.home-quick:hover {
-  border-color: var(--cyan);
-  transform: translateY(-3px);
+.server-item:last-child,.profile-item:last-child,.info-row:last-child {
+  border-bottom:0;
 }
 
-.home-quick .symbol, .symbol {
-  font-size: 27px;
-  margin-bottom: 12px;
+.server-item p,.profile-item p { margin:5px 0 0; }
+
+.empty {
+  color:var(--muted);
+  padding:20px 0;
+  text-align:center;
 }
 
-.home-quick h3 { margin-bottom: 6px; }
-.home-quick p { margin: 0; font-size: 13px; }
-
-.home-feature {
-  min-height: 165px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background:
-    radial-gradient(circle at 90% 20%, #00cfff22, transparent 40%),
-    linear-gradient(140deg, #132c49, #101a2c);
+.settings-layout {
+  display:grid;
+  grid-template-columns:220px minmax(0,1fr);
+  gap:18px;
+  align-items:start;
 }
 
-.home-update { border-left: 3px solid var(--blue); }
-
-.home-status {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+.settings-menu {
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  position:sticky;
+  top:90px;
 }
 
-.home-status-item {
-  flex: 1;
-  min-width: 130px;
-  padding: 15px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--panel);
+.settings-menu button {
+  text-align:left;
+  background:transparent;
+  color:var(--muted);
 }
 
-.home-status-item strong {
-  display: block;
-  margin-bottom: 5px;
-  color: var(--cyan);
+.settings-menu button.active {
+  background:rgba(var(--accent-rgb),.13);
+  color:var(--accent);
+  border-color:var(--accent);
 }
 
-.home-status-item small { color: var(--muted); }
+.setting-panel { display:none; }
+.setting-panel.active { display:block; }
+
+.setting-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  padding:17px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.setting-row:last-child { border-bottom:0; }
+
+.setting-description {
+  color:var(--muted);
+  font-size:12px;
+  margin-top:5px;
+  line-height:1.5;
+}
+
+.switch {
+  width:48px;
+  height:27px;
+  flex-shrink:0;
+  position:relative;
+  display:inline-block;
+}
+
+.switch input { display:none; }
+
+.switch span {
+  position:absolute;
+  inset:0;
+  background:#34435b;
+  border-radius:30px;
+  cursor:pointer;
+}
+
+.switch span:before {
+  content:"";
+  position:absolute;
+  width:19px;
+  height:19px;
+  left:4px;
+  top:4px;
+  background:white;
+  border-radius:50%;
+  transition:.2s;
+}
+
+.switch input:checked + span { background:var(--accent); }
+.switch input:checked + span:before { transform:translateX(21px); }
+
+.range-line {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:130px;
+}
+
+.range-line input { padding:0; }
+
+.theme-options {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.theme-button {
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  border:2px solid transparent;
+}
+
+.theme-button.selected { border-color:white; }
+
+.preview-box {
+  padding:17px;
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  background:var(--panel2);
+  margin-top:12px;
+}
 
 footer {
-  padding: 25px;
-  color: var(--muted);
-  text-align: center;
-  border-top: 1px solid var(--border);
+  text-align:center;
+  color:var(--muted);
+  padding:25px;
+  border-top:1px solid var(--border);
+  font-size:12px;
 }
 
-#toast {
-  position: fixed;
-  left: 50%;
-  bottom: 25px;
-  z-index: 30;
-  max-width: 90%;
-  padding: 13px 18px;
-  border: 1px solid var(--cyan);
-  border-radius: 12px;
-  color: white;
-  background: #10243a;
-  box-shadow: 0 5px 25px #0008;
-  transform: translate(-50%, 150px);
-  transition: .3s;
+.toast {
+  position:fixed;
+  bottom:22px;
+  left:50%;
+  transform:translate(-50%,20px);
+  opacity:0;
+  pointer-events:none;
+  z-index:30;
+  background:var(--panel2);
+  border:1px solid var(--accent);
+  border-radius:13px;
+  padding:13px 18px;
+  transition:.25s;
+  box-shadow:0 8px 30px #0008;
 }
 
-#toast.show { transform: translate(-50%, 0); }
+.toast.show { opacity:1; transform:translate(-50%,0); }
 
-@media(max-width:650px) {
-  header {
-    flex-direction: column;
-    padding: 14px 3%;
+@media(max-width:760px) {
+  .topbar { align-items:flex-start; flex-direction:column; }
+  .nav { width:100%; overflow-x:auto; flex-wrap:nowrap; }
+  .nav button { white-space:nowrap; }
+  .tile,.third { grid-column:span 6; }
+  .wide,.half { grid-column:span 12; }
+  .settings-layout { grid-template-columns:1fr; }
+  .settings-menu {
+    position:static;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
-  nav { width: 100%; }
-  nav button {
-    flex: 1 1 auto;
-    padding: 9px;
-    font-size: 13px;
-  }
-  main { margin-top: 20px; }
-  .home-hero { padding: 28px 20px; }
+  .settings-menu button { text-align:center; }
+}
+
+@media(max-width:440px) {
+  .tile,.third { grid-column:span 12; }
+  .form-grid { grid-template-columns:1fr; }
+  .server-item,.profile-item { align-items:flex-start; flex-direction:column; }
+  .setting-row { gap:10px; }
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo">Universal<span>Client</span></div>
-
-  <nav>
+<header class="topbar">
+  <div class="brand">UNIVERSAL<span>CLIENT</span></div>
+  <nav class="nav">
     <button class="active" data-page="home">Home</button>
     <button data-page="java">Java</button>
     <button data-page="bedrock">Bedrock</button>
@@ -382,716 +428,872 @@ footer {
 <main>
 
 <!-- HOME -->
-<section id="home" class="page active">
+<section class="page active" id="home">
+  <div class="content">
+    <div class="card hero">
+      <div class="eyebrow">Your Minecraft Hub</div>
+      <h1 id="homeGreeting">Welcome to UniversalClient.</h1>
+      <p>Dein zentraler Hub für Minecraft Java und Bedrock. Verwalte Server, Profile und deine Client-Einstellungen an einem Ort.</p>
+      <div class="actions">
+        <button class="primary" onclick="showPage('bedrock')">Bedrock öffnen</button>
+        <button onclick="showPage('servers')">Server verwalten</button>
+      </div>
+    </div>
 
-  <div class="home-hero">
-    <div class="home-label">YOUR MINECRAFT EXPERIENCE</div>
-    <h1>Welcome to<br>UniversalClient.</h1>
-    <p>
-      Eine zentrale Plattform für dein Minecraft-Erlebnis.
-      Entdecke deine Bereiche, verwalte deine Einstellungen
-      und behalte kommende Funktionen im Blick.
-    </p>
-    <div>
-      <button class="primary" onclick="showPage('java')">
-        Explore UniversalClient
-      </button>
+    <div class="card tile" onclick="showPage('java')">
+      <div class="big-icon">☕</div>
+      <h3>Java Edition</h3>
+      <p class="muted">Launcher-Bereich und Projektstatus</p>
+      <span class="eyebrow">In Entwicklung</span>
+    </div>
+
+    <div class="card tile" onclick="showPage('bedrock')">
+      <div class="big-icon">🟩</div>
+      <h3>Bedrock Edition</h3>
+      <p class="muted">Minecraft auf deinem iPad öffnen</p>
+      <span class="eyebrow">App-Verknüpfung</span>
+    </div>
+
+    <div class="card tile" onclick="showPage('servers')">
+      <div class="big-icon">🌐</div>
+      <h3>Deine Server</h3>
+      <p class="muted">Serveradressen und Versionen speichern</p>
+      <span class="eyebrow">Serververwaltung</span>
+    </div>
+
+    <div class="card wide">
+      <div class="eyebrow">Dashboard</div>
+      <h2>Dein Überblick</h2>
+      <div class="info-row"><span>Gespeicherte Server</span><strong id="homeServerCount">0</strong></div>
+      <div class="info-row"><span>Gespeicherte Profile</span><strong id="homeProfileCount">0</strong></div>
+      <div class="info-row"><span>Plattform</span><strong>Web / iPad</strong></div>
+    </div>
+
+    <div class="card half">
+      <div class="eyebrow">Projektstatus</div>
+      <h2>UniversalClient</h2>
+      <p class="muted">Die Web-Oberfläche ist verfügbar. Weitere Funktionen können schrittweise ergänzt werden.</p>
+      <span class="status"><span class="dot"></span> Website verfügbar</span>
+    </div>
+
+    <div class="card full">
+      <div class="eyebrow">Roadmap</div>
+      <h2>Was noch kommen kann</h2>
+      <div class="info-row"><span>Mehr Themes und Anpassungen</span><span class="eyebrow">Geplant</span></div>
+      <div class="info-row"><span>Erweiterte Serververwaltung</span><span class="eyebrow">Geplant</span></div>
+      <div class="info-row"><span>Java-Unterstützung auf kompatiblen Geräten</span><span class="eyebrow">Später</span></div>
     </div>
   </div>
-
-  <div class="home-section">
-    <div class="home-heading">
-      <h2>Quick Access</h2>
-      <span>SHORTCUTS</span>
-    </div>
-
-    <div class="grid">
-      <div class="card home-quick" onclick="showPage('java')">
-        <div class="symbol">☕</div>
-        <h3>Java Edition</h3>
-        <p>Dein Java-Bereich</p>
-      </div>
-
-      <div class="card home-quick" onclick="showPage('bedrock')">
-        <div class="symbol">🟩</div>
-        <h3>Bedrock Edition</h3>
-        <p>Dein Bedrock-Bereich</p>
-      </div>
-
-      <div class="card home-quick" onclick="showPage('servers')">
-        <div class="symbol">🌐</div>
-        <h3>Servers</h3>
-        <p>Deine Serververwaltung</p>
-      </div>
-
-      <div class="card home-quick" onclick="showPage('profiles')">
-        <div class="symbol">👤</div>
-        <h3>Profiles</h3>
-        <p>Deine Profile</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="home-section">
-    <div class="home-heading">
-      <h2>Featured</h2>
-      <span>HIGHLIGHT</span>
-    </div>
-
-    <div class="card home-feature">
-      <div>
-        <div class="symbol">⚡</div>
-        <h2>One Client. Two Editions.</h2>
-        <p>
-          Java und Bedrock in einer übersichtlichen Oberfläche.
-          Wähle deinen Bereich und entdecke die Funktionen.
-        </p>
-      </div>
-      <div>
-        <button class="primary" onclick="showPage('bedrock')">
-          Discover more
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="home-section">
-    <div class="home-heading">
-      <h2>News & Updates</h2>
-      <span>WHAT'S NEW</span>
-    </div>
-
-    <div class="grid">
-      <div class="card home-update">
-        <span class="tag">CURRENT</span>
-        <h3>New Home Experience</h3>
-        <p>
-          Das Home-Dashboard bekommt ein neues Design
-          mit Schnellzugriffen und Highlights.
-        </p>
-      </div>
-
-      <div class="card home-update">
-        <span class="tag">AVAILABLE</span>
-        <h3>Server Management</h3>
-        <p>
-          Speichere deine Minecraft-Server und verwalte
-          ihre Informationen.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div class="home-section">
-    <div class="home-heading">
-      <h2>Coming Soon</h2>
-      <span>ROADMAP</span>
-    </div>
-
-    <div class="grid">
-      <div class="card">
-        <div class="symbol">🎨</div>
-        <h3>More Themes</h3>
-        <p>Weitere Designs und Anpassungsmöglichkeiten.</p>
-        <span class="tag">PLANNED</span>
-      </div>
-
-      <div class="card">
-        <div class="symbol">✨</div>
-        <h3>More Customization</h3>
-        <p>Mehr Möglichkeiten, UniversalClient anzupassen.</p>
-        <span class="tag">PLANNED</span>
-      </div>
-
-      <div class="card">
-        <div class="symbol">🚀</div>
-        <h3>New Features</h3>
-        <p>Weitere Funktionen für die Plattform.</p>
-        <span class="tag">IN DEVELOPMENT</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="home-section">
-    <div class="home-heading">
-      <h2>UniversalClient Status</h2>
-      <span>OVERVIEW</span>
-    </div>
-
-    <div class="home-status">
-      <div class="home-status-item">
-        <strong>Version 1.1</strong>
-        <small>Current Version</small>
-      </div>
-      <div class="home-status-item">
-        <strong>Web Edition</strong>
-        <small>Platform</small>
-      </div>
-      <div class="home-status-item">
-        <strong>In Development</strong>
-        <small>Project Status</small>
-      </div>
-    </div>
-  </div>
-
 </section>
 
 <!-- JAVA -->
-<section id="java" class="page">
-  <h2>☕ Java Edition</h2>
-
-  <div class="card">
-    <h3>Java-Bereich</h3>
-    <p>
-      Hier kannst du deine Java-Server verwalten und
-      Informationen zu deinen Servern speichern.
-    </p>
-
-    <div class="notice">
-      Der Java-Spielstart ist auf dieser iPad-Webseite noch
-      nicht integriert. Zum Spielen werden eine kompatible
-      Java-Laufzeit und eine gültige Minecraft-Java-Lizenz benötigt.
+<section class="page" id="java">
+  <div class="content">
+    <div class="card hero">
+      <div class="eyebrow">Java Edition</div>
+      <h1>Java Client</h1>
+      <p>Dieser Bereich ist für eine spätere Java-Launcher-Integration vorgesehen.</p>
+      <span class="eyebrow">Noch nicht verfügbar</span>
     </div>
-
-    <button class="primary" onclick="showPage('servers')">
-      Java-Server verwalten
-    </button>
+    <div class="card full">
+      <h2>Warum funktioniert Java hier noch nicht?</h2>
+      <p class="muted">Eine Webseite kann Minecraft Java nicht einfach selbst starten. Dafür werden eine kompatible Laufzeitumgebung und eine gültige Minecraft-Lizenz benötigt. Diese Webseite stellt keinen Java-Launcher bereit.</p>
+    </div>
   </div>
 </section>
 
 <!-- BEDROCK -->
-<section id="bedrock" class="page">
-  <h2>🟩 Bedrock Edition</h2>
-
-  <div class="card">
-    <h3>Minecraft Bedrock öffnen</h3>
-    <p>
-      Öffne Minecraft direkt aus UniversalClient auf deinem iPad.
-    </p>
-
-    <button class="primary" onclick="openMinecraft()">
-      Minecraft öffnen
-    </button>
-
-    <div class="notice">
-      Die Webseite kann Minecraft öffnen, aber nicht automatisch
-      einen gespeicherten Server auswählen oder eine bestimmte
-      Spielversion einstellen. Wähle deinen Server anschließend
-      in Minecraft aus.
+<section class="page" id="bedrock">
+  <div class="content">
+    <div class="card hero">
+      <div class="eyebrow">Bedrock Edition</div>
+      <h1>Minecraft Bedrock</h1>
+      <p>Öffne Minecraft auf deinem iPad über die App-Verknüpfung.</p>
+      <div class="actions">
+        <button class="primary" onclick="openMinecraft()">Minecraft öffnen ↗</button>
+      </div>
     </div>
-
-    <button onclick="showPage('servers')">
-      Bedrock-Server verwalten
-    </button>
+    <div class="card full">
+      <h2>Server beitreten</h2>
+      <p class="muted">Speichere einen Bedrock-Server im Bereich Server. Von dort kannst du Minecraft öffnen und die Serverdaten in Minecraft manuell eingeben.</p>
+      <button onclick="showPage('servers')">Zu meinen Servern</button>
+      <p class="muted" style="margin-top:15px">Hinweis: Die Webseite kann Minecraft öffnen, aber keine Serververbindung innerhalb der App automatisch herstellen.</p>
+    </div>
   </div>
 </section>
 
-<!-- SERVERS -->
-<section id="servers" class="page">
-  <h2>🌐 Serververwaltung</h2>
+<!-- SERVER -->
+<section class="page" id="servers">
+  <div class="content">
+    <div class="card full">
+      <div class="eyebrow">Server Manager</div>
+      <h1>Meine Server</h1>
+      <p class="muted">Speichere deine Serverdaten lokal in diesem Browser.</p>
+    </div>
 
-  <div class="card">
-    <h3>Neuen Server hinzufügen</h3>
+    <div class="card half">
+      <h2 id="serverFormTitle">Server hinzufügen</h2>
+      <input type="hidden" id="serverEditId">
 
-    <form id="serverForm">
       <div class="field">
         <label for="serverName">Servername</label>
-        <input id="serverName" placeholder="Mein Minecraft Server" required>
+        <input id="serverName" placeholder="Mein Minecraft Server">
       </div>
 
-      <div class="field">
-        <label for="serverEdition">Edition</label>
-        <select id="serverEdition">
-          <option value="Bedrock">Bedrock</option>
-          <option value="Java">Java</option>
-        </select>
+      <div class="form-grid">
+        <div class="field">
+          <label for="serverEdition">Edition</label>
+          <select id="serverEdition">
+            <option>Bedrock</option>
+            <option>Java</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="serverVersion">Version</label>
+          <select id="serverVersion">
+            <option>Unbekannt</option>
+            <option>1.21.x</option>
+            <option>1.20.x</option>
+            <option>1.19.x</option>
+            <option>1.18.x</option>
+            <option>Andere</option>
+          </select>
+        </div>
       </div>
 
       <div class="field">
         <label for="serverAddress">Serveradresse / IP</label>
-        <input id="serverAddress" placeholder="play.example.net" required>
+        <input id="serverAddress" placeholder="play.example.net">
       </div>
 
       <div class="field">
         <label for="serverPort">Port</label>
-        <input id="serverPort" type="number" value="19132" required>
+        <input id="serverPort" type="number" value="19132">
       </div>
 
-      <div class="field">
-        <label for="serverVersion">Serverversion</label>
-        <select id="serverVersion">
-          <option value="Unbekannt">Unbekannt / automatisch</option>
-          <option value="1.21.x">1.21.x</option>
-          <option value="1.20.x">1.20.x</option>
-          <option value="1.19.x">1.19.x</option>
-          <option value="1.18.x">1.18.x</option>
-          <option value="Andere">Andere Version</option>
-        </select>
+      <div class="actions">
+        <button class="primary" onclick="saveServer()">Server speichern</button>
+        <button onclick="clearServerForm()">Zurücksetzen</button>
       </div>
+    </div>
 
-      <div class="field" id="customVersionField" hidden>
-        <label for="customVersion">Eigene Version</label>
-        <input id="customVersion" placeholder="Version eintragen">
-      </div>
-
-      <button class="primary" type="submit">Server speichern</button>
-    </form>
+    <div class="card half">
+      <h2>Gespeicherte Server</h2>
+      <div id="serverList"></div>
+    </div>
   </div>
-
-  <h3 class="section-title">Gespeicherte Server</h3>
-  <div id="serverList" class="grid"></div>
 </section>
 
 <!-- PROFILES -->
-<section id="profiles" class="page">
-  <h2>👤 Profiles</h2>
-
-  <div class="card">
-    <h3>Profil erstellen</h3>
-
-    <form id="profileForm">
+<section class="page" id="profiles">
+  <div class="content">
+    <div class="card full">
+      <div class="eyebrow">Personalization</div>
+      <h1>Profile</h1>
+      <p class="muted">Erstelle verschiedene lokale Profile für deine Einstellungen.</p>
+    </div>
+    <div class="card half">
+      <h2>Neues Profil</h2>
       <div class="field">
         <label for="profileName">Profilname</label>
-        <input id="profileName" placeholder="Mein Profil" required>
+        <input id="profileName" placeholder="Mein Profil">
       </div>
-
-      <button class="primary" type="submit">Profil erstellen</button>
-    </form>
+      <button class="primary" onclick="addProfile()">Profil erstellen</button>
+    </div>
+    <div class="card half">
+      <h2>Meine Profile</h2>
+      <div id="profileList"></div>
+    </div>
   </div>
-
-  <h3 class="section-title">Deine Profile</h3>
-  <div id="profileList" class="grid"></div>
 </section>
 
 <!-- SETTINGS -->
-<section id="settings" class="page">
-  <h2>⚙ Einstellungen</h2>
+<section class="page" id="settings">
+  <div class="content">
+    <div class="card full">
+      <div class="eyebrow">Control Center</div>
+      <h1>Settings</h1>
+      <p class="muted">Passe UniversalClient an deine Wünsche an.</p>
+    </div>
 
-  <div class="card">
-    <h3>Darstellung</h3>
+    <div class="settings-layout full">
+      <aside class="settings-menu card">
+        <button class="active" data-setting="appearance">🎨 Erscheinungsbild</button>
+        <button data-setting="interface">🖥️ Oberfläche</button>
+        <button data-setting="notifications">🔔 Benachrichtigungen</button>
+        <button data-setting="performance">⚡ Leistung</button>
+        <button data-setting="minecraft">⛏️ Minecraft</button>
+        <button data-setting="privacy">🔒 Datenschutz</button>
+        <button data-setting="advanced">🛠️ Erweitert</button>
+      </aside>
 
-    <label for="animationSetting">Animationen</label>
-    <select id="animationSetting">
-      <option value="on">Aktiviert</option>
-      <option value="off">Deaktiviert</option>
-    </select>
+      <div class="card">
 
-    <label for="soundSetting" style="margin-top:16px">Sounds</label>
-    <select id="soundSetting">
-      <option value="on">Aktiviert</option>
-      <option value="off">Deaktiviert</option>
-    </select>
+        <!-- APPEARANCE -->
+        <section class="setting-panel active" id="setting-appearance">
+          <div class="eyebrow">Appearance</div>
+          <h2>Erscheinungsbild</h2>
+          <p class="muted">Ändere Farben und das Design deines Clients.</p>
 
-    <label for="languageSetting" style="margin-top:16px">Sprache</label>
-    <select id="languageSetting">
-      <option value="de">Deutsch</option>
-      <option value="en">English (teilweise)</option>
-    </select>
+          <h3>Farbthema</h3>
+          <div class="theme-options">
+            <button class="theme-button" data-theme-choice="blue" style="background:#28a9ff" title="Blau"></button>
+            <button class="theme-button" data-theme-choice="purple" style="background:#a678ff" title="Lila"></button>
+            <button class="theme-button" data-theme-choice="red" style="background:#ff637c" title="Rot"></button>
+            <button class="theme-button" data-theme-choice="green" style="background:#43d69a" title="Grün"></button>
+          </div>
 
-    <p class="muted">
-      Die Einstellungen werden in deinem Browser gespeichert.
-      Die englische Übersetzung ist noch nicht vollständig.
-    </p>
+          <div class="setting-row">
+            <div>
+              **Neon-Stärke**
+              <div class="setting-description">Steuert die Intensität der Akzentfarbe.</div>
+            </div>
+            <div class="range-line">
+              <input id="neonRange" type="range" min="0" max="2" step=".1">
+              <span id="neonValue">1.0</span>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              **Abgerundete Karten**
+              <div class="setting-description">Ändert die Ecken der Karten.</div>
+            </div>
+            <select id="radiusChoice" style="max-width:130px">
+              <option value="10px">Klein</option>
+              <option value="18px">Mittel</option>
+              <option value="27px">Groß</option>
+            </select>
+          </div>
+
+          <div class="preview-box">
+            <span class="eyebrow">Live Preview</span>
+            <h3>So sieht dein Design aus</h3>
+            <p class="muted">Deine Änderungen werden direkt angezeigt.</p>
+            <button class="primary">Beispiel-Button</button>
+          </div>
+        </section>
+
+        <!-- INTERFACE -->
+        <section class="setting-panel" id="setting-interface">
+          <div class="eyebrow">Interface</div>
+          <h2>Oberfläche</h2>
+
+          <div class="setting-row">
+            <div>
+              **Kompaktmodus**
+              <div class="setting-description">Verringert Abstände und Karteninnenräume.</div>
+            </div>
+            <label class="switch"><input id="compactToggle" type="checkbox"><span></span></label>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              **Schriftgröße**
+              <div class="setting-description">Passe die Größe der Website-Schrift an.</div>
+            </div>
+            <div class="range-line">
+              <input id="fontRange" type="range" min="13" max="19" step="1">
+              <span id="fontValue">15</span>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:18px">
+            <label for="greetingInput">Eigener Begrüßungstext</label>
+            <input id="greetingInput" maxlength="60" placeholder="Welcome to UniversalClient.">
+            <div class="setting-description">Dieser Text erscheint auf deiner Startseite.</div>
+          </div>
+          <button class="primary" onclick="saveGreeting()">Begrüßung speichern</button>
+        </section>
+
+        <!-- NOTIFICATIONS -->
+        <section class="setting-panel" id="setting-notifications">
+          <div class="eyebrow">Notifications</div>
+          <h2>Benachrichtigungen</h2>
+
+          <div class="setting-row">
+            <div>
+              **Hinweise**
+              <div class="setting-description">Zeigt Bestätigungen und Hinweise in UniversalClient.</div>
+            </div>
+            <label class="switch"><input id="notificationsToggle" type="checkbox"><span></span></label>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              **Sounds**
+              <div class="setting-description">Spielt bei unterstützten Aktionen einen kurzen Ton ab.</div>
+            </div>
+            <label class="switch"><input id="soundToggle" type="checkbox"><span></span></label>
+          </div>
+
+          <p class="muted">Diese Optionen steuern Hinweise innerhalb der geöffneten Website. Es werden keine Push-Nachrichten im Hintergrund versendet.</p>
+        </section>
+
+        <!-- PERFORMANCE -->
+        <section class="setting-panel" id="setting-performance">
+          <div class="eyebrow">Performance</div>
+          <h2>Leistung</h2>
+
+          <div class="setting-row">
+            <div>
+              **Animationen**
+              <div class="setting-description">Aktiviert oder deaktiviert Übergänge.</div>
+            </div>
+            <label class="switch"><input id="animationsToggle" type="checkbox"><span></span></label>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              **Hintergrundeffekte**
+              <div class="setting-description">Schaltet den dekorativen Hintergrund aus.</div>
+            </div>
+            <label class="switch"><input id="effectsToggle" type="checkbox"><span></span></label>
+          </div>
+        </section>
+
+        <!-- MINECRAFT -->
+        <section class="setting-panel" id="setting-minecraft">
+          <div class="eyebrow">Minecraft</div>
+          <h2>Minecraft-Einstellungen</h2>
+
+          <div class="field">
+            <label for="editionChoice">Bevorzugte Edition</label>
+            <select id="editionChoice">
+              <option value="Bedrock">Bedrock Edition</option>
+              <option value="Java">Java Edition</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="defaultVersion">Bevorzugte Serverversion</label>
+            <select id="defaultVersion">
+              <option>Unbekannt</option>
+              <option>1.21.x</option>
+              <option>1.20.x</option>
+              <option>1.19.x</option>
+              <option>1.18.x</option>
+              <option>Andere</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              **Serverdaten auf der Startseite anzeigen**
+              <div class="setting-description">Speichert deine Dashboard-Präferenz.</div>
+            </div>
+            <label class="switch"><input id="showServerToggle" type="checkbox"><span></span></label>
+          </div>
+
+          <p class="muted">Die bevorzugte Version ist nur eine gespeicherte Einstellung. Sie ändert nicht die Version von Minecraft selbst.</p>
+        </section>
+
+        <!-- PRIVACY -->
+        <section class="setting-panel" id="setting-privacy">
+          <div class="eyebrow">Privacy</div>
+          <h2>Datenschutz und Daten</h2>
+          <p class="muted">Server, Profile und Einstellungen werden lokal in diesem Browser gespeichert.</p>
+
+          <div class="info-row"><span>Gespeicherte Server</span><strong id="privacyServerCount">0</strong></div>
+          <div class="info-row"><span>Gespeicherte Profile</span><strong id="privacyProfileCount">0</strong></div>
+
+          <div class="actions">
+            <button class="primary" onclick="exportData()">Daten exportieren (JSON)</button>
+          </div>
+
+          <div style="margin-top:25px">
+            <h3>Lokale Daten zurücksetzen</h3>
+            <p class="muted">Entfernt die von UniversalClient gespeicherten Server, Profile und Einstellungen in diesem Browser.</p>
+            <button class="danger" onclick="resetData()">Alle App-Daten zurücksetzen</button>
+          </div>
+        </section>
+
+        <!-- ADVANCED -->
+        <section class="setting-panel" id="setting-advanced">
+          <div class="eyebrow">Advanced</div>
+          <h2>Erweiterte Einstellungen</h2>
+
+          <div class="setting-row">
+            <div>
+              **Entwicklermodus**
+              <div class="setting-description">Zeigt zusätzliche technische Informationen.</div>
+            </div>
+            <label class="switch"><input id="developerToggle" type="checkbox"><span></span></label>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              **Feature-Vorschau**
+              <div class="setting-description">Zeigt Hinweise auf geplante Funktionen.</div>
+            </div>
+            <label class="switch"><input id="previewToggle" type="checkbox"><span></span></label>
+          </div>
+
+          <div class="preview-box" id="debugBox" hidden>
+            <h3>Debug-Informationen</h3>
+            <div class="info-row"><span>App-Version</span><strong>1.0.0</strong></div>
+            <div class="info-row"><span>Speicher</span><strong>Local Storage</strong></div>
+            <div class="info-row"><span>Plattform</span><strong id="platformInfo">Web</strong></div>
+            <div class="info-row"><span>Browser</span><strong id="browserInfo">Unbekannt</strong></div>
+          </div>
+
+          <p class="muted">UniversalClient Web Version 1.0.0</p>
+        </section>
+
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ABOUT -->
-<section id="about" class="page">
-  <h2>ℹ About UniversalClient</h2>
-
-  <div class="card">
-    <h3>About the Project</h3>
-    <p>
-      UniversalClient ist ein unabhängiges Webprojekt,
-      das Java- und Bedrock-Bereiche in einer gemeinsamen
-      Oberfläche zusammenführt.
-    </p>
-    <p>
-      Das Projekt befindet sich in Entwicklung.
-      Weitere Funktionen und Verbesserungen sind geplant.
-    </p>
-    <div class="server-meta">
-      <span class="tag">Version 1.1</span>
-      <span class="tag">Web Edition</span>
-      <span class="tag">In Development</span>
+<section class="page" id="about">
+  <div class="content">
+    <div class="card hero">
+      <div class="eyebrow">About</div>
+      <h1>UniversalClient</h1>
+      <p>Ein persönliches Minecraft-Dashboard mit futuristischem Design.</p>
     </div>
-    <div class="notice">
-      UniversalClient ist kein offizielles Produkt von
-      Mojang oder Microsoft.
+    <div class="card half">
+      <h2>Version</h2>
+      <p class="muted">UniversalClient Web 1.0.0</p>
+    </div>
+    <div class="card half">
+      <h2>Technologie</h2>
+      <p class="muted">HTML, CSS, JavaScript und lokaler Browserspeicher.</p>
+    </div>
+    <div class="card full">
+      <h2>Wichtiger Hinweis</h2>
+      <p class="muted">UniversalClient ist aktuell eine Web-Oberfläche. Es ist kein offizieller Minecraft-Launcher und ersetzt keine Minecraft-Lizenz oder Spielinstallation.</p>
     </div>
   </div>
 </section>
 
 </main>
 
-<footer>
-  UniversalClient · Your Minecraft Experience
-</footer>
-
-<div id="toast" role="status"></div>
+<footer>UNIVERSALCLIENT · WEB VERSION 1.0.0</footer>
+<div class="toast" id="toast"></div>
 
 <script>
-const STORAGE = {
-  servers: "universalclient_servers",
-  profiles: "universalclient_profiles",
-  settings: "universalclient_settings",
-  theme: "universalclient_theme"
+const KEYS = {
+  servers:"universalclient_servers",
+  profiles:"universalclient_profiles",
+  settings:"universalclient_settings",
+  theme:"universalclient_theme"
 };
 
-function load(key, fallback) {
+const defaults = {
+  animations:true,
+  sound:false,
+  notifications:true,
+  compact:false,
+  effects:true,
+  neon:1,
+  radius:"18px",
+  fontSize:15,
+  greeting:"Welcome to UniversalClient.",
+  edition:"Bedrock",
+  version:"Unbekannt",
+  showServers:true,
+  developer:false,
+  preview:true
+};
+
+function readJSON(key,fallback) {
   try {
-    const value = localStorage.getItem(key);
+    const value=localStorage.getItem(key);
     return value ? JSON.parse(value) : fallback;
   } catch {
     return fallback;
   }
 }
 
-function save(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
+function getServers() {
+  const data=readJSON(KEYS.servers,[]);
+  return Array.isArray(data) ? data : [];
 }
 
-let servers = load(STORAGE.servers, []);
-let profiles = load(STORAGE.profiles, []);
+function getProfiles() {
+  const data=readJSON(KEYS.profiles,[]);
+  return Array.isArray(data) ? data : [];
+}
 
-let settings = load(STORAGE.settings, {
-  animations: "on",
-  sound: "on",
-  language: "de"
-});
+function getSettings() {
+  return {...defaults,...readJSON(KEYS.settings,{})};
+}
+
+let settings=getSettings();
+
+function saveSettings() {
+  localStorage.setItem(KEYS.settings,JSON.stringify(settings));
+}
 
 function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, character => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  })[character]);
+  return String(value).replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[char]));
 }
 
 function toast(message) {
-  const element = document.getElementById("toast");
-  element.textContent = message;
-  element.classList.add("show");
-
+  if(settings.notifications===false) return;
+  const el=document.getElementById("toast");
+  el.textContent=message;
+  el.classList.add("show");
   clearTimeout(window.toastTimer);
-  window.toastTimer = setTimeout(() => {
-    element.classList.remove("show");
-  }, 2600);
+  window.toastTimer=setTimeout(()=>el.classList.remove("show"),2600);
+  if(settings.sound) playSound();
+}
 
-  if (settings.sound === "on") {
-    try {
-      const audio = new AudioContext();
-      const oscillator = audio.createOscillator();
-      const gain = audio.createGain();
-
-      oscillator.connect(gain);
-      gain.connect(audio.destination);
-
-      oscillator.frequency.value = 550;
-      gain.gain.value = 0.035;
-
-      oscillator.start();
-      oscillator.stop(audio.currentTime + 0.07);
-      oscillator.onended = () => audio.close();
-    } catch {}
-  }
+function playSound() {
+  try {
+    const Audio=window.AudioContext||window.webkitAudioContext;
+    if(!Audio) return;
+    const ctx=new Audio();
+    const oscillator=ctx.createOscillator();
+    const gain=ctx.createGain();
+    oscillator.frequency.value=620;
+    gain.gain.value=.035;
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+    oscillator.start();
+    oscillator.stop(ctx.currentTime+.08);
+    oscillator.onended=()=>ctx.close();
+  } catch(e) {}
 }
 
 function showPage(page) {
-  document.querySelectorAll(".page").forEach(section => {
-    section.classList.remove("active");
-  });
-
-  document.querySelectorAll("nav button").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === page);
-  });
-
-  document.getElementById(page).classList.add("active");
-
-  if (page === "servers") renderServers();
-  if (page === "profiles") renderProfiles();
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  const section=document.getElementById(page);
+  if(section) section.classList.add("active");
+  const nav=document.querySelector(`[data-page="${page}"]`);
+  if(nav) nav.classList.add("active");
+  if(page==="settings") refreshPrivacy();
+  window.scrollTo({top:0,behavior:settings.animations?"smooth":"auto"});
 }
 
-document.querySelectorAll("nav button").forEach(button => {
-  button.addEventListener("click", () => showPage(button.dataset.page));
+document.querySelectorAll(".nav button").forEach(button=>{
+  button.addEventListener("click",()=>showPage(button.dataset.page));
 });
 
-function openMinecraft() {
-  toast("Minecraft wird geöffnet …");
-  window.location.href = "minecraft://";
+document.querySelectorAll("[data-setting]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    document.querySelectorAll("[data-setting]").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".setting-panel").forEach(p=>p.classList.remove("active"));
+    button.classList.add("active");
+    document.getElementById("setting-"+button.dataset.setting).classList.add("active");
+  });
+});
+
+const themes={
+  blue:{accent:"#28a9ff",rgb:"40,169,255"},
+  purple:{accent:"#a678ff",rgb:"166,120,255"},
+  red:{accent:"#ff637c",rgb:"255,99,124"},
+  green:{accent:"#43d69a",rgb:"67,214,154"}
+};
+
+function setTheme(name) {
+  const theme=themes[name]||themes.blue;
+  document.documentElement.style.setProperty("--accent",theme.accent);
+  document.documentElement.style.setProperty("--accent-rgb",theme.rgb);
+  localStorage.setItem(KEYS.theme,name);
+  document.querySelectorAll("[data-theme-choice]").forEach(button=>{
+    button.classList.toggle("selected",button.dataset.themeChoice===name);
+  });
 }
 
-// Serververwaltung
-
-const editionInput = document.getElementById("serverEdition");
-const portInput = document.getElementById("serverPort");
-
-editionInput.addEventListener("change", () => {
-  portInput.value = editionInput.value === "Bedrock"
-    ? "19132"
-    : "25565";
+document.querySelectorAll("[data-theme-choice]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    setTheme(button.dataset.themeChoice);
+    toast("Design geändert.");
+  });
 });
 
-document.getElementById("serverVersion").addEventListener("change", event => {
-  document.getElementById("customVersionField").hidden =
-    event.target.value !== "Andere";
+function applySettings() {
+  document.body.classList.toggle("compact",!!settings.compact);
+  document.body.classList.toggle("no-animations",!settings.animations);
+  document.body.classList.toggle("no-effects",!settings.effects);
+
+  document.documentElement.style.setProperty("--neon",settings.neon);
+  document.documentElement.style.setProperty("--radius",settings.radius);
+  document.documentElement.style.setProperty("--font-size",settings.fontSize+"px");
+
+  document.getElementById("homeGreeting").textContent=settings.greeting;
+
+  document.getElementById("compactToggle").checked=!!settings.compact;
+  document.getElementById("animationsToggle").checked=!!settings.animations;
+  document.getElementById("effectsToggle").checked=!!settings.effects;
+  document.getElementById("soundToggle").checked=!!settings.sound;
+  document.getElementById("notificationsToggle").checked=!!settings.notifications;
+  document.getElementById("developerToggle").checked=!!settings.developer;
+  document.getElementById("previewToggle").checked=!!settings.preview;
+  document.getElementById("showServerToggle").checked=!!settings.showServers;
+
+  document.getElementById("neonRange").value=settings.neon;
+  document.getElementById("neonValue").textContent=Number(settings.neon).toFixed(1);
+  document.getElementById("radiusChoice").value=settings.radius;
+  document.getElementById("fontRange").value=settings.fontSize;
+  document.getElementById("fontValue").textContent=settings.fontSize;
+  document.getElementById("greetingInput").value=settings.greeting;
+  document.getElementById("editionChoice").value=settings.edition;
+  document.getElementById("defaultVersion").value=settings.version;
+
+  document.getElementById("debugBox").hidden=!settings.developer;
+  document.querySelectorAll("[data-theme-choice]").forEach(button=>{
+    button.classList.toggle("selected",button.dataset.themeChoice===(localStorage.getItem(KEYS.theme)||"blue"));
+  });
+}
+
+function bindSetting(id,key,transform=value=>value) {
+  document.getElementById(id).addEventListener("change",event=>{
+    settings[key]=transform(event.target.type==="checkbox"?event.target.checked:event.target.value);
+    saveSettings();
+    applySettings();
+    updateDashboard();
+    toast("Einstellung gespeichert.");
+  });
+}
+
+bindSetting("compactToggle","compact");
+bindSetting("animationsToggle","animations");
+bindSetting("effectsToggle","effects");
+bindSetting("soundToggle","sound");
+bindSetting("notificationsToggle","notifications");
+bindSetting("developerToggle","developer");
+bindSetting("previewToggle","preview");
+bindSetting("showServerToggle","showServers");
+bindSetting("editionChoice","edition");
+bindSetting("defaultVersion","version");
+bindSetting("radiusChoice","radius");
+bindSetting("neonRange","neon",Number);
+bindSetting("fontRange","fontSize",Number);
+
+document.getElementById("neonRange").addEventListener("input",event=>{
+  document.getElementById("neonValue").textContent=Number(event.target.value).toFixed(1);
+});
+document.getElementById("fontRange").addEventListener("input",event=>{
+  document.getElementById("fontValue").textContent=event.target.value;
 });
 
-document.getElementById("serverForm").addEventListener("submit", event => {
-  event.preventDefault();
+function saveGreeting() {
+  const value=document.getElementById("greetingInput").value.trim();
+  settings.greeting=value||defaults.greeting;
+  saveSettings();
+  applySettings();
+  toast("Begrüßung gespeichert.");
+}
 
-  const versionChoice = document.getElementById("serverVersion").value;
+function refreshPrivacy() {
+  document.getElementById("privacyServerCount").textContent=getServers().length;
+  document.getElementById("privacyProfileCount").textContent=getProfiles().length;
+}
 
-  const version = versionChoice === "Andere"
-    ? document.getElementById("customVersion").value.trim() || "Unbekannt"
-    : versionChoice;
+function updateDashboard() {
+  document.getElementById("homeServerCount").textContent=getServers().length;
+  document.getElementById("homeProfileCount").textContent=getProfiles().length;
+  refreshPrivacy();
+}
 
-  const server = {
-    id: Date.now(),
-    name: document.getElementById("serverName").value.trim(),
-    edition: editionInput.value,
-    address: document.getElementById("serverAddress").value.trim(),
-    port: portInput.value.trim(),
-    version
-  };
+function clearServerForm() {
+  document.getElementById("serverEditId").value="";
+  document.getElementById("serverFormTitle").textContent="Server hinzufügen";
+  document.getElementById("serverName").value="";
+  document.getElementById("serverAddress").value="";
+  document.getElementById("serverEdition").value=settings.edition;
+  document.getElementById("serverVersion").value=settings.version;
+  document.getElementById("serverPort").value=settings.edition==="Java"?25565:19132;
+}
 
-  servers.push(server);
-  save(STORAGE.servers, servers);
+function saveServer() {
+  const name=document.getElementById("serverName").value.trim();
+  const address=document.getElementById("serverAddress").value.trim();
+  const edition=document.getElementById("serverEdition").value;
+  const version=document.getElementById("serverVersion").value;
+  const port=Number(document.getElementById("serverPort").value);
+  const editId=document.getElementById("serverEditId").value;
 
-  event.target.reset();
-  portInput.value = "19132";
-  document.getElementById("customVersionField").hidden = true;
-
-  renderServers();
-  toast("Server wurde gespeichert!");
-});
-
-function renderServers() {
-  const list = document.getElementById("serverList");
-
-  if (!servers.length) {
-    list.innerHTML =
-      '<div class="card"><p>Noch keine Server gespeichert.</p></div>';
+  if(!name||!address||!Number.isInteger(port)||port<1||port>65535) {
+    toast("Bitte überprüfe deine Serverdaten.");
     return;
   }
 
-  list.innerHTML = servers.map(server => {
-    const edition = server.edition || "Bedrock";
-    const version = server.version || "Unbekannt";
-    const port = server.port || (edition === "Java" ? "25565" : "19132");
+  const servers=getServers();
+  const server={id:editId||String(Date.now()),name,address,edition,version,port};
 
-    return `
-      <div class="card server-card">
-        <h3>${escapeHTML(server.name)}</h3>
-        <p>${escapeHTML(server.address)}:${escapeHTML(port)}</p>
+  const index=servers.findIndex(item=>String(item.id)===String(editId));
+  if(editId&&index>=0) servers[index]=server;
+  else servers.push(server);
 
-        <div class="server-meta">
-          <span class="tag">${escapeHTML(edition)}</span>
-          <span class="tag">Version ${escapeHTML(version)}</span>
-        </div>
-
-        <div class="card-actions">
-          <button class="primary" onclick="startServer(${server.id})">
-            ${edition === "Bedrock" ? "Minecraft öffnen" : "Java-Info"}
-          </button>
-          <button onclick="editServer(${server.id})">Bearbeiten</button>
-          <button class="danger" onclick="deleteServer(${server.id})">Löschen</button>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-function startServer(id) {
-  const server = servers.find(item => item.id === id);
-  if (!server) return;
-
-  if ((server.edition || "Bedrock") === "Bedrock") {
-    toast("Minecraft wird geöffnet. Wähle dort deinen Server aus.");
-    setTimeout(openMinecraft, 350);
-  } else {
-    toast("Java-Start ist auf diesem iPad noch nicht verfügbar.");
-  }
+  localStorage.setItem(KEYS.servers,JSON.stringify(servers));
+  clearServerForm();
+  renderServers();
+  updateDashboard();
+  toast("Server gespeichert.");
 }
 
 function editServer(id) {
-  const server = servers.find(item => item.id === id);
-  if (!server) return;
-
-  const name = prompt("Servername:", server.name);
-  if (name === null) return;
-
-  const address = prompt("Serveradresse:", server.address);
-  if (address === null) return;
-
-  const port = prompt("Port:", server.port || "19132");
-  if (port === null) return;
-
-  const version = prompt("Version:", server.version || "Unbekannt");
-  if (version === null) return;
-
-  if (!name.trim() || !address.trim() || !port.trim()) {
-    toast("Bitte fülle die Pflichtfelder aus.");
-    return;
-  }
-
-  server.name = name.trim();
-  server.address = address.trim();
-  server.port = port.trim();
-  server.version = version.trim() || "Unbekannt";
-
-  save(STORAGE.servers, servers);
-  renderServers();
-  toast("Server aktualisiert!");
+  const server=getServers().find(item=>String(item.id)===String(id));
+  if(!server) return;
+  document.getElementById("serverEditId").value=server.id;
+  document.getElementById("serverFormTitle").textContent="Server bearbeiten";
+  document.getElementById("serverName").value=server.name||"";
+  document.getElementById("serverAddress").value=server.address||"";
+  document.getElementById("serverEdition").value=server.edition||"Bedrock";
+  document.getElementById("serverVersion").value=server.version||"Unbekannt";
+  document.getElementById("serverPort").value=server.port||19132;
+  showPage("servers");
 }
 
 function deleteServer(id) {
-  if (!confirm("Diesen Server wirklich löschen?")) return;
-
-  servers = servers.filter(server => server.id !== id);
-  save(STORAGE.servers, servers);
+  if(!confirm("Diesen Server wirklich löschen?")) return;
+  localStorage.setItem(KEYS.servers,JSON.stringify(getServers().filter(s=>String(s.id)!==String(id))));
   renderServers();
+  updateDashboard();
   toast("Server gelöscht.");
 }
 
-// Profile
+function startServer(id) {
+  const server=getServers().find(s=>String(s.id)===String(id));
+  if(!server) return;
+  if(server.edition==="Bedrock") {
+    openMinecraft();
+    toast("Minecraft geöffnet. Serverdaten bitte manuell eingeben.");
+  } else {
+    toast("Java ist in dieser Webversion nicht verfügbar.");
+  }
+}
 
-document.getElementById("profileForm").addEventListener("submit", event => {
-  event.preventDefault();
+function renderServers() {
+  const list=document.getElementById("serverList");
+  const servers=getServers();
 
-  const name = document.getElementById("profileName").value.trim();
-  if (!name) return;
-
-  profiles.push({ id: Date.now(), name });
-  save(STORAGE.profiles, profiles);
-
-  event.target.reset();
-  renderProfiles();
-  toast("Profil erstellt!");
-});
-
-function renderProfiles() {
-  const list = document.getElementById("profileList");
-
-  if (!profiles.length) {
-    list.innerHTML =
-      '<div class="card"><p>Noch keine Profile erstellt.</p></div>';
+  if(!servers.length) {
+    list.innerHTML='<div class="empty">Noch keine Server gespeichert.</div>';
     return;
   }
 
-  list.innerHTML = profiles.map(profile => `
-    <div class="card">
-      <h3>👤 ${escapeHTML(profile.name)}</h3>
-      <button class="danger" onclick="deleteProfile(${profile.id})">
-        Löschen
-      </button>
+  list.innerHTML=servers.map(server=>`
+    <div class="server-item">
+      <div>
+        <strong>${escapeHTML(server.name)}</strong>
+        <p class="muted">${escapeHTML(server.edition)} · ${escapeHTML(server.address)}:${escapeHTML(server.port)} · ${escapeHTML(server.version||"Unbekannt")}</p>
+      </div>
+      <div class="actions">
+        <button class="small primary" onclick="startServer('${escapeHTML(server.id)}')">Start</button>
+        <button class="small" onclick="editServer('${escapeHTML(server.id)}')">Bearbeiten</button>
+        <button class="small danger" onclick="deleteServer('${escapeHTML(server.id)}')">Löschen</button>
+      </div>
     </div>
   `).join("");
 }
 
-function deleteProfile(id) {
-  profiles = profiles.filter(profile => profile.id !== id);
-  save(STORAGE.profiles, profiles);
+function addProfile() {
+  const input=document.getElementById("profileName");
+  const name=input.value.trim();
+  if(!name) {
+    toast("Bitte gib einen Profilnamen ein.");
+    return;
+  }
+  const profiles=getProfiles();
+  profiles.push({id:String(Date.now()),name});
+  localStorage.setItem(KEYS.profiles,JSON.stringify(profiles));
+  input.value="";
   renderProfiles();
+  updateDashboard();
+  toast("Profil erstellt.");
+}
+
+function deleteProfile(id) {
+  if(!confirm("Dieses Profil wirklich löschen?")) return;
+  localStorage.setItem(KEYS.profiles,JSON.stringify(getProfiles().filter(p=>String(p.id)!==String(id))));
+  renderProfiles();
+  updateDashboard();
   toast("Profil gelöscht.");
 }
 
-// Einstellungen
+function renderProfiles() {
+  const list=document.getElementById("profileList");
+  const profiles=getProfiles();
 
-function applySettings() {
-  document.body.classList.toggle(
-    "no-animations",
-    settings.animations === "off"
-  );
-
-  document.getElementById("animationSetting").value = settings.animations;
-  document.getElementById("soundSetting").value = settings.sound;
-  document.getElementById("languageSetting").value = settings.language;
-}
-
-document.getElementById("animationSetting").addEventListener("change", event => {
-  settings.animations = event.target.value;
-  save(STORAGE.settings, settings);
-  applySettings();
-  toast("Animationseinstellung gespeichert.");
-});
-
-document.getElementById("soundSetting").addEventListener("change", event => {
-  settings.sound = event.target.value;
-  save(STORAGE.settings, settings);
-  toast("Soundeinstellung gespeichert.");
-});
-
-document.getElementById("languageSetting").addEventListener("change", event => {
-  settings.language = event.target.value;
-  save(STORAGE.settings, settings);
-  toast("Spracheinstellung gespeichert. Übersetzung teilweise verfügbar.");
-});
-
-// Designs
-
-const themes = {
-  blue: {
-    blue: "#168cff",
-    cyan: "#00d9ff",
-    panel: "#101a2c",
-    panel2: "#14223a",
-    border: "#203653"
-  },
-  purple: {
-    blue: "#945cff",
-    cyan: "#d18cff",
-    panel: "#1a1430",
-    panel2: "#292044",
-    border: "#49356b"
-  },
-  red: {
-    blue: "#e34b61",
-    cyan: "#ff8798",
-    panel: "#28151e",
-    panel2: "#3b202b",
-    border: "#633442"
-  },
-  green: {
-    blue: "#13a879",
-    cyan: "#5df0b9",
-    panel: "#10251f",
-    panel2: "#18382c",
-    border: "#285541"
+  if(!profiles.length) {
+    list.innerHTML='<div class="empty">Noch keine Profile vorhanden.</div>';
+    return;
   }
-};
 
-function setTheme(name) {
-  const theme = themes[name];
-  if (!theme) return;
-
-  const root = document.documentElement;
-
-  root.style.setProperty("--blue", theme.blue);
-  root.style.setProperty("--cyan", theme.cyan);
-  root.style.setProperty("--panel", theme.panel);
-  root.style.setProperty("--panel2", theme.panel2);
-  root.style.setProperty("--border", theme.border);
-
-  save(STORAGE.theme, name);
-  toast("Design geändert!");
+  list.innerHTML=profiles.map(profile=>`
+    <div class="profile-item">
+      <div>
+        <strong>${escapeHTML(profile.name)}</strong>
+        <p class="muted">Lokales Profil</p>
+      </div>
+      <button class="small danger" onclick="deleteProfile('${escapeHTML(profile.id)}')">Löschen</button>
+    </div>
+  `).join("");
 }
 
-function loadTheme() {
-  const name = load(STORAGE.theme, "blue");
-  setTheme(name);
+function openMinecraft() {
+  window.location.href="minecraft://";
 }
 
-// Start
+function exportData() {
+  const data={
+    app:"UniversalClient",
+    version:"1.0.0",
+    exportedAt:new Date().toISOString(),
+    servers:getServers(),
+    profiles:getProfiles(),
+    settings:getSettings(),
+    theme:localStorage.getItem(KEYS.theme)||"blue"
+  };
 
-applySettings();
-loadTheme();
-renderServers();
-renderProfiles();
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+  link.href=url;
+  link.download="universalclient-backup.json";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  toast("Export vorbereitet.");
+}
+
+function resetData() {
+  const accepted=confirm("Wirklich alle lokalen UniversalClient-Daten zurücksetzen? Dieser Vorgang kann nicht rückgängig gemacht werden.");
+  if(!accepted) return;
+
+  Object.values(KEYS).forEach(key=>localStorage.removeItem(key));
+  settings={...defaults};
+  localStorage.setItem(KEYS.settings,JSON.stringify(settings));
+  setTheme("blue");
+  applySettings();
+  renderServers();
+  renderProfiles();
+  updateDashboard();
+  clearServerForm();
+  toast("Lokale App-Daten zurückgesetzt.");
+}
+
+function initDebug() {
+  document.getElementById("platformInfo").textContent=navigator.platform||"Web";
+  document.getElementById("browserInfo").textContent=navigator.userAgent.includes("Safari")?"Safari":"Webbrowser";
+}
+
+function init() {
+  settings=getSettings();
+  setTheme(localStorage.getItem(KEYS.theme)||"blue");
+  applySettings();
+  clearServerForm();
+  renderServers();
+  renderProfiles();
+  updateDashboard();
+  initDebug();
+}
+
+init();
 </script>
 
 </body>
