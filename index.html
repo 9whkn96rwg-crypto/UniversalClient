@@ -1,851 +1,727 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090713">
-<title>UniversalClient 3.0</title>
+<title>UniversalClient</title>
 
 <style>
-:root{
---bg:#090713;
---sidebar:#100b1c;
---panel:#191226;
---panel2:#251936;
---accent:#9b65ff;
---accent2:#00d9ff;
---text:#fbf8ff;
---muted:#aaa0bd;
---border:#ffffff17;
---radius:19px;
---font:15px;
+:root {
+  --bg:#080b16;
+  --side:#0d1224;
+  --card:#111a30;
+  --accent:#00e5ff;
+  --text:#eaf2ff;
+  --muted:#91a2bf;
+  --border:#263653;
+  --radius:14px;
 }
-*{box-sizing:border-box}
-body{
-margin:0;color:var(--text);font-family:Inter,system-ui,sans-serif;
-font-size:var(--font);min-height:100vh;
-background:
-radial-gradient(ellipse at 12% 12%,#7223a633,transparent 40%),
-radial-gradient(ellipse at 90% 85%,#005dba30,transparent 40%),
-linear-gradient(135deg,#080611,#10091c 55%,#080713);
-background-attachment:fixed;
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
 }
-body:before{
-content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-opacity:.13;
-background-image:
-linear-gradient(#a46aff22 1px,transparent 1px),
-linear-gradient(90deg,#a46aff22 1px,transparent 1px);
-background-size:45px 45px;
-mask-image:linear-gradient(to bottom,black,transparent);
+
+button,input,select { font:inherit; }
+
+button {
+  cursor:pointer;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  padding:11px 14px;
+  border-radius:9px;
 }
-button,input,select,textarea{font:inherit}
-button{cursor:pointer;color:inherit}
-button:focus-visible,input:focus-visible,select:focus-visible{
-outline:2px solid var(--accent);outline-offset:3px
+
+button:hover {
+  border-color:var(--accent);
 }
-.app{
-position:relative;z-index:1;width:min(1550px,97%);
-min-height:92vh;margin:4vh auto;
-display:grid;grid-template-columns:250px minmax(0,1fr);
-background:#0c0817ed;border:1px solid #a46aff38;
-border-radius:23px;overflow:hidden;
-box-shadow:0 0 40px #8c3cff18,0 30px 100px #000b;
-backdrop-filter:blur(20px);
+
+.primary {
+  background:var(--accent);
+  color:#061018;
+  font-weight:bold;
 }
-.sidebar{
-background:linear-gradient(180deg,#25153bee,#100a1c);
-border-right:1px solid #a46aff30;padding:24px 16px;
-display:flex;flex-direction:column;min-width:0;
+
+.layout {
+  display:grid;
+  grid-template-columns:230px 1fr;
+  min-height:100vh;
 }
-.brand{
-font-weight:950;font-size:18px;letter-spacing:1px;
-padding:0 8px 24px;text-shadow:0 0 18px #a45cff88;
+
+.sidebar {
+  background:var(--side);
+  padding:22px;
+  border-right:1px solid var(--border);
 }
-.brand span{color:#bd8aff}
-.brand-icon{font-size:25px;margin-right:8px}
-.profile-card{
-background:linear-gradient(145deg,#a15bff,#6544c9 55%,#303caa);
-border:1px solid #d3b4ff88;border-radius:19px;
-padding:18px 12px;text-align:center;margin:0 12px 25px;
-box-shadow:0 0 25px #9b55ff44;
+
+.logo {
+  font-size:21px;
+  font-weight:bold;
+  margin-bottom:25px;
 }
-.avatar{
-width:65px;height:65px;margin:0 auto 12px;
-border-radius:50%;display:grid;place-items:center;
-background:linear-gradient(135deg,#160e28,#d64aff);
-border:3px solid #21142e;font-size:29px;
-box-shadow:0 0 22px #e2a1ff88;
+
+.logo span { color:var(--accent); }
+
+nav {
+  display:grid;
+  gap:8px;
 }
-.profile-card strong{display:block}
-.profile-card small{opacity:.85}
-.stats{display:flex;justify-content:space-around;margin-top:15px;font-size:12px}
-.stats strong{font-size:16px;margin-top:4px}
-.nav-label{
-font-size:10px;font-weight:900;letter-spacing:2px;
-margin:10px 7px;color:#a88bc9;
+
+nav button {
+  text-align:left;
+  background:transparent;
 }
-.nav-button{
-width:100%;border:1px solid transparent;background:transparent;
-color:#bcb2c5;text-align:left;padding:12px 13px;
-border-radius:11px;display:flex;align-items:center;gap:12px;
-font-size:14px;margin:3px 0;transition:.2s;
+
+nav button.active {
+  color:var(--accent);
+  border-color:var(--accent);
+  background:var(--card);
 }
-.nav-button:hover{background:#a15bff20;color:white;transform:translateX(3px)}
-.nav-button.active{
-background:linear-gradient(100deg,#9255ff,#6e58db);
-box-shadow:0 0 20px #9255ff44;color:white;
+
+main { padding:25px; min-width:0; }
+
+h1 { margin-top:0; }
+
+.page { display:none; }
+.page.active { display:block; }
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
 }
-.nav-icon{width:20px;text-align:center;font-size:18px}
-.sidebar-bottom{margin-top:auto;padding-top:25px}
-.logout{
-width:100%;background:transparent;border:1px solid #594263;
-border-radius:10px;padding:12px;font-size:12px;font-weight:800;
+
+.card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;
+  margin-bottom:15px;
 }
-.main{min-width:0;background:#110c1b9c}
-.mobile-top{
-display:none;padding:14px;justify-content:space-between;
-align-items:center;border-bottom:1px solid var(--border);
+
+.muted { color:var(--muted); }
+
+.field { margin:13px 0; }
+
+label {
+  display:block;
+  margin-bottom:7px;
+  color:var(--muted);
 }
-.page{display:none}
-.page.active{display:block;animation:fade .25s ease}
-@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
-.page-content{padding:25px 30px 35px}
-.hero{
-min-height:430px;display:flex;align-items:flex-end;padding:32px;
-position:relative;overflow:hidden;
-background:
-linear-gradient(0deg,#0c0817 0%,transparent 90%),
-linear-gradient(90deg,#10071c99,transparent),
-url("https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1800&q=85") center/cover;
-border-bottom:1px solid #a55cff55;
-box-shadow:0 15px 40px #0007;
+
+input,select {
+  width:100%;
+  padding:10px;
+  background:var(--bg);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:8px;
 }
-.hero:after{
-content:"";position:absolute;inset:0;pointer-events:none;
-background:linear-gradient(110deg,#8e43ff20,transparent 50%,#00c8ff17);
+
+input[type=color] { height:43px; }
+input[type=checkbox] { width:auto; }
+
+.item {
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
 }
-.hero-content{position:relative;z-index:1;width:100%}
-.hero h1{
-font-size:clamp(30px,4vw,48px);margin:10px 0;
-text-transform:uppercase;letter-spacing:-1.5px;
-text-shadow:0 0 20px #b879ff99;
+
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
 }
-.hero-description{max-width:550px;color:#e2d6f5;line-height:1.6}
-.hero-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
-.tag{
-display:inline-block;padding:6px 13px;border:1px solid #c28aff;
-color:#e1c5ff;background:#a35bff20;border-radius:30px;
-font-size:11px;margin-right:5px;box-shadow:0 0 12px #a35bff35;
+
+.toast {
+  display:none;
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:var(--card);
+  border:1px solid var(--accent);
+  padding:14px 18px;
+  border-radius:10px;
+  z-index:100;
 }
-.primary{
-border:1px solid #d3b4ff88;border-radius:11px;padding:13px 20px;
-background:linear-gradient(110deg,#a04fff,#754bfa,#258dff);
-color:white;font-weight:900;box-shadow:0 0 18px #9854ff55;
-transition:.25s;
-}
-.primary:hover{filter:brightness(1.15);transform:translateY(-3px);box-shadow:0 0 28px #9854ffaa}
-.secondary{
-background:linear-gradient(145deg,#2b1d40,#181225);
-border:1px solid #7651a0;border-radius:11px;padding:11px 15px;
-transition:.2s;
-}
-.secondary:hover{border-color:#b77aff;box-shadow:0 0 15px #9d54ff44}
-.section-heading{
-display:flex;align-items:center;justify-content:space-between;
-gap:12px;margin:25px 0 13px;
-}
-.section-heading h2{font-size:17px;margin:0}
-.text-button{background:transparent;border:0;color:#c7a5ff;font-size:12px}
-.game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
-.game-card{
-min-width:0;border-radius:17px;overflow:hidden;
-background:#171022;border:1px solid #b57bff40;
-box-shadow:0 8px 25px #0005;cursor:pointer;
-transition:.3s;
-}
-.game-card:hover{transform:translateY(-7px) scale(1.015);border-color:#b47aff;box-shadow:0 12px 35px #8e3fff35}
-.game-art{
-height:150px;display:grid;place-items:center;font-size:57px;
-position:relative;overflow:hidden;text-shadow:0 0 25px white;
-}
-.game-art:after{
-content:"";position:absolute;inset:0;
-background:linear-gradient(130deg,transparent 20%,#ffffff22 50%,transparent 75%);
-transform:translateX(-100%);transition:.6s;
-}
-.game-card:hover .game-art:after{transform:translateX(100%)}
-.green{background:linear-gradient(135deg,#174c39,#7baf58)}
-.purple{background:linear-gradient(135deg,#712b9a,#e14ca6)}
-.blue{background:linear-gradient(135deg,#172f78,#34b9db)}
-.red{background:linear-gradient(135deg,#7e202b,#ed693a)}
-.gold{background:linear-gradient(135deg,#8c5820,#e5c45d)}
-.pink{background:linear-gradient(135deg,#782e76,#ee86c9)}
-.game-info{padding:13px 14px;background:linear-gradient(180deg,#281a3a,#110c1b)}
-.game-info small{color:#bd9bff}
-.game-info strong{display:block;margin:4px 0;font-size:14px}
-.game-info p{font-size:12px;color:#e2d6e9;margin:0}
-.panel{
-background:linear-gradient(145deg,#2a1b3fef,#130d20f5);
-border:1px solid #b175ff35;border-radius:19px;padding:20px;
-box-shadow:0 10px 30px #0003,inset 0 1px #ffffff08;
-backdrop-filter:blur(15px);
-}
-.panel h2{font-size:18px}
-.two-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:20px}
-.subtitle,.muted{color:var(--muted);line-height:1.6}
-.page-title{font-size:29px;margin:0 0 8px}
-.news-item,.server-item,.profile-item,.setting-item{
-padding:14px 0;border-bottom:1px solid #ffffff13;
-}
-.news-item:last-child,.server-item:last-child,.profile-item:last-child{border:0}
-.news-item strong{display:block;margin-bottom:5px}
-.news-item p,.server-item p,.profile-item p{font-size:12px;color:var(--muted);margin:5px 0 0;overflow-wrap:anywhere}
-input,select,textarea{
-width:100%;color:white;background:#090612;
-border:1px solid #634681;border-radius:11px;padding:12px;outline:none;
-transition:.2s;
-}
-input:focus,select:focus,textarea:focus{border-color:#bd8aff;box-shadow:0 0 0 3px #9e5cff25}
-label{display:block;color:#c9b9d0;font-size:12px;margin-bottom:7px}
-.field{margin-bottom:14px}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.small{padding:7px 10px;font-size:12px;border-radius:7px}
-.danger{color:#ff8c9d}
-.empty{padding:20px 0;color:var(--muted);text-align:center}
-.server-item,.profile-item{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.settings-layout{display:grid;grid-template-columns:190px minmax(0,1fr);gap:15px}
-.settings-menu{display:flex;flex-direction:column;gap:6px}
-.settings-menu button{
-background:transparent;border:1px solid transparent;border-radius:11px;
-text-align:left;padding:12px;color:var(--muted);transition:.2s;
-}
-.settings-menu button:hover{background:#9e5cff20;color:white}
-.settings-menu button.active{
-background:linear-gradient(100deg,#854bce,#493b83);
-border-color:#b78aff;color:white;box-shadow:0 0 15px #914bff33;
-}
-.setting-panel{display:none}
-.setting-panel.active{display:block}
-.setting-row{
-display:flex;align-items:center;justify-content:space-between;
-gap:15px;padding:15px 0;border-bottom:1px solid #ffffff12;
-}
-.setting-row:last-child{border:0}
-.setting-row strong{font-size:13px}
-.setting-description{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}
-.switch{width:45px;height:25px;position:relative;flex-shrink:0}
-.switch input{display:none}
-.switch span{position:absolute;inset:0;background:#453452;border-radius:20px;cursor:pointer}
-.switch span:before{
-content:"";position:absolute;width:17px;height:17px;left:4px;top:4px;
-background:white;border-radius:50%;transition:.2s;
-}
-.switch input:checked+span{background:linear-gradient(90deg,#a14dff,#378fff);box-shadow:0 0 13px #9c5aff88}
-.switch input:checked+span:before{transform:translateX(20px)}
-.theme-list{display:flex;gap:12px;flex-wrap:wrap;margin:15px 0}
-.theme-choice{
-width:43px;height:43px;border:3px solid transparent;
-border-radius:13px;box-shadow:0 5px 15px #0005;transition:.2s;
-}
-.theme-choice:hover{transform:scale(1.12)}
-.theme-choice.selected{outline:2px solid white;outline-offset:3px}
-.avatar-editor{
-width:85px;height:85px;border-radius:50%;display:grid;
-place-items:center;font-size:35px;
-background:linear-gradient(135deg,#8178ff,#c34aff);margin-bottom:15px;
-}
-.toast{
-position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);
-opacity:0;pointer-events:none;background:linear-gradient(110deg,#35204f,#17142d);
-border:1px solid #bd8aff;padding:13px 18px;border-radius:13px;
-z-index:50;transition:.2s;box-shadow:0 0 25px #a65aff55;
-}
-.toast.show{opacity:1;transform:translate(-50%,0)}
-footer{padding:22px;text-align:center;color:#8e78aa;font-size:10px;letter-spacing:2px}
-::-webkit-scrollbar{width:8px}
-::-webkit-scrollbar-track{background:#100b19}
-::-webkit-scrollbar-thumb{background:linear-gradient(#a45cff,#397fff);border-radius:20px}
-body.compact .page-content{padding-top:14px}
-body.compact .game-grid{gap:9px}
-body.compact .panel{padding:13px}
-@media(prefers-reduced-motion:reduce){
-*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-}
-@media(max-width:950px){
-.app{grid-template-columns:205px minmax(0,1fr);width:98%}
-.page-content{padding:20px}
-.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-.game-art{height:125px}
-}
-@media(max-width:650px){
-.app{width:100%;min-height:100vh;margin:0;border:0;border-radius:0;display:block}
-.sidebar{
-display:none;position:fixed;z-index:30;top:0;bottom:0;left:0;
-width:270px;box-shadow:20px 0 50px #0009;background:#110a1df7;
-}
-.sidebar.open{display:flex}
-.mobile-top{
-display:flex;position:sticky;top:0;z-index:20;
-background:#0f091bf5;backdrop-filter:blur(18px);
-}
-.page-content{padding:0 14px 25px}
-.hero{min-height:390px;padding:20px}
-.hero h1{font-size:29px}
-.game-grid{gap:10px}
-.game-art{height:105px;font-size:43px}
-.game-info{padding:10px}
-.game-info strong{font-size:12px}
-.game-info p{font-size:11px}
-.two-columns{grid-template-columns:1fr}
-.settings-layout{grid-template-columns:1fr}
-.settings-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
-.settings-menu button{text-align:center;font-size:12px;padding:10px 5px}
-.form-grid{grid-template-columns:1fr}
+
+@media(max-width:750px) {
+  .layout { grid-template-columns:1fr; }
+  .sidebar { border-right:0; }
+  nav { grid-template-columns:repeat(2,1fr); }
+  main { padding:15px; }
+  .grid { grid-template-columns:1fr; }
 }
 </style>
 </head>
 
 <body>
-<div class="app">
 
-<aside class="sidebar" id="sidebar">
- <div class="brand"><span class="brand-icon">🎮</span> UNIVERSAL<span>CLIENT</span></div>
- <div class="profile-card">
-  <div class="avatar" id="sideAvatar">👾</div>
-  <strong id="sideName">PLAYER</strong>
-  <small>✦ UNIVERSAL MEMBER</small>
-  <div class="stats">
-   <div>Servers<strong id="sideServerCount">0</strong></div>
-   <div>Profiles<strong id="sideProfileCount">1</strong></div>
-  </div>
- </div>
- <div class="nav-label">MAIN MENU</div>
- <button class="nav-button active" data-page="home"><span class="nav-icon">⌂</span> Dashboard</button>
- <button class="nav-button" data-page="games"><span class="nav-icon">♟</span> Games</button>
- <button class="nav-button" data-page="servers"><span class="nav-icon">▣</span> Server Manager</button>
- <button class="nav-button" data-page="news"><span class="nav-icon">➤</span> News Feed</button>
- <button class="nav-button" data-page="profiles"><span class="nav-icon">♙</span> Profile</button>
- <div class="nav-label" style="margin-top:23px">SYSTEM</div>
- <button class="nav-button" data-page="settings"><span class="nav-icon">⚙</span> Settings</button>
- <button class="nav-button" data-page="help"><span class="nav-icon">ⓘ</span> Help Center</button>
- <div class="sidebar-bottom">
-  <button class="logout" onclick="showPage('home')">↩ &nbsp; BACK TO DASHBOARD</button>
- </div>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="logo">UNIVERSAL<span>CLIENT</span></div>
+
+  <nav>
+    <button class="active" data-page="dashboard">⌂ Dashboard</button>
+    <button data-page="games">▣ Games</button>
+    <button data-page="servers">◈ Server</button>
+    <button data-page="news">▤ News</button>
+    <button data-page="profile">◎ Profil</button>
+    <button data-page="design">⚙ Design</button>
+    <button data-page="help">? Hilfe</button>
+  </nav>
 </aside>
 
-<div class="main">
- <div class="mobile-top">
-  <button class="secondary" onclick="toggleSidebar()">☰</button>
-  <strong>UNIVERSAL<span style="color:var(--accent)">CLIENT</span></strong>
-  <button class="secondary" onclick="showPage('settings')">⚙</button>
- </div>
+<main>
 
- <!-- DASHBOARD -->
- <section class="page active" id="home">
-  <div class="hero">
-   <div class="hero-content">
-    <span class="tag">✦ UNIVERSALCLIENT 3.0</span>
-    <span class="tag">CYBERPUNK EDITION</span>
-    <h1>Enter another world.</h1>
-    <div class="hero-bottom">
-     <div>
-      <strong>YOUR GAMING EXPERIENCE</strong>
-      <p class="hero-description">Dein persönlicher Gaming-Hub. Verwalte deine Minecraft-Server, Profile und Einstellungen in einer futuristischen Oberfläche.</p>
-     </div>
-     <button class="primary" onclick="showPage('games')">EXPLORE GAMES ↗</button>
-    </div>
-   </div>
-  </div>
-  <div class="page-content">
-   <div class="section-heading">
-    <h2>✦ YOUR GAMES</h2>
-    <button class="text-button" onclick="showPage('games')">VIEW ALL →</button>
-   </div>
-   <div class="game-grid" id="homeGames"></div>
-   <div class="two-columns">
-    <div class="panel">
-     <div class="section-heading" style="margin-top:0"><h2>Recent Activity</h2><span class="muted">● LOCAL</span></div>
-     <div id="activityList"><p class="muted">Noch keine Aktivitäten.</p></div>
-    </div>
-    <div class="panel">
-     <h2>Quick Access</h2>
-     <div class="actions">
-      <button class="primary" onclick="showPage('servers')">＋ Add Server</button>
-      <button class="secondary" onclick="showPage('profiles')">My Profile</button>
-      <button class="secondary" onclick="openMinecraft()">Open Minecraft ↗</button>
-     </div>
-     <p class="muted" style="font-size:12px;margin-top:15px">Deine Daten bleiben lokal in diesem Browser.</p>
-    </div>
-   </div>
-  </div>
- </section>
+<header>
+  <p class="muted">UNIVERSALCLIENT / <span id="breadcrumb">Dashboard</span></p>
+  <h1 id="heading">Dashboard</h1>
+</header>
 
- <!-- GAMES -->
- <section class="page" id="games">
-  <div class="page-content">
-   <h1 class="page-title">Your Games</h1>
-   <p class="subtitle">Deine Spiele und Bereiche an einem Ort.</p>
-   <div class="game-grid" id="allGames"></div>
-   <div class="panel" style="margin-top:20px">
-    <h2>Minecraft Editions</h2>
-    <p class="muted">Wähle den Bereich, den du öffnen möchtest.</p>
+<!-- DASHBOARD -->
+<section id="dashboard" class="page active">
+
+  <div class="grid">
+    <div class="card">
+      <p class="muted">Gespeicherte Server</p>
+      <h1 id="server-count">0</h1>
+    </div>
+
+    <div class="card">
+      <p class="muted">Spielerprofile</p>
+      <h1 id="profile-count">0</h1>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Willkommen bei UniversalClient</h2>
+    <p class="muted">Verwalte deine Server, Profile und dein persönliches Design.</p>
     <div class="actions">
-     <button class="primary" onclick="openMinecraft()">Bedrock öffnen ↗</button>
-     <button class="secondary" onclick="showPage('java')">Java Informationen</button>
+      <button class="primary" data-go="servers">Server verwalten</button>
+      <button data-go="design">Design bearbeiten</button>
     </div>
-   </div>
   </div>
- </section>
 
- <!-- SERVERS -->
- <section class="page" id="servers">
-  <div class="page-content">
-   <h1 class="page-title">Server Manager</h1>
-   <p class="subtitle">Deine Minecraft-Server. Alles an einem Ort.</p>
-   <div class="two-columns">
-    <div class="panel">
-     <h2 id="serverTitle">＋ Add New Server</h2>
-     <input type="hidden" id="serverId">
-     <div class="field"><label>Servername</label><input id="serverName" placeholder="Mein Server"></div>
-     <div class="field">
-      <label>Edition</label>
-      <select id="serverEdition"><option>Bedrock</option><option>Java</option></select>
-     </div>
-     <div class="field"><label>Adresse / IP</label><input id="serverAddress" placeholder="play.example.net"></div>
-     <div class="form-grid">
-      <div class="field"><label>Port</label><input id="serverPort" type="number" value="19132"></div>
+  <div class="card">
+    <h2>Letzte Aktivität</h2>
+    <div id="activity">Noch keine Aktivität.</div>
+  </div>
+
+</section>
+
+<!-- GAMES -->
+<section id="games" class="page">
+
+  <div class="card">
+    <h2>Minecraft Bedrock</h2>
+    <p class="muted">Öffnet Minecraft, falls es installiert ist.</p>
+    <button class="primary" id="minecraft">Minecraft öffnen</button>
+  </div>
+
+  <div class="card">
+    <h2>Minecraft Java</h2>
+    <p class="muted">Starte Java über deinen installierten Minecraft Launcher.</p>
+  </div>
+
+</section>
+
+<!-- SERVER -->
+<section id="servers" class="page">
+
+  <div class="grid">
+
+    <div class="card">
+      <h2>Server hinzufügen</h2>
+
       <div class="field">
-       <label>Version</label>
-       <select id="serverVersion">
-        <option>Unbekannt</option><option>1.21.x</option><option>1.20.x</option>
-        <option>1.19.x</option><option>1.18.x</option>
-       </select>
+        <label for="server-name">Servername</label>
+        <input id="server-name" placeholder="Mein Server">
       </div>
-     </div>
-     <div class="actions">
-      <button class="primary" onclick="saveServer()">Save Server</button>
-      <button class="secondary" onclick="clearServerForm()">Reset</button>
-     </div>
-    </div>
-    <div class="panel">
-     <h2>My Servers</h2>
-     <div id="serverList"></div>
-    </div>
-   </div>
-  </div>
- </section>
 
- <!-- NEWS -->
- <section class="page" id="news">
-  <div class="page-content">
-   <h1 class="page-title">News Feed</h1>
-   <p class="subtitle">Neuigkeiten rund um dein UniversalClient-Projekt.</p>
-   <div class="panel">
-    <div class="news-item"><strong>🎮 UniversalClient ist online</strong><p>Dein persönlicher Gaming-Hub ist verfügbar.</p></div>
-    <div class="news-item"><strong>🌌 Cyberpunk Edition</strong><p>Das neue Neon-Design ist jetzt aktiviert.</p></div>
-    <div class="news-item"><strong>🌐 Server Manager</strong><p>Server können gespeichert, bearbeitet und organisiert werden.</p></div>
-    <div class="news-item"><strong>⚙️ Neue Einstellungen</strong><p>Farben, Schriftgröße und weitere Optionen lassen sich anpassen.</p></div>
-   </div>
-   <p class="muted" style="font-size:12px">Dies sind Projektmeldungen, keine offiziellen Live-Nachrichten von Minecraft.</p>
-  </div>
- </section>
-
- <!-- PROFILE -->
- <section class="page" id="profiles">
-  <div class="page-content">
-   <h1 class="page-title">My Profile</h1>
-   <p class="subtitle">Dein persönlicher Spielerbereich.</p>
-   <div class="two-columns">
-    <div class="panel">
-     <h2>Profile Editor</h2>
-     <div class="avatar-editor" id="profileAvatarPreview">👾</div>
-     <div class="field"><label>Spielername</label><input id="playerName" maxlength="24" placeholder="Dein Name"></div>
-     <div class="field">
-      <label>Avatar</label>
-      <select id="playerAvatar">
-       <option>👾</option><option>🎮</option><option>🐉</option>
-       <option>⚡</option><option>🦊</option><option>💎</option><option>🚀</option>
-      </select>
-     </div>
-     <div class="field"><label>Beschreibung</label><textarea id="playerBio" rows="3" maxlength="120" placeholder="Über mich ..."></textarea></div>
-     <button class="primary" onclick="saveProfile()">Save Profile</button>
-    </div>
-    <div class="panel">
-     <h2>Saved Profiles</h2>
-     <div class="field"><label>Neues Profil</label><input id="newProfileName" placeholder="Profilname"></div>
-     <button class="secondary" onclick="addProfile()">＋ Create Profile</button>
-     <div id="profileList" style="margin-top:15px"></div>
-    </div>
-   </div>
-  </div>
- </section>
-
- <!-- SETTINGS -->
- <section class="page" id="settings">
-  <div class="page-content">
-   <h1 class="page-title">Settings</h1>
-   <p class="subtitle">Make UniversalClient yours.</p>
-   <div class="settings-layout">
-    <div class="panel settings-menu">
-     <button class="active" data-setting="appearance">🎨 Appearance</button>
-     <button data-setting="interface">🖥 Interface</button>
-     <button data-setting="notifications">🔔 Notifications</button>
-     <button data-setting="performance">⚡ Performance</button>
-     <button data-setting="minecraft">⛏ Minecraft</button>
-     <button data-setting="privacy">🔒 Privacy</button>
-     <button data-setting="advanced">🛠 Advanced</button>
-    </div>
-    <div class="panel">
-     <div class="setting-panel active" id="setting-appearance">
-      <h2>Appearance</h2><p class="muted">Wähle deine Lieblingsfarbe.</p>
-      <strong>Color Theme</strong>
-      <div class="theme-list">
-       <button class="theme-choice" data-theme="purple" style="background:#9b65ff"></button>
-       <button class="theme-choice" data-theme="blue" style="background:#36aaff"></button>
-       <button class="theme-choice" data-theme="pink" style="background:#e45cbf"></button>
-       <button class="theme-choice" data-theme="green" style="background:#43c995"></button>
+      <div class="field">
+        <label for="server-address">Server-Adresse</label>
+        <input id="server-address" placeholder="play.example.net">
       </div>
-      <div class="setting-row">
-       <div><strong>Card Roundness</strong><div class="setting-description">Form der Karten.</div></div>
-       <select id="roundness" style="width:125px"><option value="10px">Small</option><option value="19px">Medium</option><option value="27px">Large</option></select>
+
+      <div class="field">
+        <label for="server-port">Port</label>
+        <input id="server-port" type="number" value="19132">
       </div>
-     </div>
-     <div class="setting-panel" id="setting-interface">
-      <h2>Interface</h2>
-      <div class="setting-row"><div><strong>Compact Mode</strong><div class="setting-description">Weniger Abstand zwischen Elementen.</div></div><label class="switch"><input type="checkbox" id="compact"><span></span></label></div>
-      <div class="setting-row"><div><strong>Font Size</strong><div class="setting-description">Schriftgröße anpassen.</div></div><input type="range" id="fontSize" min="13" max="19" style="max-width:130px"></div>
-     </div>
-     <div class="setting-panel" id="setting-notifications">
-      <h2>Notifications</h2>
-      <div class="setting-row"><div><strong>In-App Notifications</strong><div class="setting-description">Hinweise innerhalb der Website.</div></div><label class="switch"><input type="checkbox" id="notifications"><span></span></label></div>
-      <div class="setting-row"><div><strong>Sound Effects</strong><div class="setting-description">Kurze Töne bei Aktionen.</div></div><label class="switch"><input type="checkbox" id="sound"><span></span></label></div>
-     </div>
-     <div class="setting-panel" id="setting-performance">
-      <h2>Performance</h2>
-      <div class="setting-row"><div><strong>Animations</strong><div class="setting-description">Seitenübergänge und Bewegungen.</div></div><label class="switch"><input type="checkbox" id="animations"><span></span></label></div>
-      <div class="setting-row"><div><strong>Background Effects</strong><div class="setting-description">Dekorative Hintergrundeffekte.</div></div><label class="switch"><input type="checkbox" id="backgroundEffects"><span></span></label></div>
-     </div>
-     <div class="setting-panel" id="setting-minecraft">
-      <h2>Minecraft</h2>
-      <div class="field"><label>Preferred Edition</label><select id="preferredEdition"><option>Bedrock</option><option>Java</option></select></div>
-      <div class="field"><label>Preferred Version</label><select id="preferredVersion"><option>Unbekannt</option><option>1.21.x</option><option>1.20.x</option><option>1.19.x</option></select></div>
-      <p class="muted">Diese Angaben speichern deine Vorlieben. Sie ändern nicht die installierte Minecraft-Version.</p>
-     </div>
-     <div class="setting-panel" id="setting-privacy">
-      <h2>Privacy & Data</h2>
-      <p class="muted">Deine App-Daten werden lokal in diesem Browser gespeichert.</p>
-      <div class="setting-item">Server: <strong id="privacyServers">0</strong></div>
-      <div class="setting-item">Profile: <strong id="privacyProfiles">0</strong></div>
+
+      <button class="primary" id="add-server">Server speichern</button>
+    </div>
+
+    <div class="card">
+      <h2>Meine Server</h2>
+      <div id="server-list">Keine Server vorhanden.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news" class="page">
+  <div class="card">
+    <h2>News</h2>
+    <p class="muted">Hier erscheinen später Neuigkeiten und Updates.</p>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+
+  <div class="grid">
+    <div class="card">
+      <h2>Profil erstellen</h2>
+      <div class="field">
+        <label for="player-name">Spielername</label>
+        <input id="player-name" placeholder="Dein Spielername">
+      </div>
+      <button class="primary" id="save-profile">Profil speichern</button>
+    </div>
+
+    <div class="card">
+      <h2>Meine Profile</h2>
+      <div id="profile-list">Keine Profile vorhanden.</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- DESIGN -->
+<section id="design" class="page">
+
+  <div class="card">
+    <h2>Design-Vorlagen</h2>
+    <div class="actions">
+      <button data-preset="cyber">Cyberpunk</button>
+      <button data-preset="blue">Neon Blue</button>
+      <button data-preset="green">Matrix Green</button>
+      <button data-preset="pink">Pink Galaxy</button>
+      <button data-preset="sunset">Sunset</button>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h2>Farben</h2>
+
+      <div class="field">
+        <label for="bg-color">Hintergrund</label>
+        <input type="color" id="bg-color" value="#080b16">
+      </div>
+
+      <div class="field">
+        <label for="side-color">Sidebar</label>
+        <input type="color" id="side-color" value="#0d1224">
+      </div>
+
+      <div class="field">
+        <label for="card-color">Karten</label>
+        <input type="color" id="card-color" value="#111a30">
+      </div>
+
+      <div class="field">
+        <label for="accent-color">Akzentfarbe</label>
+        <input type="color" id="accent-color" value="#00e5ff">
+      </div>
+
+      <div class="field">
+        <label for="text-color">Text</label>
+        <input type="color" id="text-color" value="#eaf2ff">
+      </div>
+
+      <div class="field">
+        <label for="border-color">Rahmen</label>
+        <input type="color" id="border-color" value="#263653">
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Layout</h2>
+
+      <div class="field">
+        <label for="radius">Eckenradius</label>
+        <input type="range" id="radius" min="0" max="30" value="14">
+      </div>
+
+      <div class="field">
+        <label for="font-size">Schriftgröße</label>
+        <input type="range" id="font-size" min="12" max="22" value="15">
+      </div>
+
+      <div class="field">
+        <label for="font-family">Schriftart</label>
+        <select id="font-family">
+          <option value="Arial,sans-serif">Arial</option>
+          <option value="system-ui,sans-serif">System</option>
+          <option value="Verdana,sans-serif">Verdana</option>
+          <option value="Georgia,serif">Georgia</option>
+          <option value="monospace">Monospace</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>
+          <input type="checkbox" id="glow" checked>
+          Neon-Effekt
+        </label>
+      </div>
+
+      <div class="field">
+        <label>
+          <input type="checkbox" id="compact">
+          Kompakter Modus
+        </label>
+      </div>
+
       <div class="actions">
-       <button class="primary" onclick="exportData()">Export JSON</button>
-       <button class="secondary danger" onclick="resetData()">Reset App Data</button>
+        <button class="primary" id="save-design">Design speichern</button>
+        <button id="reset-design">Zurücksetzen</button>
       </div>
-     </div>
-     <div class="setting-panel" id="setting-advanced">
-      <h2>Advanced</h2>
-      <div class="setting-row"><div><strong>Developer Mode</strong><div class="setting-description">Zusätzliche technische Informationen anzeigen.</div></div><label class="switch"><input type="checkbox" id="developer"><span></span></label></div>
-      <div id="debugInfo" hidden class="setting-item">UniversalClient Web · Version 3.0<br>Storage: Local Storage<br>Platform: Web</div>
-     </div>
     </div>
-   </div>
-  </div>
- </section>
 
- <!-- JAVA -->
- <section class="page" id="java">
-  <div class="page-content">
-   <h1 class="page-title">Java Edition</h1>
-   <div class="panel">
-    <h2>Java Launcher</h2>
-    <p class="subtitle">Dieser Bereich ist für eine spätere Java-Integration vorgesehen.</p>
-    <p class="muted">Eine Webseite kann Minecraft Java nicht selbst starten. Dafür werden eine kompatible Laufzeitumgebung und eine gültige Minecraft-Lizenz benötigt.</p>
-   </div>
   </div>
- </section>
+</section>
 
- <!-- HELP -->
- <section class="page" id="help">
-  <div class="page-content">
-   <h1 class="page-title">Help Center</h1>
-   <div class="panel">
-    <div class="news-item"><strong>Wie füge ich einen Server hinzu?</strong><p>Öffne Server Manager und trage Name, Adresse, Edition und Port ein.</p></div>
-    <div class="news-item"><strong>Wie öffne ich Minecraft?</strong><p>Nutze den Bedrock-Button. Dein iPad versucht, die Minecraft-App zu öffnen.</p></div>
-    <div class="news-item"><strong>Wo sind meine Daten?</strong><p>Sie werden lokal im Browser gespeichert. Exportiere regelmäßig eine Sicherung.</p></div>
-    <div class="news-item"><strong>Kann ich Java starten?</strong><p>Der Java-Bereich ist derzeit nur eine Informationsseite.</p></div>
-   </div>
+<!-- HELP -->
+<section id="help" class="page">
+  <div class="card">
+    <h2>Hilfe</h2>
+    <p class="muted">Deine Daten und Einstellungen werden lokal in deinem Browser gespeichert.</p>
+    <button id="export-data">Daten exportieren</button>
   </div>
- </section>
+</section>
 
- <footer>UNIVERSALCLIENT · VERSION 3.0 · CYBERPUNK EDITION</footer>
-</div>
+</main>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const K={
- servers:"universalclient_servers",
- profiles:"universalclient_profiles",
- settings:"universalclient_settings",
- theme:"universalclient_theme",
- player:"universalclient_player",
- activity:"universalclient_activity"
-};
-const defaults={
- compact:false,fontSize:15,notifications:true,sound:false,
- animations:true,backgroundEffects:true,roundness:"19px",
- edition:"Bedrock",version:"Unbekannt",developer:false
-};
-function read(key,fallback){
- try{const x=localStorage.getItem(key);return x?JSON.parse(x):fallback}
- catch{return fallback}
-}
-function servers(){const x=read(K.servers,[]);return Array.isArray(x)?x:[]}
-function profiles(){const x=read(K.profiles,[]);return Array.isArray(x)?x:[]}
-let settings={...defaults,...read(K.settings,{})};
-const themes={
- purple:["#9b65ff","#00d9ff"],
- blue:["#36aaff","#3d71ff"],
- pink:["#e45cbf","#a64aff"],
- green:["#43c995","#269e80"]
-};
-function setTheme(name){
- const t=themes[name]||themes.purple;
- document.documentElement.style.setProperty("--accent",t[0]);
- document.documentElement.style.setProperty("--accent2",t[1]);
- localStorage.setItem(K.theme,name);
- document.querySelectorAll("[data-theme]").forEach(b=>b.classList.toggle("selected",b.dataset.theme===name));
-}
-function saveSettings(){localStorage.setItem(K.settings,JSON.stringify(settings))}
-function applySettings(){
- document.documentElement.style.setProperty("--radius",settings.roundness);
- document.documentElement.style.setProperty("--font",settings.fontSize+"px");
- document.body.classList.toggle("compact",!!settings.compact);
- ["compact","notifications","sound","animations","backgroundEffects","developer"].forEach(k=>{
-  document.getElementById(k).checked=!!settings[k];
- });
- document.getElementById("fontSize").value=settings.fontSize;
- document.getElementById("roundness").value=settings.roundness;
- document.getElementById("preferredEdition").value=settings.edition;
- document.getElementById("preferredVersion").value=settings.version;
- document.getElementById("debugInfo").hidden=!settings.developer;
-}
-function toast(message){
- if(settings.notifications===false)return;
- const el=document.getElementById("toast");
- el.textContent=message;el.classList.add("show");
- clearTimeout(window.toastTimer);
- window.toastTimer=setTimeout(()=>el.classList.remove("show"),2400);
- if(settings.sound){
-  try{
-   const C=window.AudioContext||window.webkitAudioContext;
-   if(C){const c=new C(),o=c.createOscillator(),g=c.createGain();o.frequency.value=600;g.gain.value=.025;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.07);o.onended=()=>c.close()}
-  }catch(e){}
- }
-}
-function esc(v){
- return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-function logActivity(message){
- const a=read(K.activity,[]);
- a.unshift({message,time:new Date().toLocaleString()});
- localStorage.setItem(K.activity,JSON.stringify(a.slice(0,8)));
- renderActivity();
-}
-function renderActivity(){
- const a=read(K.activity,[]);
- document.getElementById("activityList").innerHTML=a.length?
- a.slice(0,5).map(x=>`<div class="news-item"><strong>${esc(x.message)}</strong><p>${esc(x.time)}</p></div>`).join(""):
- '<p class="muted">Noch keine Aktivitäten.</p>';
-}
-function showPage(id){
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- document.querySelectorAll(".nav-button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
- const page=document.getElementById(id);if(page)page.classList.add("active");
- document.getElementById("sidebar").classList.remove("open");
- if(id==="settings")refreshPrivacy();
- window.scrollTo({top:0,behavior:settings.animations?"smooth":"auto"});
-}
-document.querySelectorAll(".nav-button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
-function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
-document.querySelectorAll("[data-setting]").forEach(b=>b.addEventListener("click",()=>{
- document.querySelectorAll("[data-setting]").forEach(x=>x.classList.remove("active"));
- document.querySelectorAll(".setting-panel").forEach(x=>x.classList.remove("active"));
- b.classList.add("active");
- document.getElementById("setting-"+b.dataset.setting).classList.add("active");
-}));
-document.querySelectorAll("[data-theme]").forEach(b=>b.addEventListener("click",()=>{
- setTheme(b.dataset.theme);toast("Theme geändert.");
-}));
-function bind(id,key,convert=v=>v){
- document.getElementById(id).addEventListener("change",e=>{
-  settings[key]=convert(e.target.type==="checkbox"?e.target.checked:e.target.value);
-  saveSettings();applySettings();toast("Einstellung gespeichert.");
- });
-}
-bind("compact","compact",Boolean);
-bind("fontSize","fontSize",Number);
-bind("roundness","roundness");
-bind("notifications","notifications",Boolean);
-bind("sound","sound",Boolean);
-bind("animations","animations",Boolean);
-bind("backgroundEffects","backgroundEffects",Boolean);
-bind("preferredEdition","edition");
-bind("preferredVersion","version");
-bind("developer","developer",Boolean);
+(function () {
+"use strict";
 
-function gameCard(name,description,emoji,color,action){
- return `<article class="game-card" onclick="${action}">
- <div class="game-art ${color}">${emoji}</div>
- <div class="game-info"><small>UNIVERSALCLIENT</small><strong>${name}</strong><p>${description}</p></div></article>`;
+const $ = id => document.getElementById(id);
+
+function notify(message) {
+  const box = $("toast");
+  box.textContent = message;
+  box.style.display = "block";
+  setTimeout(() => box.style.display = "none", 2500);
 }
-function renderGames(){
- const cards=[
- gameCard("Minecraft Bedrock","Deine Bedrock Edition","⛏️","green","openMinecraft()"),
- gameCard("Java Edition","In Entwicklung","☕","purple","showPage('java')"),
- gameCard("My Servers","Deine gespeicherten Server","🌐","blue","showPage('servers')"),
- gameCard("Player Profile","Dein Spielerprofil","👾","pink","showPage('profiles')"),
- gameCard("News Feed","Projekt-Neuigkeiten","📰","red","showPage('news')"),
- gameCard("Settings","Dein Design","⚙️","gold","showPage('settings')")
- ];
- document.getElementById("homeGames").innerHTML=cards.slice(0,3).join("");
- document.getElementById("allGames").innerHTML=cards.join("");
+
+function getData(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch (error) {
+    return fallback;
+  }
 }
-function updateCounts(){
- document.getElementById("sideServerCount").textContent=servers().length;
- document.getElementById("sideProfileCount").textContent=profiles().length;
- refreshPrivacy();
+
+function saveData(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    notify("Speichern nicht möglich: " + error.message);
+  }
 }
-function refreshPrivacy(){
- document.getElementById("privacyServers").textContent=servers().length;
- document.getElementById("privacyProfiles").textContent=profiles().length;
+
+let servers = getData("uc_servers", []);
+let profiles = getData("uc_profiles", []);
+let activity = getData("uc_activity", []);
+
+const presets = {
+  cyber: ["#080b16","#0d1224","#111a30","#00e5ff","#eaf2ff","#263653"],
+  blue: ["#071426","#0b1e35","#102844","#3b82f6","#eaf5ff","#244766"],
+  green: ["#030b06","#06140b","#0b1d11","#39ff14","#e2ffe7","#1d5730"],
+  pink: ["#170d24","#211032","#2b1640","#ff4fd8","#fff0ff","#56336f"],
+  sunset: ["#1b1020","#241329","#321a2b","#ff7a45","#fff0e9","#63364e"]
+};
+
+const colorIds = [
+  "bg-color","side-color","card-color",
+  "accent-color","text-color","border-color"
+];
+
+function applyColors() {
+  const vars = ["--bg","--side","--card","--accent","--text","--border"];
+
+  colorIds.forEach((id,index) => {
+    document.documentElement.style.setProperty(
+      vars[index],
+      $(id).value
+    );
+  });
 }
-function clearServerForm(){
- document.getElementById("serverId").value="";
- document.getElementById("serverTitle").textContent="＋ Add New Server";
- document.getElementById("serverName").value="";
- document.getElementById("serverAddress").value="";
- document.getElementById("serverEdition").value=settings.edition;
- document.getElementById("serverPort").value=settings.edition==="Java"?25565:19132;
- document.getElementById("serverVersion").value=settings.version;
+
+function saveDesign() {
+  const design = {};
+
+  colorIds.forEach(id => design[id] = $(id).value);
+
+  design.radius = $("radius").value;
+  design.fontSize = $("font-size").value;
+  design.fontFamily = $("font-family").value;
+  design.glow = $("glow").checked;
+  design.compact = $("compact").checked;
+
+  saveData("uc_design", design);
+  notify("Design gespeichert!");
 }
-document.getElementById("serverEdition").addEventListener("change",e=>{
- document.getElementById("serverPort").value=e.target.value==="Java"?25565:19132;
+
+function loadDesign() {
+  const design = getData("uc_design", null);
+
+  if (design) {
+    colorIds.forEach(id => {
+      if (design[id]) $(id).value = design[id];
+    });
+
+    if (design.radius) $("radius").value = design.radius;
+    if (design.fontSize) $("font-size").value = design.fontSize;
+    if (design.fontFamily) $("font-family").value = design.fontFamily;
+
+    $("glow").checked = design.glow !== false;
+    $("compact").checked = !!design.compact;
+  }
+
+  updateDesign();
+}
+
+function updateDesign() {
+  applyColors();
+
+  document.documentElement.style.setProperty(
+    "--radius",
+    $("radius").value + "px"
+  );
+
+  document.body.style.fontSize = $("font-size").value + "px";
+  document.body.style.fontFamily = $("font-family").value;
+
+  document.body.classList.toggle("no-glow", !$("glow").checked);
+  document.body.classList.toggle("compact", $("compact").checked);
+}
+
+function resetDesign() {
+  const defaults = presets.cyber;
+
+  colorIds.forEach((id,index) => {
+    $(id).value = defaults[index];
+  });
+
+  $("radius").value = 14;
+  $("font-size").value = 15;
+  $("font-family").value = "Arial,sans-serif";
+  $("glow").checked = true;
+  $("compact").checked = false;
+
+  updateDesign();
+  saveDesign();
+  notify("Design zurückgesetzt!");
+}
+
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.toggle("active", page.id === id);
+  });
+
+  document.querySelectorAll("[data-page]").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === id);
+  });
+
+  const button = document.querySelector('[data-page="' + id + '"]');
+  $("heading").textContent = button ? button.textContent.trim() : id;
+  $("breadcrumb").textContent = $("heading").textContent;
+}
+
+function render() {
+  $("server-count").textContent = servers.length;
+  $("profile-count").textContent = profiles.length;
+
+  $("server-list").innerHTML = "";
+
+  if (servers.length === 0) {
+    $("server-list").textContent = "Keine Server vorhanden.";
+  }
+
+  servers.forEach((server,index) => {
+    const row = document.createElement("div");
+    row.className = "item";
+
+    const info = document.createElement("span");
+    info.textContent = server.name + " – " + server.address + ":" + server.port;
+
+    const remove = document.createElement("button");
+    remove.textContent = "Entfernen";
+    remove.addEventListener("click", () => {
+      servers.splice(index,1);
+      saveData("uc_servers",servers);
+      render();
+      notify("Server entfernt.");
+    });
+
+    row.append(info,remove);
+    $("server-list").append(row);
+  });
+
+  $("profile-list").innerHTML = "";
+
+  if (profiles.length === 0) {
+    $("profile-list").textContent = "Keine Profile vorhanden.";
+  }
+
+  profiles.forEach(profile => {
+    const row = document.createElement("div");
+    row.className = "item";
+    row.textContent = profile;
+    $("profile-list").append(row);
+  });
+
+  $("activity").innerHTML = "";
+
+  if (activity.length === 0) {
+    $("activity").textContent = "Noch keine Aktivität.";
+  }
+
+  activity.forEach(entry => {
+    const row = document.createElement("div");
+    row.className = "item";
+    row.textContent = entry;
+    $("activity").append(row);
+  });
+}
+
+function log(message) {
+  activity.unshift(message);
+  activity = activity.slice(0,5);
+  saveData("uc_activity",activity);
+  render();
+}
+
+/* Navigation */
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.page));
 });
-function saveServer(){
- const id=document.getElementById("serverId").value;
- const name=document.getElementById("serverName").value.trim();
- const address=document.getElementById("serverAddress").value.trim();
- const edition=document.getElementById("serverEdition").value;
- const port=Number(document.getElementById("serverPort").value);
- const version=document.getElementById("serverVersion").value;
- if(!name||!address||!Number.isInteger(port)||port<1||port>65535){toast("Bitte überprüfe deine Eingaben.");return}
- const list=servers(),item={id:id||String(Date.now()),name,address,edition,port,version};
- const i=list.findIndex(x=>String(x.id)===String(id));
- if(id&&i>=0)list[i]=item;else list.push(item);
- localStorage.setItem(K.servers,JSON.stringify(list));
- clearServerForm();renderServers();updateCounts();logActivity("Server gespeichert: "+name);toast("Server gespeichert.");
-}
-function renderServers(){
- const list=servers();
- document.getElementById("serverList").innerHTML=list.length?list.map(s=>`
- <div class="server-item">
- <div><strong>${esc(s.name)}</strong><p>${esc(s.edition)} · ${esc(s.address)}:${esc(s.port)} · ${esc(s.version||"Unbekannt")}</p></div>
- <div class="actions">
- <button class="secondary small" onclick="startServer('${esc(s.id)}')">Start</button>
- <button class="secondary small" onclick="editServer('${esc(s.id)}')">Edit</button>
- <button class="secondary small danger" onclick="deleteServer('${esc(s.id)}')">Delete</button>
- </div></div>`).join(""):'<div class="empty">Noch keine Server gespeichert.</div>';
-}
-function editServer(id){
- const s=servers().find(x=>String(x.id)===String(id));if(!s)return;
- document.getElementById("serverId").value=s.id;
- document.getElementById("serverTitle").textContent="Edit Server";
- document.getElementById("serverName").value=s.name;
- document.getElementById("serverAddress").value=s.address;
- document.getElementById("serverEdition").value=s.edition;
- document.getElementById("serverPort").value=s.port;
- document.getElementById("serverVersion").value=s.version||"Unbekannt";
- window.scrollTo({top:0,behavior:"smooth"});
-}
-function deleteServer(id){
- if(!confirm("Diesen Server löschen?"))return;
- localStorage.setItem(K.servers,JSON.stringify(servers().filter(s=>String(s.id)!==String(id))));
- renderServers();updateCounts();toast("Server gelöscht.");
-}
-function startServer(id){
- const s=servers().find(x=>String(x.id)===String(id));if(!s)return;
- if(s.edition==="Bedrock"){openMinecraft();toast("Minecraft geöffnet. Server bitte manuell eingeben.")}
- else toast("Java ist in dieser Webversion nicht verfügbar.");
-}
-function openMinecraft(){window.location.href="minecraft://"}
-function saveProfile(){
- const p={
- name:document.getElementById("playerName").value.trim()||"PLAYER",
- avatar:document.getElementById("playerAvatar").value,
- bio:document.getElementById("playerBio").value.trim()
- };
- localStorage.setItem(K.player,JSON.stringify(p));
- renderPlayer();logActivity("Profil aktualisiert");toast("Profil gespeichert.");
-}
-function renderPlayer(){
- const p=read(K.player,{name:"PLAYER",avatar:"👾",bio:""});
- document.getElementById("playerName").value=p.name;
- document.getElementById("playerAvatar").value=p.avatar;
- document.getElementById("playerBio").value=p.bio;
- document.getElementById("sideName").textContent=p.name;
- document.getElementById("sideAvatar").textContent=p.avatar;
- document.getElementById("profileAvatarPreview").textContent=p.avatar;
-}
-document.getElementById("playerAvatar").addEventListener("change",e=>{
- document.getElementById("profileAvatarPreview").textContent=e.target.value;
+
+document.querySelectorAll("[data-go]").forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.go));
 });
-function addProfile(){
- const input=document.getElementById("newProfileName"),name=input.value.trim();
- if(!name){toast("Profilnamen eingeben.");return}
- const list=profiles();list.push({id:String(Date.now()),name});
- localStorage.setItem(K.profiles,JSON.stringify(list));
- input.value="";renderProfiles();updateCounts();logActivity("Profil erstellt: "+name);toast("Profil erstellt.");
-}
-function renderProfiles(){
- const list=profiles();
- document.getElementById("profileList").innerHTML=list.length?list.map(p=>`
- <div class="profile-item"><div><strong>${esc(p.name)}</strong><p>Lokales Profil</p></div>
- <button class="secondary small danger" onclick="deleteProfile('${esc(p.id)}')">Delete</button></div>`).join(""):'<div class="empty">Noch keine weiteren Profile.</div>';
-}
-function deleteProfile(id){
- if(!confirm("Profil löschen?"))return;
- localStorage.setItem(K.profiles,JSON.stringify(profiles().filter(p=>String(p.id)!==String(id))));
- renderProfiles();updateCounts();toast("Profil gelöscht.");
-}
-function exportData(){
- const data={
- app:"UniversalClient",version:"3.0",exportedAt:new Date().toISOString(),
- servers:servers(),profiles:profiles(),settings,
- player:read(K.player,{}),theme:localStorage.getItem(K.theme)||"purple",
- activity:read(K.activity,[])
- };
- const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
- const url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download="universalclient-backup.json";a.click();
- setTimeout(()=>URL.revokeObjectURL(url),1000);toast("Backup erstellt.");
-}
-function resetData(){
- if(!confirm("Alle UniversalClient-Daten in diesem Browser zurücksetzen?"))return;
- Object.values(K).forEach(k=>localStorage.removeItem(k));
- settings={...defaults};saveSettings();setTheme("purple");applySettings();
- clearServerForm();renderServers();renderProfiles();renderPlayer();
- renderActivity();updateCounts();toast("App-Daten zurückgesetzt.");
-}
-function init(){
- setTheme(localStorage.getItem(K.theme)||"purple");
- applySettings();renderGames();renderServers();renderProfiles();
- renderPlayer();renderActivity();updateCounts();clearServerForm();
-}
-init();
+
+/* Server hinzufügen */
+$("add-server").addEventListener("click", () => {
+  const name = $("server-name").value.trim();
+  const address = $("server-address").value.trim();
+  const port = Number($("server-port").value);
+
+  if (!name || !address || !Number.isInteger(port) || port < 1 || port > 65535) {
+    notify("Bitte alle Serverdaten korrekt eingeben.");
+    return;
+  }
+
+  servers.push({name,address,port});
+  saveData("uc_servers",servers);
+
+  $("server-name").value = "";
+  $("server-address").value = "";
+
+  log("Server hinzugefügt: " + name);
+  notify("Server gespeichert!");
+});
+
+/* Profil speichern */
+$("save-profile").addEventListener("click", () => {
+  const name = $("player-name").value.trim();
+
+  if (!name) {
+    notify("Bitte einen Spielernamen eingeben.");
+    return;
+  }
+
+  profiles.push(name);
+  saveData("uc_profiles",profiles);
+
+  $("player-name").value = "";
+  log("Profil gespeichert: " + name);
+  notify("Profil gespeichert!");
+});
+
+/* Design-Vorlagen */
+document.querySelectorAll("[data-preset]").forEach(button => {
+  button.addEventListener("click", () => {
+    const values = presets[button.dataset.preset];
+
+    colorIds.forEach((id,index) => {
+      $(id).value = values[index];
+    });
+
+    updateDesign();
+    saveDesign();
+    notify("Vorlage angewendet!");
+  });
+});
+
+/* Design-Steuerung */
+colorIds.forEach(id => {
+  $(id).addEventListener("input", updateDesign);
+});
+
+["radius","font-size","font-family","glow","compact"].forEach(id => {
+  $(id).addEventListener("input", updateDesign);
+  $(id).addEventListener("change", updateDesign);
+});
+
+$("save-design").addEventListener("click", saveDesign);
+$("reset-design").addEventListener("click", resetDesign);
+
+/* Minecraft */
+$("minecraft").addEventListener("click", () => {
+  window.location.href = "minecraft://";
+});
+
+/* Backup */
+$("export-data").addEventListener("click", () => {
+  const data = {
+    servers,
+    profiles,
+    activity,
+    design: getData("uc_design",{})
+  };
+
+  const file = new Blob(
+    [JSON.stringify(data,null,2)],
+    {type:"application/json"}
+  );
+
+  const url = URL.createObjectURL(file);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "universalclient-backup.json";
+  link.click();
+
+  URL.revokeObjectURL(url);
+});
+
+/* Start */
+loadDesign();
+render();
+
+})();
 </script>
+
 </body>
 </html>
