@@ -4,265 +4,937 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#060b18">
 <title>UniversalClient</title>
 
 <style>
 :root {
-  --bg:#080b16;
-  --side:#0d1224;
-  --card:#111a30;
-  --accent:#00e5ff;
-  --text:#eaf2ff;
-  --muted:#91a2bf;
-  --border:#263653;
-  --radius:14px;
+  --bg:#060b18;
+  --side:#091329;
+  --panel:#0c1930;
+  --accent:#08cfff;
+  --text:#edf6ff;
+  --muted:#8da5c5;
+  --border:#1b3b62;
+  --radius:17px;
 }
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,sans-serif
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(ellipse at 75% -20%,#12396b 0,transparent 42%),var(--bg);
+  color:var(--text);
+  font:15px/1.5 Inter,system-ui,Arial,sans-serif;
 }
-button,input,select{font:inherit}
-button{
-  cursor:pointer;border:1px solid var(--border);
-  background:var(--card);color:var(--text);
-  padding:11px 14px;border-radius:9px
+
+button,input,select { font:inherit; }
+
+button {
+  cursor:pointer;
+  color:var(--text);
+  background:#102341;
+  border:1px solid #24466d;
+  border-radius:10px;
+  padding:10px 14px;
+  transition:.18s;
 }
-button:hover{border-color:var(--accent)}
-button:disabled{opacity:.5;cursor:not-allowed}
-.primary{background:var(--accent);color:#061018;font-weight:bold}
-.layout{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
-.sidebar{background:var(--side);padding:22px;border-right:1px solid var(--border)}
-.logo{font-size:21px;font-weight:bold;margin-bottom:25px}
-.logo span{color:var(--accent)}
-nav{display:grid;gap:8px}
-nav button{text-align:left;background:transparent}
-nav button.active{color:var(--accent);border-color:var(--accent);background:var(--card)}
-main{padding:25px;min-width:0}
-h1{margin-top:0}
-.page{display:none}
-.page.active{display:block}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
-.card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--radius);padding:20px;margin-bottom:15px
+
+button:hover {
+  border-color:var(--accent);
+  box-shadow:0 0 16px #08cfff24;
+  transform:translateY(-1px);
 }
-.muted{color:var(--muted)}
-.field{margin:13px 0}
-label{display:block;margin-bottom:7px;color:var(--muted)}
-input,select{
-  width:100%;padding:10px;background:var(--bg);color:var(--text);
-  border:1px solid var(--border);border-radius:8px
+
+button:disabled {
+  opacity:.5;
+  cursor:not-allowed;
 }
-input[type=color]{height:43px}
-input[type=checkbox]{width:auto}
-.item{
-  padding:12px 0;border-bottom:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;gap:10px
+
+.primary {
+  background:linear-gradient(110deg,#08cfff,#176dff);
+  border:0;
+  color:#03101f;
+  font-weight:800;
 }
-.actions{display:flex;flex-wrap:wrap;gap:10px}
-.toast{
-  display:none;position:fixed;bottom:20px;right:20px;
-  background:var(--card);border:1px solid var(--accent);
-  padding:14px 18px;border-radius:10px;z-index:100;
-  max-width:90vw
+
+.danger {
+  border-color:#74324c;
+  color:#ff91aa;
 }
-.status{font-size:13px;margin-top:10px;color:var(--muted)}
-.online{color:#45e69a}
-.offline{color:#ffbd59}
-.auth-card{max-width:520px}
-.auth-card input{margin-bottom:10px}
-@media(max-width:750px){
-  .layout{grid-template-columns:1fr}
-  .sidebar{border-right:0}
-  nav{grid-template-columns:repeat(2,1fr)}
-  main{padding:15px}
-  .grid{grid-template-columns:1fr}
+
+.layout {
+  display:grid;
+  grid-template-columns:245px minmax(0,1fr);
+  min-height:100vh;
+}
+
+.sidebar {
+  background:linear-gradient(180deg,#0a1730f5,#071023f5);
+  border-right:1px solid #17385f;
+  padding:22px 16px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  z-index:5;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:5px 8px 25px;
+}
+
+.brand-mark {
+  width:49px;
+  height:49px;
+  filter:drop-shadow(0 0 9px #00cfff88);
+  flex:none;
+}
+
+.brand-name {
+  font-weight:900;
+  letter-spacing:1px;
+  font-size:17px;
+  line-height:1.1;
+}
+
+.brand-name span { color:var(--accent); }
+
+.brand small {
+  display:block;
+  color:#7594bb;
+  font-size:9px;
+  letter-spacing:3px;
+  margin-top:5px;
+}
+
+.nav-label {
+  font-size:10px;
+  color:#58769d;
+  letter-spacing:2px;
+  font-weight:800;
+  padding:10px 12px 6px;
+}
+
+nav { display:grid; gap:6px; }
+
+nav button {
+  background:transparent;
+  border-color:transparent;
+  text-align:left;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:12px;
+  color:#a9bdd8;
+  font-weight:650;
+}
+
+nav button.active {
+  background:linear-gradient(90deg,#0b75b94a,#123d7140);
+  border-color:#087fba;
+  color:#e8faff;
+  box-shadow:inset 3px 0 var(--accent),0 0 18px #00bfff16;
+}
+
+.ico {
+  width:20px;
+  height:20px;
+  color:#69b9e9;
+  flex:none;
+}
+
+.sidebar-bottom {
+  margin-top:auto;
+  border:1px solid #1a3d64;
+  background:#0b1b34;
+  border-radius:13px;
+  padding:13px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.sidebar-bottom strong {
+  color:#dff7ff;
+  display:block;
+  margin-bottom:3px;
+}
+
+main {
+  padding:25px clamp(16px,3vw,42px);
+  min-width:0;
+  max-width:1700px;
+  width:100%;
+  margin:auto;
+}
+
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.eyebrow {
+  font-size:11px;
+  letter-spacing:2px;
+  color:#6e91b9;
+  font-weight:800;
+}
+
+.cloud-pill {
+  font-size:12px;
+  border:1px solid #245077;
+  background:#0b1c34;
+  padding:7px 11px;
+  border-radius:30px;
+  color:#a8c4df;
+}
+
+.cloud-pill:before {
+  content:"";
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#ffbd59;
+  margin-right:7px;
+}
+
+.cloud-pill.online:before {
+  background:#35dfa0;
+  box-shadow:0 0 9px #35dfa0;
+}
+
+h1 {
+  font-size:clamp(27px,3vw,38px);
+  margin:4px 0 0;
+  letter-spacing:-1px;
+}
+
+h2 { font-size:18px; margin:0 0 14px; }
+h3 { font-size:15px; margin:0 0 8px; }
+
+.page { display:none; }
+.page.active { display:block; animation:fade .22s ease; }
+
+@keyframes fade {
+  from { opacity:.4; transform:translateY(4px); }
+  to { opacity:1; transform:none; }
+}
+
+.hero {
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:25px;
+  padding:28px 30px;
+  border:1px solid #17639a;
+  border-radius:20px;
+  background:linear-gradient(105deg,#0b1c39f5,#0c2b51e8 55%,#07152ce8);
+  margin-bottom:17px;
+  box-shadow:0 12px 35px #0003;
+}
+
+.hero:after {
+  content:"";
+  position:absolute;
+  width:320px;
+  height:220px;
+  right:8%;
+  top:-130px;
+  border-radius:50%;
+  background:#00bfff22;
+  filter:blur(35px);
+}
+
+.hero-copy { position:relative; z-index:1; }
+.hero h1 { font-size:clamp(28px,4vw,44px); }
+.hero p { color:#a9c1df; margin:8px 0 0; }
+
+.hero-logo {
+  width:150px;
+  height:115px;
+  flex:none;
+  filter:drop-shadow(0 0 16px #008dff77);
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+}
+
+.card {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:19px;
+  margin-bottom:15px;
+  box-shadow:0 8px 25px #0002;
+}
+
+.stat {
+  display:flex;
+  align-items:center;
+  gap:15px;
+  min-height:105px;
+}
+
+.stat-icon {
+  width:49px;
+  height:49px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:#087ebd25;
+  color:#39cfff;
+  border:1px solid #17699a;
+}
+
+.stat-icon svg { width:25px; height:25px; }
+
+.stat strong {
+  font-size:30px;
+  display:block;
+  line-height:1.1;
+}
+
+.muted { color:var(--muted); }
+
+.section-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.section-head h2 { margin:0; }
+
+.field { margin:13px 0; }
+
+label {
+  display:block;
+  color:#9db2ce;
+  font-size:13px;
+  margin-bottom:6px;
+}
+
+input,select {
+  width:100%;
+  padding:11px 12px;
+  background:#071326;
+  color:var(--text);
+  border:1px solid #244263;
+  border-radius:9px;
+  outline:none;
+}
+
+input:focus,select:focus {
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px #00cfff17;
+}
+
+input[type=color] { height:44px; padding:4px; }
+input[type=checkbox] { width:auto; accent-color:var(--accent); }
+input[type=range] { padding:0; accent-color:var(--accent); }
+
+.actions {
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+}
+
+.item {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid #1b3553;
+}
+
+.item:last-child { border-bottom:0; }
+
+.item-main {
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-width:0;
+}
+
+.item-main strong { display:block; overflow-wrap:anywhere; }
+.item-main small { color:var(--muted); }
+
+.item-icon {
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  background:#0b3151;
+  border:1px solid #1b5d87;
+  display:grid;
+  place-items:center;
+  color:#4acfff;
+  flex:none;
+}
+
+.item-icon svg { width:21px; height:21px; }
+
+.item-actions { display:flex; gap:6px; flex-wrap:wrap; }
+.item-actions button { padding:7px 10px; font-size:12px; }
+
+.empty {
+  padding:18px 5px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.activity-row {
+  display:flex;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid #1b3553;
+  color:#b7c9df;
+  font-size:13px;
+}
+
+.activity-row:last-child { border:0; }
+
+.activity-dot {
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--accent);
+  margin-top:7px;
+  flex:none;
+  box-shadow:0 0 8px var(--accent);
+}
+
+.game-card {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  min-height:130px;
+}
+
+.game-art {
+  width:78px;
+  height:78px;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  flex:none;
+  background:linear-gradient(145deg,#124d7c,#101d3a);
+  border:1px solid #2875a5;
+  color:#72ddff;
+}
+
+.game-art svg { width:43px; height:43px; }
+
+.auth-card { max-width:560px; }
+.status { font-size:13px; color:var(--muted); margin-top:10px; }
+.hidden { display:none!important; }
+.no-glow .card,.no-glow button { box-shadow:none!important; }
+.compact .card { padding:13px; }
+.compact .item { padding:8px 0; }
+
+.toast {
+  display:none;
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#102542;
+  border:1px solid var(--accent);
+  padding:13px 17px;
+  border-radius:11px;
+  z-index:20;
+  box-shadow:0 8px 28px #0008;
+  max-width:90vw;
+}
+
+.footer-note {
+  font-size:11px;
+  color:#607d9f;
+  margin-top:18px;
+}
+
+@media(max-width:850px) {
+  .layout { grid-template-columns:1fr; }
+  .sidebar {
+    height:auto;
+    position:relative;
+    padding:12px;
+  }
+  .brand { padding:3px 8px 12px; }
+  .brand-mark { width:38px; height:38px; }
+  .nav-label,.sidebar-bottom { display:none; }
+  nav {
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:4px;
+  }
+  nav button {
+    justify-content:center;
+    padding:9px 5px;
+    font-size:11px;
+    gap:5px;
+    flex-direction:column;
+  }
+  nav button .ico { width:18px; height:18px; }
+  main { padding:18px; }
+  .topbar { margin-bottom:18px; }
+}
+
+@media(max-width:560px) {
+  .grid { grid-template-columns:1fr; }
+  .hero { padding:22px; }
+  .hero-logo { width:85px; height:80px; }
+  .topbar {
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .item {
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .item-actions { width:100%; }
+  .item-actions button { flex:1; }
 }
 </style>
 </head>
 
 <body>
+
+<!-- UC-LOGO UND SVG-ICON-BIBLIOTHEK -->
+<svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
+<symbol id="i-home" viewBox="0 0 24 24">
+<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+</symbol>
+<symbol id="i-game" viewBox="0 0 24 24">
+<path d="M6 8h12a4 4 0 0 1 3.8 5l-1 4a2 2 0 0 1-3.3 1l-2.2-2H8.7l-2.2 2a2 2 0 0 1-3.3-1l-1-4A4 4 0 0 1 6 8Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M7 11v4m-2-2h4m7-1h.01M18 14h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-server" viewBox="0 0 24 24">
+<rect x="3" y="3" width="18" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<rect x="3" y="14" width="18" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M7 6.5h.01M7 17.5h.01M11 6.5h6M11 17.5h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-news" viewBox="0 0 24 24">
+<path d="M5 3h12l3 3v15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M16 3v4h4M8 11h9M8 15h9M8 19h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-user" viewBox="0 0 24 24">
+<circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M4 21a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-settings" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M19 13.5l1.2 1-1.6 2.7-1.5-.5a7 7 0 0 1-1.5.9l-.3 1.6h-3.2l-.3-1.6a7 7 0 0 1-1.5-.9l-1.5.5-1.6-2.7 1.2-1a7 7 0 0 1 0-3l-1.2-1 1.6-2.7 1.5.5a7 7 0 0 1 1.5-.9l.3-1.6h3.2l.3 1.6a7 7 0 0 1 1.5.9l1.5-.5 1.6 2.7-1.2 1a7 7 0 0 1 0 3Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+</symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24">
+<path d="M7 18h11a4 4 0 0 0 .5-8A6.5 6.5 0 0 0 6 8.5 4.8 4.8 0 0 0 7 18Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M12 17v-7m-3 3 3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<symbol id="i-help" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M9.5 9a2.6 2.6 0 1 1 4.5 1.8c-1.3 1.2-2 1.5-2 3M12 17.5h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-plus" viewBox="0 0 24 24">
+<path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-edit" viewBox="0 0 24 24">
+<path d="m4 16.5-.8 4.3 4.3-.8L20 7.5 16.5 4 4 16.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="m14.8 5.7 3.5 3.5" stroke="currentColor" stroke-width="1.8"/>
+</symbol>
+<symbol id="i-trash" viewBox="0 0 24 24">
+<path d="M4 7h16M9 7V4h6v3m3 0-1 14H7L6 7m3 3v7m6-7v7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<symbol id="i-clock" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+</symbol>
+<symbol id="i-minecraft" viewBox="0 0 24 24">
+<path d="m12 2 9 5v10l-9 5-9-5V7l9-5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+<path d="m3.5 7.5 8.5 5 8.5-5M12 12.5V22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+</symbol>
+</svg>
+
 <div class="layout">
 
 <aside class="sidebar">
-  <div class="logo">UNIVERSAL<span>CLIENT</span></div>
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 160 120" aria-label="UC Logo">
+      <path d="M17 27v42q0 27 29 27h27q26 0 26-27V27H77v39q0 12-12 12H57q-12 0-12-12V27Z" fill="#bcefff"/>
+      <path d="M91 28h48l-10 16h-34v16h28l-10 15H95v18H78V59q0-31 13-31Z" fill="#08cfff"/>
+      <path d="M10 78C28 112 112 111 149 34" fill="none" stroke="#00eaff" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <div class="brand-name">UNIVERSAL<span>CLIENT</span></div>
+      <small>GAME MANAGEMENT</small>
+    </div>
+  </div>
+
+  <div class="nav-label">MENÜ</div>
+
   <nav>
-    <button class="active" data-page="dashboard">⌂ Dashboard</button>
-    <button data-page="games">▣ Games</button>
-    <button data-page="servers">◈ Server</button>
-    <button data-page="news">▤ News</button>
-    <button data-page="profile">◎ Profil</button>
-    <button data-page="design">⚙ Design</button>
-    <button data-page="account">☁ Konto / Cloud</button>
-    <button data-page="help">? Hilfe</button>
+    <button class="active" data-page="dashboard" data-title="Dashboard">
+      <svg class="ico"><use href="#i-home"/></svg>Dashboard
+    </button>
+    <button data-page="games" data-title="Games">
+      <svg class="ico"><use href="#i-game"/></svg>Games
+    </button>
+    <button data-page="servers" data-title="Server">
+      <svg class="ico"><use href="#i-server"/></svg>Server
+    </button>
+    <button data-page="news" data-title="News">
+      <svg class="ico"><use href="#i-news"/></svg>News
+    </button>
+    <button data-page="profile" data-title="Profile">
+      <svg class="ico"><use href="#i-user"/></svg>Profile
+    </button>
+    <button data-page="design" data-title="Design">
+      <svg class="ico"><use href="#i-settings"/></svg>Design
+    </button>
+    <button data-page="account" data-title="Konto / Cloud">
+      <svg class="ico"><use href="#i-cloud"/></svg>Konto / Cloud
+    </button>
+    <button data-page="help" data-title="Hilfe">
+      <svg class="ico"><use href="#i-help"/></svg>Hilfe
+    </button>
   </nav>
+
+  <div class="sidebar-bottom">
+    <strong>UniversalClient</strong>
+    Dein zentraler Gaming-Bereich.<br>
+    <span>Version 2.0 · Neon Edition</span>
+  </div>
 </aside>
 
 <main>
-<header>
-  <p class="muted">UNIVERSALCLIENT / <span id="breadcrumb">Dashboard</span></p>
-  <h1 id="heading">Dashboard</h1>
-  <p class="status" id="cloud-status">Cloud: nicht angemeldet</p>
+
+<header class="topbar">
+  <div>
+    <div class="eyebrow">UNIVERSALCLIENT / <span id="breadcrumb">Dashboard</span></div>
+    <h1 id="heading">Dashboard</h1>
+  </div>
+  <span class="cloud-pill" id="cloud-status">Cloud: nicht angemeldet</span>
 </header>
 
+<!-- DASHBOARD -->
 <section id="dashboard" class="page active">
+
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">DEIN GAMING HUB</div>
+      <h1>Willkommen bei<br>UniversalClient.</h1>
+      <p>Profile, Server und dein Setup – alles an einem Ort.</p>
+      <div class="actions" style="margin-top:18px">
+        <button class="primary" data-go="profile">Profile verwalten</button>
+        <button data-go="servers">Server öffnen</button>
+      </div>
+    </div>
+
+    <svg class="hero-logo" viewBox="0 0 160 120" aria-label="UC Logo">
+      <path d="M17 27v42q0 27 29 27h27q26 0 26-27V27H77v39q0 12-12 12H57q-12 0-12-12V27Z" fill="#bcefff"/>
+      <path d="M91 28h48l-10 16h-34v16h28l-10 15H95v18H78V59q0-31 13-31Z" fill="#08cfff"/>
+      <path d="M10 78C28 112 112 111 149 34" fill="none" stroke="#00eaff" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="grid">
+    <div class="card stat">
+      <span class="stat-icon"><svg><use href="#i-server"/></svg></span>
+      <div>
+        <span class="muted">Gespeicherte Server</span>
+        <strong id="server-count">0</strong>
+      </div>
+    </div>
+
+    <div class="card stat">
+      <span class="stat-icon"><svg><use href="#i-user"/></svg></span>
+      <div>
+        <span class="muted">Spielerprofile</span>
+        <strong id="profile-count">0</strong>
+      </div>
+    </div>
+  </div>
+
   <div class="grid">
     <div class="card">
-      <p class="muted">Gespeicherte Server</p>
-      <h1 id="server-count">0</h1>
+      <div class="section-head">
+        <h2>Letzte Aktivität</h2>
+        <svg class="ico"><use href="#i-clock"/></svg>
+      </div>
+      <div id="activity"></div>
     </div>
+
     <div class="card">
-      <p class="muted">Spielerprofile</p>
-      <h1 id="profile-count">0</h1>
+      <h2>Schnellzugriff</h2>
+
+      <div class="item">
+        <div class="item-main">
+          <span class="item-icon"><svg><use href="#i-server"/></svg></span>
+          <strong>Server verwalten</strong>
+        </div>
+        <button data-go="servers">Öffnen</button>
+      </div>
+
+      <div class="item">
+        <div class="item-main">
+          <span class="item-icon"><svg><use href="#i-settings"/></svg></span>
+          <strong>Design anpassen</strong>
+        </div>
+        <button data-go="design">Öffnen</button>
+      </div>
+
+      <div class="item">
+        <div class="item-main">
+          <span class="item-icon"><svg><use href="#i-cloud"/></svg></span>
+          <strong>Cloud verbinden</strong>
+        </div>
+        <button data-go="account">Öffnen</button>
+      </div>
     </div>
-  </div>
-  <div class="card">
-    <h2>Willkommen bei UniversalClient</h2>
-    <p class="muted">Verwalte Server, Profile und dein persönliches Design.</p>
-    <div class="actions">
-      <button class="primary" data-go="servers">Server verwalten</button>
-      <button data-go="design">Design bearbeiten</button>
-      <button data-go="account">Cloud verbinden</button>
-    </div>
-  </div>
-  <div class="card">
-    <h2>Letzte Aktivität</h2>
-    <div id="activity">Noch keine Aktivität.</div>
   </div>
 </section>
 
+<!-- GAMES -->
 <section id="games" class="page">
-  <div class="card">
-    <h2>Minecraft Bedrock</h2>
-    <p class="muted">Öffnet Minecraft, falls es installiert ist.</p>
-    <button class="primary" id="minecraft">Minecraft öffnen</button>
-  </div>
-  <div class="card">
-    <h2>Minecraft Java</h2>
-    <p class="muted">Java kann über den installierten Minecraft Launcher gestartet werden.</p>
+  <div class="grid">
+
+    <div class="card game-card">
+      <div class="game-art">
+        <svg><use href="#i-minecraft"/></svg>
+      </div>
+      <div>
+        <h2>Minecraft Bedrock</h2>
+        <p class="muted">Minecraft über den installierten Client öffnen.</p>
+        <button class="primary" id="minecraft">Minecraft öffnen</button>
+      </div>
+    </div>
+
+    <div class="card game-card">
+      <div class="game-art">
+        <svg><use href="#i-game"/></svg>
+      </div>
+      <div>
+        <h2>Minecraft Java</h2>
+        <p class="muted">Starte Java über deinen installierten Minecraft Launcher.</p>
+        <span class="muted">Launcher wird separat geöffnet.</span>
+      </div>
+    </div>
+
   </div>
 </section>
 
+<!-- SERVER -->
 <section id="servers" class="page">
   <div class="grid">
+
     <div class="card">
       <h2>Server hinzufügen</h2>
+
       <div class="field">
         <label for="server-name">Servername</label>
         <input id="server-name" placeholder="Mein Server">
       </div>
+
       <div class="field">
         <label for="server-address">Server-Adresse</label>
         <input id="server-address" placeholder="play.example.net">
       </div>
+
+      <div class="field">
+        <label for="server-edition">Edition</label>
+        <select id="server-edition">
+          <option>Java</option>
+          <option selected>Bedrock</option>
+        </select>
+      </div>
+
       <div class="field">
         <label for="server-port">Port</label>
         <input id="server-port" type="number" value="19132">
       </div>
+
       <button class="primary" id="add-server">Server speichern</button>
     </div>
+
     <div class="card">
       <h2>Meine Server</h2>
-      <div id="server-list">Keine Server vorhanden.</div>
+      <div id="server-list"></div>
     </div>
+
   </div>
 </section>
 
+<!-- NEWS -->
 <section id="news" class="page">
   <div class="card">
     <h2>News</h2>
-    <p class="muted">Hier erscheinen später Neuigkeiten und Updates.</p>
+    <p class="muted">Hier kannst du später Updates und Neuigkeiten zu UniversalClient ergänzen.</p>
   </div>
 </section>
 
+<!-- PROFILE -->
 <section id="profile" class="page">
   <div class="grid">
+
     <div class="card">
       <h2>Profil erstellen</h2>
+
       <div class="field">
         <label for="player-name">Spielername</label>
         <input id="player-name" placeholder="Dein Spielername">
       </div>
+
+      <div class="field">
+        <label for="player-edition">Edition</label>
+        <select id="player-edition">
+          <option>Java</option>
+          <option>Bedrock</option>
+        </select>
+      </div>
+
       <button class="primary" id="save-profile">Profil speichern</button>
     </div>
+
     <div class="card">
       <h2>Meine Profile</h2>
-      <div id="profile-list">Keine Profile vorhanden.</div>
+      <div id="profile-list"></div>
     </div>
+
   </div>
 </section>
 
+<!-- DESIGN -->
 <section id="design" class="page">
+
   <div class="card">
     <h2>Design-Vorlagen</h2>
     <div class="actions">
-      <button data-preset="cyber">Cyberpunk</button>
+      <button data-preset="cyber">Cyber</button>
       <button data-preset="blue">Neon Blue</button>
-      <button data-preset="green">Matrix Green</button>
+      <button data-preset="green">Matrix</button>
       <button data-preset="pink">Pink Galaxy</button>
       <button data-preset="sunset">Sunset</button>
     </div>
   </div>
+
   <div class="grid">
+
     <div class="card">
       <h2>Farben</h2>
-      <div class="field"><label for="bg-color">Hintergrund</label><input type="color" id="bg-color" value="#080b16"></div>
-      <div class="field"><label for="side-color">Sidebar</label><input type="color" id="side-color" value="#0d1224"></div>
-      <div class="field"><label for="card-color">Karten</label><input type="color" id="card-color" value="#111a30"></div>
-      <div class="field"><label for="accent-color">Akzentfarbe</label><input type="color" id="accent-color" value="#00e5ff"></div>
-      <div class="field"><label for="text-color">Text</label><input type="color" id="text-color" value="#eaf2ff"></div>
-      <div class="field"><label for="border-color">Rahmen</label><input type="color" id="border-color" value="#263653"></div>
+
+      <div class="field">
+        <label for="bg-color">Hintergrund</label>
+        <input type="color" id="bg-color" value="#060b18">
+      </div>
+
+      <div class="field">
+        <label for="side-color">Sidebar</label>
+        <input type="color" id="side-color" value="#091329">
+      </div>
+
+      <div class="field">
+        <label for="card-color">Karten</label>
+        <input type="color" id="card-color" value="#0c1930">
+      </div>
+
+      <div class="field">
+        <label for="accent-color">Akzentfarbe</label>
+        <input type="color" id="accent-color" value="#08cfff">
+      </div>
+
+      <div class="field">
+        <label for="text-color">Text</label>
+        <input type="color" id="text-color" value="#edf6ff">
+      </div>
+
+      <div class="field">
+        <label for="border-color">Rahmen</label>
+        <input type="color" id="border-color" value="#1b3b62">
+      </div>
     </div>
+
     <div class="card">
       <h2>Layout</h2>
-      <div class="field"><label for="radius">Eckenradius</label><input type="range" id="radius" min="0" max="30" value="14"></div>
-      <div class="field"><label for="font-size">Schriftgröße</label><input type="range" id="font-size" min="12" max="22" value="15"></div>
+
+      <div class="field">
+        <label for="radius">Eckenradius</label>
+        <input type="range" id="radius" min="0" max="30" value="17">
+      </div>
+
+      <div class="field">
+        <label for="font-size">Schriftgröße</label>
+        <input type="range" id="font-size" min="12" max="22" value="15">
+      </div>
+
       <div class="field">
         <label for="font-family">Schriftart</label>
         <select id="font-family">
+          <option value="Inter,system-ui,Arial,sans-serif">Modern</option>
           <option value="Arial,sans-serif">Arial</option>
-          <option value="system-ui,sans-serif">System</option>
           <option value="Verdana,sans-serif">Verdana</option>
           <option value="Georgia,serif">Georgia</option>
           <option value="monospace">Monospace</option>
         </select>
       </div>
-      <div class="field"><label><input type="checkbox" id="glow" checked> Neon-Effekt</label></div>
-      <div class="field"><label><input type="checkbox" id="compact"> Kompakter Modus</label></div>
+
+      <div class="field">
+        <label><input type="checkbox" id="glow" checked> Neon-Effekt</label>
+      </div>
+
+      <div class="field">
+        <label><input type="checkbox" id="compact"> Kompakter Modus</label>
+      </div>
+
       <div class="actions">
         <button class="primary" id="save-design">Design speichern</button>
         <button id="reset-design">Zurücksetzen</button>
       </div>
     </div>
+
   </div>
 </section>
 
+<!-- ACCOUNT -->
 <section id="account" class="page">
+
   <div class="card auth-card">
     <h2>Supabase Konto</h2>
-    <p class="muted">Registriere dich oder melde dich an, um deine Daten in der Cloud zu speichern.</p>
+    <p class="muted">Melde dich an, um deine Daten in der Cloud zu speichern.</p>
 
     <div id="logged-out">
       <div class="field">
         <label for="auth-email">E-Mail-Adresse</label>
         <input id="auth-email" type="email" autocomplete="email" placeholder="name@example.com">
       </div>
+
       <div class="field">
         <label for="auth-password">Passwort</label>
         <input id="auth-password" type="password" autocomplete="current-password" placeholder="Mindestens 6 Zeichen">
       </div>
+
       <div class="actions">
         <button class="primary" id="login-button">Anmelden</button>
         <button id="register-button">Registrieren</button>
       </div>
+
       <p class="status" id="auth-message" aria-live="polite"></p>
     </div>
 
-    <div id="logged-in" hidden>
-      <p>Angemeldet als:</p>
-      <strong id="account-email"></strong>
-      <p class="status online">Dein Konto ist verbunden.</p>
+    <div id="logged-in" class="hidden">
+      <p>Angemeldet als <strong id="account-email"></strong></p>
+
       <div class="actions">
         <button class="primary" id="sync-button">Jetzt synchronisieren</button>
         <button id="logout-button">Abmelden</button>
@@ -276,435 +948,496 @@ input[type=checkbox]{width:auto}
   </div>
 </section>
 
+<!-- HELP -->
 <section id="help" class="page">
   <div class="card">
-    <h2>Hilfe</h2>
-    <p class="muted">Deine Daten werden lokal und – nach der Anmeldung – in Supabase gespeichert.</p>
-    <button id="export-data">Daten exportieren</button>
+    <h2>Hilfe & Backup</h2>
+
+    <p class="muted">
+      Deine Daten werden lokal gespeichert und nach Anmeldung mit Supabase synchronisiert.
+    </p>
+
+    <div class="actions">
+      <button class="primary" id="export-data">Backup exportieren</button>
+      <button id="import-data">Backup importieren</button>
+      <input id="import-file" type="file" accept="application/json" hidden>
+    </div>
+
+    <p class="footer-note">
+      Für Cloud-Synchronisierung muss die Tabelle user_data mit passenden Row-Level-Security-Regeln eingerichtet sein.
+    </p>
   </div>
 </section>
+
 </main>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
 
-<!-- Supabase JavaScript Bibliothek -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-(function () {
+(function() {
 "use strict";
 
-/* ---------------------------------
-   SUPABASE PROJEKT-EINSTELLUNGEN
----------------------------------- */
+/* SUPABASE */
 
 const SUPABASE_URL = "https://exeqrwljcgicomzzepfx.supabase.co";
 const SUPABASE_KEY = "sb_publishable_XRXkXxqf9APa7fYIgHJA-w_pi02EULp";
 
-/* ---------------------------------
-   GRUNDLAGEN
----------------------------------- */
+/* BASIS */
 
 const $ = id => document.getElementById(id);
 
-function notify(message) {
-  const box = $("toast");
-  box.textContent = message;
-  box.style.display = "block";
-  setTimeout(() => box.style.display = "none", 3000);
-}
-
-function getData(key, fallback) {
+const read = (key,fallback) => {
   try {
-    const value = localStorage.getItem(key);
-    return value ? JSON.parse(value) : fallback;
+    return JSON.parse(localStorage.getItem(key)) ?? fallback;
   } catch {
     return fallback;
   }
-}
+};
 
-function saveLocal(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-}
+const write = (key,value) => {
+  localStorage.setItem(key,JSON.stringify(value));
+};
 
-let servers = getData("uc_servers", []);
-let profiles = getData("uc_profiles", []);
-let activity = getData("uc_activity", []);
+let servers = read("uc_servers",[]);
+let profiles = read("uc_profiles",[]);
+let activity = read("uc_activity",[]);
 
 let supabase = null;
 let currentUser = null;
 let syncTimer = null;
-let isApplyingCloudData = false;
+
+function toast(message) {
+  const box = $("toast");
+  box.textContent = message;
+  box.style.display = "block";
+  setTimeout(() => box.style.display = "none",2800);
+}
+
+/* NAVIGATION */
+
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => {
+    p.classList.toggle("active",p.id === id);
+  });
+
+  document.querySelectorAll("[data-page]").forEach(b => {
+    b.classList.toggle("active",b.dataset.page === id);
+  });
+
+  const button = document.querySelector('[data-page="' + id + '"]');
+  $("heading").textContent = button?.dataset.title || id;
+  $("breadcrumb").textContent = $("heading").textContent;
+}
+
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click",() => showPage(button.dataset.page));
+});
+
+document.querySelectorAll("[data-go]").forEach(button => {
+  button.addEventListener("click",() => showPage(button.dataset.go));
+});
+
+/* AKTIVITÄT */
+
+function renderActivity() {
+  const el = $("activity");
+  el.replaceChildren();
+
+  if (!activity.length) {
+    el.textContent = "Noch keine Aktivität.";
+    el.className = "empty";
+    return;
+  }
+
+  el.className = "";
+
+  activity.forEach(entry => {
+    const row = document.createElement("div");
+    row.className = "activity-row";
+
+    const dot = document.createElement("span");
+    dot.className = "activity-dot";
+
+    const text = document.createElement("span");
+    text.textContent = entry;
+
+    row.append(dot,text);
+    el.append(row);
+  });
+}
+
+function log(message) {
+  activity.unshift(new Date().toLocaleString("de-DE") + " · " + message);
+  activity = activity.slice(0,8);
+
+  write("uc_activity",activity);
+  renderActivity();
+  queueCloudSync();
+}
+
+/* SERVER */
+
+function renderServers() {
+  const el = $("server-list");
+  el.replaceChildren();
+
+  if (!servers.length) {
+    el.textContent = "Noch keine Server gespeichert.";
+    el.className = "empty";
+    return;
+  }
+
+  el.className = "";
+
+  servers.forEach((server,index) => {
+    const row = document.createElement("div");
+    row.className = "item";
+
+    const main = document.createElement("div");
+    main.className = "item-main";
+
+    const icon = document.createElement("span");
+    icon.className = "item-icon";
+    icon.innerHTML = '<svg><use href="#i-server"></use></svg>';
+
+    const info = document.createElement("span");
+
+    const name = document.createElement("strong");
+    name.textContent = server.name;
+
+    const details = document.createElement("small");
+    details.textContent =
+      (server.edition || "Bedrock") + " · " +
+      server.address + ":" + server.port;
+
+    info.append(name,details);
+    main.append(icon,info);
+
+    const actions = document.createElement("div");
+    actions.className = "item-actions";
+
+    const remove = document.createElement("button");
+    remove.className = "danger";
+    remove.innerHTML = '<svg width="17" height="17"><use href="#i-trash"></use></svg>';
+    remove.setAttribute("aria-label","Server entfernen");
+
+    remove.onclick = () => {
+      servers.splice(index,1);
+      write("uc_servers",servers);
+      render();
+      log("Server entfernt: " + server.name);
+    };
+
+    actions.append(remove);
+    row.append(main,actions);
+    el.append(row);
+  });
+}
+
+/* PROFILE */
+
+function renderProfiles() {
+  const el = $("profile-list");
+  el.replaceChildren();
+
+  if (!profiles.length) {
+    el.textContent = "Noch keine Profile gespeichert.";
+    el.className = "empty";
+    return;
+  }
+
+  el.className = "";
+
+  profiles.forEach((profile,index) => {
+    const row = document.createElement("div");
+    row.className = "item";
+
+    const nameText =
+      typeof profile === "string" ? profile : profile.name;
+
+    const edition =
+      typeof profile === "string" ? "Minecraft-Profil" :
+      (profile.edition || "Java") + " · Spielerprofil";
+
+    const main = document.createElement("div");
+    main.className = "item-main";
+
+    const icon = document.createElement("span");
+    icon.className = "item-icon";
+    icon.innerHTML = '<svg><use href="#i-user"></use></svg>';
+
+    const info = document.createElement("span");
+    const name = document.createElement("strong");
+    name.textContent = nameText;
+
+    const details = document.createElement("small");
+    details.textContent = edition;
+
+    info.append(name,details);
+    main.append(icon,info);
+
+    const actions = document.createElement("div");
+    actions.className = "item-actions";
+
+    const edit = document.createElement("button");
+    edit.innerHTML = '<svg width="17" height="17"><use href="#i-edit"></use></svg>';
+    edit.setAttribute("aria-label","Profil bearbeiten");
+
+    edit.onclick = () => {
+      const newName = prompt("Profilname:",nameText);
+
+      if (!newName?.trim()) return;
+
+      profiles[index] = typeof profile === "string"
+        ? newName.trim()
+        : {...profile,name:newName.trim()};
+
+      write("uc_profiles",profiles);
+      render();
+      queueCloudSync();
+    };
+
+    const remove = document.createElement("button");
+    remove.className = "danger";
+    remove.innerHTML = '<svg width="17" height="17"><use href="#i-trash"></use></svg>';
+    remove.setAttribute("aria-label","Profil löschen");
+
+    remove.onclick = () => {
+      if (!confirm("Dieses Profil wirklich löschen?")) return;
+
+      profiles.splice(index,1);
+      write("uc_profiles",profiles);
+      render();
+      log("Profil gelöscht");
+    };
+
+    actions.append(edit,remove);
+    row.append(main,actions);
+    el.append(row);
+  });
+}
+
+/* ALLES RENDERN */
+
+function render() {
+  $("server-count").textContent = servers.length;
+  $("profile-count").textContent = profiles.length;
+
+  renderServers();
+  renderProfiles();
+  renderActivity();
+}
+
+/* SERVER HINZUFÜGEN */
+
+$("add-server").addEventListener("click",() => {
+  const name = $("server-name").value.trim();
+  const address = $("server-address").value.trim();
+  const port = Number($("server-port").value);
+  const edition = $("server-edition").value;
+
+  if (!name || !address ||
+      !Number.isInteger(port) ||
+      port < 1 || port > 65535) {
+    toast("Bitte Serverdaten korrekt eingeben.");
+    return;
+  }
+
+  servers.push({name,address,port,edition});
+  write("uc_servers",servers);
+
+  $("server-name").value = "";
+  $("server-address").value = "";
+
+  render();
+  log("Server hinzugefügt: " + name);
+  toast("Server gespeichert!");
+});
+
+/* PROFILE HINZUFÜGEN */
+
+$("save-profile").addEventListener("click",() => {
+  const name = $("player-name").value.trim();
+  const edition = $("player-edition").value;
+
+  if (!name) {
+    toast("Bitte Spielernamen eingeben.");
+    return;
+  }
+
+  profiles.push({name,edition});
+  write("uc_profiles",profiles);
+
+  $("player-name").value = "";
+
+  render();
+  log("Profil hinzugefügt: " + name);
+  toast("Profil gespeichert!");
+});
+
+/* GAMES */
+
+$("minecraft").addEventListener("click",() => {
+  window.location.href = "minecraft://";
+});
+
+/* DESIGN */
+
+const colorIds = [
+  "bg-color",
+  "side-color",
+  "card-color",
+  "accent-color",
+  "text-color",
+  "border-color"
+];
+
+const cssVars = [
+  "--bg",
+  "--side",
+  "--panel",
+  "--accent",
+  "--text",
+  "--border"
+];
 
 const presets = {
-  cyber:["#080b16","#0d1224","#111a30","#00e5ff","#eaf2ff","#263653"],
+  cyber:["#060b18","#091329","#0c1930","#08cfff","#edf6ff","#1b3b62"],
   blue:["#071426","#0b1e35","#102844","#3b82f6","#eaf5ff","#244766"],
   green:["#030b06","#06140b","#0b1d11","#39ff14","#e2ffe7","#1d5730"],
   pink:["#170d24","#211032","#2b1640","#ff4fd8","#fff0ff","#56336f"],
   sunset:["#1b1020","#241329","#321a2b","#ff7a45","#fff0e9","#63364e"]
 };
 
-const colorIds = [
-  "bg-color","side-color","card-color",
-  "accent-color","text-color","border-color"
-];
-
-function setCloudStatus(message, online) {
-  $("cloud-status").textContent = "Cloud: " + message;
-  $("cloud-status").className = "status " + (online ? "online" : "offline");
-}
-
-/* ---------------------------------
-   DESIGN
----------------------------------- */
-
-function applyColors() {
-  const vars = ["--bg","--side","--card","--accent","--text","--border"];
+function applyDesign() {
   colorIds.forEach((id,index) => {
-    document.documentElement.style.setProperty(vars[index], $(id).value);
+    document.documentElement.style.setProperty(
+      cssVars[index],
+      $(id).value
+    );
   });
+
+  document.documentElement.style.setProperty(
+    "--radius",
+    $("radius").value + "px"
+  );
+
+  document.body.style.fontSize = $("font-size").value + "px";
+  document.body.style.fontFamily = $("font-family").value;
+
+  document.body.classList.toggle("no-glow",!$("glow").checked);
+  document.body.classList.toggle("compact",$("compact").checked);
 }
 
 function saveDesign() {
   const design = {};
+
   colorIds.forEach(id => design[id] = $(id).value);
+
   design.radius = $("radius").value;
   design.fontSize = $("font-size").value;
   design.fontFamily = $("font-family").value;
   design.glow = $("glow").checked;
   design.compact = $("compact").checked;
 
-  saveLocal("uc_design", design);
+  write("uc_design",design);
   queueCloudSync();
-  notify("Design gespeichert!");
-}
-
-function updateDesign() {
-  applyColors();
-  document.documentElement.style.setProperty("--radius", $("radius").value + "px");
-  document.body.style.fontSize = $("font-size").value + "px";
-  document.body.style.fontFamily = $("font-family").value;
-  document.body.classList.toggle("no-glow", !$("glow").checked);
-  document.body.classList.toggle("compact", $("compact").checked);
+  toast("Design gespeichert!");
 }
 
 function loadDesign() {
-  const design = getData("uc_design", null);
+  const design = read("uc_design",null);
+
   if (design) {
-    colorIds.forEach(id => {
-      if (design[id]) $(id).value = design[id];
+    Object.entries(design).forEach(([id,value]) => {
+      if (!$(id)) return;
+
+      if ($(id).type === "checkbox") {
+        $(id).checked = !!value;
+      } else {
+        $(id).value = value;
+      }
     });
-    if (design.radius !== undefined) $("radius").value = design.radius;
-    if (design.fontSize !== undefined) $("font-size").value = design.fontSize;
-    if (design.fontFamily) $("font-family").value = design.fontFamily;
-    $("glow").checked = design.glow !== false;
-    $("compact").checked = !!design.compact;
   }
-  updateDesign();
+
+  applyDesign();
 }
-
-function resetDesign() {
-  colorIds.forEach((id,index) => $(id).value = presets.cyber[index]);
-  $("radius").value = 14;
-  $("font-size").value = 15;
-  $("font-family").value = "Arial,sans-serif";
-  $("glow").checked = true;
-  $("compact").checked = false;
-  updateDesign();
-  saveDesign();
-  notify("Design zurückgesetzt!");
-}
-
-/* ---------------------------------
-   NAVIGATION
----------------------------------- */
-
-function showPage(id) {
-  document.querySelectorAll(".page").forEach(page => {
-    page.classList.toggle("active", page.id === id);
-  });
-
-  document.querySelectorAll("[data-page]").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === id);
-  });
-
-  const button = document.querySelector('[data-page="' + id + '"]');
-  $("heading").textContent = button ? button.textContent.trim() : id;
-  $("breadcrumb").textContent = $("heading").textContent;
-}
-
-document.querySelectorAll("[data-page]").forEach(button => {
-  button.addEventListener("click", () => showPage(button.dataset.page));
-});
-
-document.querySelectorAll("[data-go]").forEach(button => {
-  button.addEventListener("click", () => showPage(button.dataset.go));
-});
-
-/* ---------------------------------
-   LOKALE DATEN UND ANZEIGE
----------------------------------- */
-
-function render() {
-  $("server-count").textContent = servers.length;
-  $("profile-count").textContent = profiles.length;
-
-  $("server-list").replaceChildren();
-
-  if (!servers.length) {
-    $("server-list").textContent = "Keine Server vorhanden.";
-  }
-
-  servers.forEach((server,index) => {
-    const row = document.createElement("div");
-    row.className = "item";
-
-    const info = document.createElement("span");
-    info.textContent = server.name + " – " + server.address + ":" + server.port;
-
-    const remove = document.createElement("button");
-    remove.textContent = "Entfernen";
-    remove.addEventListener("click", () => {
-      servers.splice(index,1);
-      saveLocal("uc_servers",servers);
-      render();
-      queueCloudSync();
-      log("Server entfernt: " + server.name);
-    });
-
-    row.append(info,remove);
-    $("server-list").append(row);
-  });
-
-  $("profile-list").replaceChildren();
-
-  if (!profiles.length) {
-    $("profile-list").textContent = "Keine Profile vorhanden.";
-  }
-
-  profiles.forEach(profile => {
-    const row = document.createElement("div");
-    row.className = "item";
-    row.textContent = profile;
-    $("profile-list").append(row);
-  });
-
-  $("activity").replaceChildren();
-
-  if (!activity.length) {
-    $("activity").textContent = "Noch keine Aktivität.";
-  }
-
-  activity.forEach(entry => {
-    const row = document.createElement("div");
-    row.className = "item";
-    row.textContent = entry;
-    $("activity").append(row);
-  });
-}
-
-function log(message) {
-  activity.unshift(new Date().toLocaleString("de-DE") + " – " + message);
-  activity = activity.slice(0,10);
-  saveLocal("uc_activity",activity);
-  render();
-  queueCloudSync();
-}
-
-/* ---------------------------------
-   SERVER UND PROFILE
----------------------------------- */
-
-$("add-server").addEventListener("click", () => {
-  const name = $("server-name").value.trim();
-  const address = $("server-address").value.trim();
-  const port = Number($("server-port").value);
-
-  if (!name || !address || !Number.isInteger(port) || port < 1 || port > 65535) {
-    notify("Bitte Serverdaten korrekt eingeben.");
-    return;
-  }
-
-  servers.push({name,address,port});
-  saveLocal("uc_servers",servers);
-  $("server-name").value = "";
-  $("server-address").value = "";
-  render();
-  log("Server hinzugefügt: " + name);
-  notify("Server gespeichert!");
-});
-
-$("save-profile").addEventListener("click", () => {
-  const name = $("player-name").value.trim();
-  if (!name) {
-    notify("Bitte Spielernamen eingeben.");
-    return;
-  }
-
-  profiles.push(name);
-  saveLocal("uc_profiles",profiles);
-  $("player-name").value = "";
-  render();
-  log("Profil gespeichert: " + name);
-  notify("Profil gespeichert!");
-});
-
-/* ---------------------------------
-   DESIGN-EVENTS
----------------------------------- */
 
 document.querySelectorAll("[data-preset]").forEach(button => {
-  button.addEventListener("click", () => {
+  button.addEventListener("click",() => {
     const values = presets[button.dataset.preset];
-    colorIds.forEach((id,index) => $(id).value = values[index]);
-    updateDesign();
+
+    colorIds.forEach((id,index) => {
+      $(id).value = values[index];
+    });
+
+    applyDesign();
     saveDesign();
-    notify("Vorlage angewendet!");
   });
 });
 
-colorIds.forEach(id => $(id).addEventListener("input", updateDesign));
-
-["radius","font-size","font-family","glow","compact"].forEach(id => {
-  $(id).addEventListener("input", updateDesign);
-  $(id).addEventListener("change", updateDesign);
+[
+  ...colorIds,
+  "radius",
+  "font-size",
+  "font-family",
+  "glow",
+  "compact"
+].forEach(id => {
+  $(id).addEventListener("input",applyDesign);
 });
 
-$("save-design").addEventListener("click", saveDesign);
-$("reset-design").addEventListener("click", resetDesign);
+$("save-design").onclick = saveDesign;
 
-$("minecraft").addEventListener("click", () => {
-  window.location.href = "minecraft://";
-});
-
-/* ---------------------------------
-   SUPABASE VERBINDUNG
----------------------------------- */
-
-function initSupabase() {
-  if (!window.supabase || !window.supabase.createClient) {
-    setCloudStatus("Supabase-Bibliothek konnte nicht geladen werden", false);
-    $("auth-message").textContent = "Bitte Internetverbindung prüfen und Seite neu laden.";
-    return;
-  }
-
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  supabase.auth.onAuthStateChange((event, session) => {
-    setTimeout(() => handleSession(session), 0);
+$("reset-design").onclick = () => {
+  presets.cyber.forEach((value,index) => {
+    $(colorIds[index]).value = value;
   });
 
-  supabase.auth.getSession().then(({data,error}) => {
-    if (error) {
-      setCloudStatus("Anmeldung konnte nicht geprüft werden", false);
-      return;
-    }
-    handleSession(data.session);
-  });
+  $("radius").value = 17;
+  $("font-size").value = 15;
+  $("font-family").value = "Inter,system-ui,Arial,sans-serif";
+  $("glow").checked = true;
+  $("compact").checked = false;
+
+  applyDesign();
+  saveDesign();
+};
+
+/* CLOUD STATUS */
+
+function cloudStatus(message,online) {
+  $("cloud-status").textContent = "Cloud: " + message;
+  $("cloud-status").classList.toggle("online",!!online);
 }
 
-async function handleSession(session) {
-  const newUser = session?.user || null;
-  const oldUserId = currentUser?.id || null;
-  const newUserId = newUser?.id || null;
+/* CLOUD SYNCHRONISIERUNG */
 
-  currentUser = newUser;
+function queueCloudSync() {
+  if (!currentUser) return;
 
-  $("logged-out").hidden = !!currentUser;
-  $("logged-in").hidden = !currentUser;
+  clearTimeout(syncTimer);
 
-  if (currentUser) {
-    $("account-email").textContent = currentUser.email || "Angemeldet";
-    setCloudStatus("angemeldet als " + (currentUser.email || "Benutzer"), true);
-
-    if (oldUserId !== newUserId) {
-      await loadCloudData();
-    }
-  } else {
-    setCloudStatus("nicht angemeldet", false);
-  }
+  syncTimer = setTimeout(() => {
+    syncCloud();
+  },900);
 }
 
-/* ---------------------------------
-   CLOUD DATEN LADEN
----------------------------------- */
-
-async function loadCloudData() {
+async function syncCloud() {
   if (!supabase || !currentUser) return;
 
-  $("sync-info").textContent = "Lade Daten aus der Cloud …";
+  $("sync-info").textContent = "Synchronisiere …";
 
-  const {data,error} = await supabase
-    .from("user_data")
-    .select("data_type,data")
-    .eq("user_id",currentUser.id);
-
-  if (error) {
-    $("sync-info").textContent = "Fehler beim Laden: " + error.message;
-    notify("Cloud-Laden fehlgeschlagen.");
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    $("sync-info").textContent = "Noch keine Cloud-Daten. Lokale Daten werden hochgeladen.";
-    await syncToCloud();
-    return;
-  }
-
-  isApplyingCloudData = true;
-
-  for (const row of data) {
-    switch (row.data_type) {
-      case "servers":
-        servers = Array.isArray(row.data) ? row.data : [];
-        saveLocal("uc_servers",servers);
-        break;
-
-      case "profiles":
-        profiles = Array.isArray(row.data) ? row.data : [];
-        saveLocal("uc_profiles",profiles);
-        break;
-
-      case "activity":
-        activity = Array.isArray(row.data) ? row.data : [];
-        saveLocal("uc_activity",activity);
-        break;
-
-      case "settings":
-      case "theme":
-        if (row.data && typeof row.data === "object") {
-          saveLocal("uc_design",row.data);
-        }
-        break;
-    }
-  }
-
-  loadDesign();
-  render();
-  isApplyingCloudData = false;
-
-  $("sync-info").textContent = "Cloud-Daten erfolgreich geladen.";
-  notify("Cloud-Daten geladen!");
-}
-
-/* ---------------------------------
-   CLOUD DATEN SPEICHERN
----------------------------------- */
-
-async function syncToCloud() {
-  if (!supabase || !currentUser || isApplyingCloudData) return;
-
-  $("sync-info").textContent = "Synchronisiere Daten …";
-
-  const design = getData("uc_design",{});
+  const design = read("uc_design",{});
 
   const records = [
     {user_id:currentUser.id,data_type:"servers",data:servers},
     {user_id:currentUser.id,data_type:"profiles",data:profiles},
     {user_id:currentUser.id,data_type:"activity",data:activity},
-    {user_id:currentUser.id,data_type:"settings",data:design},
-    {user_id:currentUser.id,data_type:"theme",data:design}
+    {user_id:currentUser.id,data_type:"settings",data:design}
   ];
 
   const {error} = await supabase
@@ -712,31 +1445,119 @@ async function syncToCloud() {
     .upsert(records,{onConflict:"user_id,data_type"});
 
   if (error) {
-    $("sync-info").textContent = "Synchronisierung fehlgeschlagen: " + error.message;
-    notify("Cloud-Fehler: " + error.message);
+    $("sync-info").textContent =
+      "Synchronisierung fehlgeschlagen: " + error.message;
     return;
   }
 
-  $("sync-info").textContent = "Zuletzt synchronisiert: " + new Date().toLocaleString("de-DE");
-  setCloudStatus("synchronisiert",true);
+  $("sync-info").textContent =
+    "Zuletzt synchronisiert: " +
+    new Date().toLocaleString("de-DE");
+
+  cloudStatus("synchronisiert",true);
 }
 
-function queueCloudSync() {
-  if (!currentUser || isApplyingCloudData) return;
+async function loadCloud() {
+  if (!supabase || !currentUser) return;
 
-  clearTimeout(syncTimer);
-  syncTimer = setTimeout(() => {
-    syncToCloud();
-  },1000);
+  $("sync-info").textContent = "Lade Cloud-Daten …";
+
+  const {data,error} = await supabase
+    .from("user_data")
+    .select("data_type,data")
+    .eq("user_id",currentUser.id);
+
+  if (error) {
+    $("sync-info").textContent = "Fehler: " + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    await syncCloud();
+    return;
+  }
+
+  data.forEach(row => {
+    switch(row.data_type) {
+      case "servers":
+        servers = Array.isArray(row.data) ? row.data : [];
+        write("uc_servers",servers);
+        break;
+
+      case "profiles":
+        profiles = Array.isArray(row.data) ? row.data : [];
+        write("uc_profiles",profiles);
+        break;
+
+      case "activity":
+        activity = Array.isArray(row.data) ? row.data : [];
+        write("uc_activity",activity);
+        break;
+
+      case "settings":
+      case "theme":
+        if (row.data && typeof row.data === "object") {
+          write("uc_design",row.data);
+        }
+        break;
+    }
+  });
+
+  loadDesign();
+  render();
+
+  $("sync-info").textContent = "Cloud-Daten geladen.";
 }
 
-/* ---------------------------------
-   REGISTRIERUNG UND LOGIN
----------------------------------- */
+async function sessionChanged(session) {
+  currentUser = session?.user || null;
 
-$("register-button").addEventListener("click", async () => {
+  $("logged-out").classList.toggle("hidden",!!currentUser);
+  $("logged-in").classList.toggle("hidden",!currentUser);
+
+  if (currentUser) {
+    $("account-email").textContent =
+      currentUser.email || "Angemeldet";
+
+    cloudStatus("angemeldet",true);
+    await loadCloud();
+  } else {
+    cloudStatus("nicht angemeldet",false);
+  }
+}
+
+function initCloud() {
+  if (!window.supabase?.createClient) {
+    cloudStatus("Bibliothek nicht geladen",false);
+    $("auth-message").textContent =
+      "Internetverbindung prüfen und Seite neu laden.";
+    return;
+  }
+
+  supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  supabase.auth.onAuthStateChange((event,session) => {
+    setTimeout(() => sessionChanged(session),0);
+  });
+
+  supabase.auth.getSession().then(({data,error}) => {
+    if (error) {
+      cloudStatus("Anmeldung nicht verfügbar",false);
+      return;
+    }
+
+    sessionChanged(data.session);
+  });
+}
+
+/* REGISTRIERUNG */
+
+$("register-button").onclick = async () => {
   if (!supabase) {
-    notify("Supabase ist noch nicht verbunden.");
+    toast("Supabase ist nicht verbunden.");
     return;
   }
 
@@ -744,7 +1565,8 @@ $("register-button").addEventListener("click", async () => {
   const password = $("auth-password").value;
 
   if (!email || password.length < 6) {
-    $("auth-message").textContent = "Bitte E-Mail und ein Passwort mit mindestens 6 Zeichen eingeben.";
+    $("auth-message").textContent =
+      "Bitte E-Mail und Passwort mit mindestens 6 Zeichen eingeben.";
     return;
   }
 
@@ -763,16 +1585,16 @@ $("register-button").addEventListener("click", async () => {
     return;
   }
 
-  if (data.session) {
-    $("auth-message").textContent = "Registrierung erfolgreich!";
-  } else {
-    $("auth-message").textContent = "Registrierung erfolgreich. Bitte bestätige deine E-Mail und melde dich danach an.";
-  }
-});
+  $("auth-message").textContent = data.session
+    ? "Registrierung erfolgreich!"
+    : "Bitte bestätige deine E-Mail-Adresse.";
+};
 
-$("login-button").addEventListener("click", async () => {
+/* LOGIN */
+
+$("login-button").onclick = async () => {
   if (!supabase) {
-    notify("Supabase ist noch nicht verbunden.");
+    toast("Supabase ist nicht verbunden.");
     return;
   }
 
@@ -780,12 +1602,12 @@ $("login-button").addEventListener("click", async () => {
   const password = $("auth-password").value;
 
   if (!email || !password) {
-    $("auth-message").textContent = "Bitte E-Mail und Passwort eingeben.";
+    $("auth-message").textContent =
+      "Bitte E-Mail und Passwort eingeben.";
     return;
   }
 
   $("login-button").disabled = true;
-  $("auth-message").textContent = "Anmeldung läuft …";
 
   const {error} = await supabase.auth.signInWithPassword({
     email,
@@ -794,64 +1616,101 @@ $("login-button").addEventListener("click", async () => {
 
   $("login-button").disabled = false;
 
-  if (error) {
-    $("auth-message").textContent = error.message;
-    return;
-  }
+  $("auth-message").textContent = error
+    ? error.message
+    : "Anmeldung erfolgreich!";
+};
 
-  $("auth-message").textContent = "Erfolgreich angemeldet!";
-  notify("Willkommen zurück!");
-});
+/* LOGOUT */
 
-$("logout-button").addEventListener("click", async () => {
+$("logout-button").onclick = async () => {
   if (!supabase) return;
 
   const {error} = await supabase.auth.signOut();
 
   if (error) {
-    notify("Abmelden fehlgeschlagen: " + error.message);
+    toast("Abmelden fehlgeschlagen: " + error.message);
     return;
   }
 
   currentUser = null;
   $("sync-info").textContent = "Abgemeldet.";
-  notify("Du wurdest abgemeldet.");
-});
+  toast("Du wurdest abgemeldet.");
+};
 
-$("sync-button").addEventListener("click", syncToCloud);
+$("sync-button").onclick = syncCloud;
 
-/* ---------------------------------
-   DATEN EXPORTIEREN
----------------------------------- */
+/* BACKUP EXPORT */
 
-$("export-data").addEventListener("click", () => {
+$("export-data").onclick = () => {
   const data = {
     servers,
     profiles,
     activity,
-    design:getData("uc_design",{})
+    design:read("uc_design",{})
   };
 
-  const file = new Blob(
+  const blob = new Blob(
     [JSON.stringify(data,null,2)],
     {type:"application/json"}
   );
 
-  const url = URL.createObjectURL(file);
+  const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
+
   link.href = url;
   link.download = "universalclient-backup.json";
   link.click();
-  setTimeout(() => URL.revokeObjectURL(url),1000);
-});
 
-/* ---------------------------------
-   START
----------------------------------- */
+  URL.revokeObjectURL(url);
+};
+
+/* BACKUP IMPORT */
+
+$("import-data").onclick = () => {
+  $("import-file").click();
+};
+
+$("import-file").onchange = async event => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  try {
+    const data = JSON.parse(await file.text());
+
+    if (!confirm("Backup importieren und lokale Daten ersetzen?")) {
+      return;
+    }
+
+    servers = Array.isArray(data.servers) ? data.servers : [];
+    profiles = Array.isArray(data.profiles) ? data.profiles : [];
+    activity = Array.isArray(data.activity) ? data.activity : [];
+
+    write("uc_servers",servers);
+    write("uc_profiles",profiles);
+    write("uc_activity",activity);
+
+    if (data.design) {
+      write("uc_design",data.design);
+    }
+
+    loadDesign();
+    render();
+    queueCloudSync();
+
+    toast("Backup importiert!");
+  } catch {
+    toast("Die Backup-Datei ist ungültig.");
+  }
+
+  event.target.value = "";
+};
+
+/* START */
 
 loadDesign();
 render();
-initSupabase();
+initCloud();
 
 })();
 </script>
