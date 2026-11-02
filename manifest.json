@@ -1,0 +1,19 @@
+
+{
+  "id": "./",
+  "name": "UniversalClient",
+  "short_name": "UC",
+  "description": "Your Minecraft Gaming Hub",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080d18",
+  "theme_color": "#080d18",
+  "icons": [
+    {
+      "src": "./apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
