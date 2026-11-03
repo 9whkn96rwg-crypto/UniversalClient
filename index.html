@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -250,8 +249,8 @@ input[type=range]{padding:0;accent-color:var(--accent)}
   <div class="hero">
     <div class="hero-copy">
       <div class="eyebrow">DEIN GAMING HUB</div>
-      <h1>Willkommen bei<br>UniversalClient.</h1>
-      <p>Profile, Server und dein Setup – alles an einem Ort.</p>
+      <h1 id="welcome-heading">Willkommen bei UniversalClient!</h1>
+      <p id="welcome-subtitle">Profile, Server und dein Setup – alles an einem Ort.</p>
       <div class="actions" style="margin-top:18px">
         <button class="primary" data-go="profile">Profile verwalten</button>
         <button data-go="servers">Server öffnen</button>
@@ -477,6 +476,41 @@ let activity=read("uc_activity",[]);
 let supabase=null,currentUser=null,isDeveloper=false,syncTimer=null;
 let ownFriendProfile=null;
 let friendRefreshSequence=0;
+
+/* PERSÖNLICHE BEGRÜSSUNG */
+function updateGreeting(){
+  const heading=$("welcome-heading");
+  const subtitle=$("welcome-subtitle");
+
+  if(!heading||!subtitle)return;
+
+  const hour=new Date().getHours();
+  let greeting;
+
+  if(hour>=5&&hour<11){
+    greeting="Guten Morgen";
+  }else if(hour>=11&&hour<18){
+    greeting="Guten Tag";
+  }else{
+    greeting="Guten Abend";
+  }
+
+  if(!currentUser){
+    heading.textContent="Willkommen bei UniversalClient!";
+    subtitle.textContent="Melde dich an und entdecke deinen Gaming Hub.";
+    return;
+  }
+
+  const username=ownFriendProfile?.username;
+
+  if(username){
+    heading.textContent=greeting+", "+username+"! 👋";
+  }else{
+    heading.textContent=greeting+"! 👋";
+  }
+
+  subtitle.textContent="Schön, dass du wieder da bist.";
+}
 
 function toast(message){
   const box=$("toast");box.textContent=message;box.style.display="block";
@@ -844,6 +878,7 @@ async function loadOwnFriendProfile(){
   if(!supabase||!currentUser){
     ownFriendProfile=null;
     setFriendsVisibility();
+    updateGreeting();
     return;
   }
 
@@ -862,6 +897,7 @@ async function loadOwnFriendProfile(){
 
   ownFriendProfile=data||null;
   setFriendsVisibility();
+  updateGreeting();
 
   if(ownFriendProfile?.username){
     friendMessage("friend-profile-status","");
@@ -912,6 +948,7 @@ async function saveFriendUsername(inputId,statusId){
 
   friendMessage(statusId,"Benutzername erfolgreich gespeichert.");
   setFriendsVisibility();
+  updateGreeting();
   toast("Benutzername gespeichert.");
   await refreshFriends();
 }
@@ -1136,6 +1173,7 @@ async function sessionChanged(session){
   $("logged-out").classList.toggle("hidden",!!currentUser);
   $("logged-in").classList.toggle("hidden",!currentUser);
   setFriendsVisibility();
+  updateGreeting();
 
   if(currentUser){
     $("account-email").textContent=currentUser.email||"Angemeldet";
@@ -1145,6 +1183,7 @@ async function sessionChanged(session){
   }else{
     cloudStatus("nicht angemeldet",false);
     $("sync-info").textContent="Nicht angemeldet.";
+    updateGreeting();
   }
 
   await checkDeveloper();
@@ -1209,6 +1248,7 @@ $("logout-button").onclick=async()=>{
   $("sync-info").textContent="Abgemeldet.";
   $("developer-nav").classList.add("hidden");
   setFriendsVisibility();
+  updateGreeting();
   showPage("dashboard");
   toast("Du wurdest abgemeldet.");
 };
@@ -1243,6 +1283,7 @@ $("import-file").onchange=async event=>{
 loadDesign();
 render();
 setFriendsVisibility();
+updateGreeting();
 initCloud();
 
 })();
