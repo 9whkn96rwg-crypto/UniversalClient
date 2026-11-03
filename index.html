@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -158,6 +159,20 @@ input[type=range]{padding:0;accent-color:var(--accent)}
 .news-body{white-space:pre-wrap;overflow-wrap:anywhere;color:#c5d6e9}
 .news-status{font-size:11px;padding:4px 8px;border-radius:20px;background:#263c58;color:#c6d9ef}
 .news-status.published{background:#104c3b;color:#8df0c4}
+
+/* FREUNDE */
+.friend-result{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;padding:12px 0;border-bottom:1px solid #1b3553
+}
+.friend-result:last-child{border-bottom:0}
+.friend-result strong{display:block;overflow-wrap:anywhere}
+.friend-result small{color:var(--muted)}
+.friend-result-info{min-width:0}
+.friend-result-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.friend-result-actions button{padding:7px 10px;font-size:12px}
+.friend-count{font-size:12px;color:var(--muted);margin-bottom:10px}
+
 @media(max-width:850px){
   .layout{grid-template-columns:1fr}
   .sidebar{height:auto;position:relative;padding:12px}
@@ -178,6 +193,9 @@ input[type=range]{padding:0;accent-color:var(--accent)}
   .item{align-items:flex-start;flex-direction:column}
   .item-actions{width:100%}
   .item-actions button{flex:1}
+  .friend-result{align-items:flex-start;flex-direction:column}
+  .friend-result-actions{width:100%;justify-content:flex-start}
+  .friend-result-actions button{flex:1}
 }
 </style>
 </head>
@@ -192,8 +210,6 @@ input[type=range]{padding:0;accent-color:var(--accent)}
 <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M19 13.5l1.2 1-1.6 2.7-1.5-.5a7 7 0 0 1-1.5.9l-.3 1.6h-3.2l-.3-1.6a7 7 0 0 1-1.5-.9l-1.5.5-1.6-2.7 1.2-1a7 7 0 0 1 0-3l-1.2-1 1.6-2.7 1.5.5a7 7 0 0 1 1.5-.9l.3-1.6h3.2l.3 1.6a7 7 0 0 1 1.5.9l1.5-.5 1.6 2.7-1.2 1a7 7 0 0 1 0 3Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
 <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18h11a4 4 0 0 0 .5-8A6.5 6.5 0 0 0 6 8.5 4.8 4.8 0 0 0 7 18Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 17v-7m-3 3 3-3 3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9.5 9a2.6 2.6 0 1 1 4.5 1.8c-1.3 1.2-2 1.5-2 3M12 17.5h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
-<symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 16.5-.8 4.3 4.3-.8L20 7.5 16.5 4 4 16.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m14.8 5.7 3.5 3.5" stroke="currentColor" stroke-width="1.8"/></symbol>
-<symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3m3 0-1 14H7L6 7m3 3v7m6-7v7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
 <symbol id="i-minecraft" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m3.5 7.5 8.5 5 8.5-5M12 12.5V22" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
 </svg>
@@ -215,6 +231,7 @@ input[type=range]{padding:0;accent-color:var(--accent)}
     <button data-page="servers" data-title="Server"><svg class="ico"><use href="#i-server"/></svg>Server</button>
     <button data-page="news" data-title="News"><svg class="ico"><use href="#i-news"/></svg>News</button>
     <button data-page="profile" data-title="Profile"><svg class="ico"><use href="#i-user"/></svg>Profile</button>
+    <button data-page="friends" data-title="Freunde"><svg class="ico"><use href="#i-user"/></svg>Freunde</button>
     <button data-page="design" data-title="Design"><svg class="ico"><use href="#i-settings"/></svg>Design</button>
     <button data-page="account" data-title="Konto / Cloud"><svg class="ico"><use href="#i-cloud"/></svg>Konto / Cloud</button>
     <button data-page="help" data-title="Hilfe"><svg class="ico"><use href="#i-help"/></svg>Hilfe</button>
@@ -257,6 +274,7 @@ input[type=range]{padding:0;accent-color:var(--accent)}
       <div class="item"><div class="item-main"><span class="item-icon"><svg><use href="#i-server"/></svg></span><strong>Server verwalten</strong></div><button data-go="servers">Öffnen</button></div>
       <div class="item"><div class="item-main"><span class="item-icon"><svg><use href="#i-settings"/></svg></span><strong>Design anpassen</strong></div><button data-go="design">Öffnen</button></div>
       <div class="item"><div class="item-main"><span class="item-icon"><svg><use href="#i-cloud"/></svg></span><strong>Cloud verbinden</strong></div><button data-go="account">Öffnen</button></div>
+      <div class="item"><div class="item-main"><span class="item-icon"><svg><use href="#i-user"/></svg></span><strong>Freunde</strong></div><button data-go="friends">Öffnen</button></div>
     </div>
   </div>
 </section>
@@ -296,6 +314,66 @@ input[type=range]{padding:0;accent-color:var(--accent)}
       <button class="primary" id="save-profile">Profil speichern</button>
     </div>
     <div class="card"><h2>Meine Profile</h2><div id="profile-list"></div></div>
+  </div>
+</section>
+
+<!-- FREUNDE -->
+<section id="friends" class="page">
+  <div id="friends-login-notice" class="card hidden">
+    <h2>Anmeldung erforderlich</h2>
+    <p class="muted">Melde dich mit deinem UniversalClient-Konto an, um Freunde zu suchen und Anfragen zu verwalten.</p>
+    <button class="primary" data-go="account">Zum Konto</button>
+  </div>
+
+  <div id="friends-setup" class="card hidden">
+    <h2>Dein Spielername</h2>
+    <p class="muted">Lege einen eindeutigen Benutzernamen fest. Andere Spieler können dich damit finden.</p>
+    <div class="field">
+      <label for="friend-username">Benutzername</label>
+      <input id="friend-username" maxlength="20" autocomplete="off" placeholder="z. B. GamingPlayer">
+    </div>
+    <button class="primary" id="save-friend-username">Benutzernamen speichern</button>
+    <p class="status" id="friend-profile-status" aria-live="polite"></p>
+  </div>
+
+  <div id="friends-content" class="hidden">
+    <div class="card">
+      <div class="section-head">
+        <h2>Mein UniversalClient-Name</h2>
+        <span class="news-status published" id="my-friend-username">Nicht gesetzt</span>
+      </div>
+      <p class="muted">Mit diesem Namen können andere Spieler dich suchen.</p>
+      <div class="field">
+        <label for="friend-username-edit">Benutzernamen ändern</label>
+        <input id="friend-username-edit" maxlength="20" autocomplete="off" placeholder="Neuer Benutzername">
+      </div>
+      <button class="primary" id="save-friend-username-edit">Änderung speichern</button>
+      <p class="status" id="friend-edit-status" aria-live="polite"></p>
+    </div>
+
+    <div class="card">
+      <h2>Spieler suchen</h2>
+      <p class="muted">Suche andere UniversalClient-Spieler anhand ihres Benutzernamens.</p>
+      <div class="field">
+        <label for="friend-search">Benutzername</label>
+        <input id="friend-search" maxlength="20" autocomplete="off" placeholder="Mindestens 2 Zeichen">
+      </div>
+      <button class="primary" id="friend-search-button">Spieler suchen</button>
+      <div id="friend-search-results" class="empty" aria-live="polite">Noch keine Suche durchgeführt.</div>
+    </div>
+
+    <div class="card">
+      <h2>Freundschaftsanfragen</h2>
+      <div id="friend-requests-list" class="empty">Anfragen werden geladen …</div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <h2>Meine Freunde</h2>
+        <button id="refresh-friends">Aktualisieren</button>
+      </div>
+      <div id="friends-list" class="empty">Freunde werden geladen …</div>
+    </div>
   </div>
 </section>
 
@@ -397,6 +475,8 @@ let servers=read("uc_servers",[]);
 let profiles=read("uc_profiles",[]);
 let activity=read("uc_activity",[]);
 let supabase=null,currentUser=null,isDeveloper=false,syncTimer=null;
+let ownFriendProfile=null;
+let friendRefreshSequence=0;
 
 function toast(message){
   const box=$("toast");box.textContent=message;box.style.display="block";
@@ -417,6 +497,7 @@ function showPage(id){
   $("breadcrumb").textContent=$("heading").textContent;
   if(id==="news")loadPublicNews();
   if(id==="developer")loadDeveloperNews();
+  if(id==="friends")openFriendsPage();
 }
 document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.go)));
@@ -702,18 +783,370 @@ $("cancel-news-edit").onclick=resetNewsForm;
 $("developer-refresh-news").onclick=loadDeveloperNews;
 $("refresh-news").onclick=loadPublicNews;
 
+/* FREUNDE: HILFSFUNKTIONEN */
+function friendMessage(id,message){
+  const element=$(id);
+  if(element)element.textContent=message;
+}
+function friendRow(name,subtitle,buttons=[]){
+  const row=document.createElement("div");
+  row.className="friend-result";
+
+  const info=document.createElement("div");
+  info.className="friend-result-info";
+
+  const strong=document.createElement("strong");
+  strong.textContent=name||"Unbekannter Spieler";
+
+  const small=document.createElement("small");
+  small.textContent=subtitle||"";
+
+  info.append(strong,small);
+
+  const actions=document.createElement("div");
+  actions.className="friend-result-actions";
+  buttons.forEach(button=>actions.append(button));
+
+  row.append(info,actions);
+  return row;
+}
+function friendButton(label,action,className=""){
+  const button=document.createElement("button");
+  button.textContent=label;
+  if(className)button.className=className;
+  button.addEventListener("click",action);
+  return button;
+}
+function setFriendsVisibility(){
+  const loggedIn=!!currentUser;
+  const hasUsername=!!ownFriendProfile?.username;
+
+  $("friends-login-notice").classList.toggle("hidden",loggedIn);
+  $("friends-setup").classList.toggle("hidden",!loggedIn||hasUsername);
+  $("friends-content").classList.toggle("hidden",!loggedIn||!hasUsername);
+
+  if(hasUsername){
+    $("my-friend-username").textContent=ownFriendProfile.username;
+    $("friend-username-edit").value=ownFriendProfile.username;
+  }
+}
+async function openFriendsPage(){
+  if(!currentUser){
+    ownFriendProfile=null;
+    setFriendsVisibility();
+    return;
+  }
+  await loadOwnFriendProfile();
+}
+
+/* EIGENES PROFIL LADEN */
+async function loadOwnFriendProfile(){
+  if(!supabase||!currentUser){
+    ownFriendProfile=null;
+    setFriendsVisibility();
+    return;
+  }
+
+  friendMessage("friend-profile-status","Profil wird geladen …");
+
+  const {data,error}=await supabase
+    .from("profiles")
+    .select("id,username,avatar_url,bio")
+    .eq("id",currentUser.id)
+    .maybeSingle();
+
+  if(error){
+    friendMessage("friend-profile-status","Profil konnte nicht geladen werden: "+error.message);
+    return;
+  }
+
+  ownFriendProfile=data||null;
+  setFriendsVisibility();
+
+  if(ownFriendProfile?.username){
+    friendMessage("friend-profile-status","");
+    await refreshFriends();
+  }else{
+    friendMessage("friend-profile-status","Bitte lege zuerst deinen Benutzernamen fest.");
+  }
+}
+
+/* BENUTZERNAME SPEICHERN */
+async function saveFriendUsername(inputId,statusId){
+  if(!supabase||!currentUser){
+    friendMessage(statusId,"Bitte zuerst anmelden.");
+    return;
+  }
+
+  const username=$(inputId).value.trim();
+
+  if(!/^[A-Za-z0-9_]{3,20}$/.test(username)){
+    friendMessage(statusId,"Erlaubt sind 3–20 Buchstaben, Zahlen und Unterstriche.");
+    return;
+  }
+
+  const button=inputId==="friend-username"
+    ?$("save-friend-username")
+    :$("save-friend-username-edit");
+
+  button.disabled=true;
+  friendMessage(statusId,"Benutzername wird gespeichert …");
+
+  const {data,error}=await supabase.rpc("uc_set_username_v1",{
+    p_username:username
+  });
+
+  button.disabled=false;
+
+  if(error){
+    friendMessage(statusId,"Fehler: "+error.message);
+    return;
+  }
+
+  const savedUsername=data?.username||username;
+  ownFriendProfile={...(ownFriendProfile||{}),id:currentUser.id,username:savedUsername};
+
+  $("friend-username").value=savedUsername;
+  $("friend-username-edit").value=savedUsername;
+  $("my-friend-username").textContent=savedUsername;
+
+  friendMessage(statusId,"Benutzername erfolgreich gespeichert.");
+  setFriendsVisibility();
+  toast("Benutzername gespeichert.");
+  await refreshFriends();
+}
+
+/* SPIELER SUCHEN */
+async function searchFriends(){
+  if(!supabase||!currentUser||!ownFriendProfile?.username){
+    toast("Bitte zuerst anmelden und einen Benutzernamen festlegen.");
+    return;
+  }
+
+  const query=$("friend-search").value.trim();
+  const target=$("friend-search-results");
+  target.replaceChildren();
+
+  if(query.length<2){
+    target.textContent="Bitte mindestens 2 Zeichen eingeben.";
+    target.className="empty";
+    return;
+  }
+
+  const button=$("friend-search-button");
+  button.disabled=true;
+  target.textContent="Suche läuft …";
+
+  const {data,error}=await supabase.rpc("uc_search_users_v1",{
+    p_query:query
+  });
+
+  button.disabled=false;
+  target.replaceChildren();
+
+  if(error){
+    target.textContent="Suche fehlgeschlagen: "+error.message;
+    target.className="empty";
+    return;
+  }
+
+  const users=(data||[]).filter(user=>user.id!==currentUser.id);
+
+  if(!users.length){
+    target.textContent="Keine weiteren Spieler gefunden.";
+    target.className="empty";
+    return;
+  }
+
+  target.className="";
+
+  users.forEach(user=>{
+    const addButton=friendButton("Anfrage senden",async()=>{
+      addButton.disabled=true;
+      addButton.textContent="Wird gesendet …";
+
+      const {error:sendError}=await supabase.rpc("uc_send_friend_request_v1",{
+        p_username:user.username
+      });
+
+      if(sendError){
+        addButton.disabled=false;
+        addButton.textContent="Anfrage senden";
+        toast("Anfrage fehlgeschlagen: "+sendError.message);
+        return;
+      }
+
+      addButton.textContent="Anfrage gesendet";
+      toast("Freundschaftsanfrage gesendet.");
+      await refreshFriends();
+    });
+
+    target.append(friendRow(user.username,"UniversalClient-Spieler",[addButton]));
+  });
+}
+
+/* FREUNDE UND ANFRAGEN LADEN */
+async function refreshFriends(){
+  if(!supabase||!currentUser||!ownFriendProfile?.username)return;
+
+  const sequence=++friendRefreshSequence;
+  const friendsTarget=$("friends-list");
+  const requestsTarget=$("friend-requests-list");
+
+  friendsTarget.textContent="Freunde werden geladen …";
+  requestsTarget.textContent="Anfragen werden geladen …";
+
+  const [friendsResult,requestsResult]=await Promise.all([
+    supabase.rpc("uc_get_friends_v1"),
+    supabase.rpc("uc_get_friend_requests_v1")
+  ]);
+
+  if(sequence!==friendRefreshSequence||!currentUser)return;
+
+  friendsTarget.replaceChildren();
+  requestsTarget.replaceChildren();
+
+  if(friendsResult.error){
+    friendsTarget.textContent="Fehler beim Laden: "+friendsResult.error.message;
+    friendsTarget.className="empty";
+  }else{
+    const friends=friendsResult.data||[];
+    $("friends-list").className=friends.length?"":"empty";
+
+    if(!friends.length){
+      friendsTarget.textContent="Du hast noch keine Freunde.";
+    }else{
+      friends.forEach(friend=>{
+        const removeButton=friendButton("Entfernen",async()=>{
+          if(!confirm("Möchtest du diese Freundschaft wirklich entfernen?"))return;
+
+          removeButton.disabled=true;
+
+          const {error}=await supabase.rpc("uc_remove_friend_v1",{
+            p_friend_id:friend.id
+          });
+
+          if(error){
+            removeButton.disabled=false;
+            toast("Fehler: "+error.message);
+            return;
+          }
+
+          toast("Freund entfernt.");
+          await refreshFriends();
+        },"danger");
+
+        friendsTarget.append(friendRow(friend.username,"Dein Freund",[removeButton]));
+      });
+    }
+  }
+
+  if(requestsResult.error){
+    requestsTarget.textContent="Fehler beim Laden: "+requestsResult.error.message;
+    requestsTarget.className="empty";
+    return;
+  }
+
+  const requests=requestsResult.data||[];
+
+  if(!requests.length){
+    requestsTarget.textContent="Keine offenen Freundschaftsanfragen.";
+    requestsTarget.className="empty";
+    return;
+  }
+
+  requestsTarget.className="";
+
+  requests.forEach(request=>{
+    const buttons=[];
+
+    if(request.direction==="incoming"){
+      const acceptButton=friendButton("Annehmen",async()=>{
+        acceptButton.disabled=true;
+        const {error}=await supabase.rpc("uc_respond_friend_request_v1",{
+          p_request_id:request.id,
+          p_accept:true
+        });
+
+        if(error){
+          acceptButton.disabled=false;
+          toast("Fehler: "+error.message);
+          return;
+        }
+
+        toast("Freundschaft angenommen.");
+        await refreshFriends();
+      },"primary");
+
+      const declineButton=friendButton("Ablehnen",async()=>{
+        declineButton.disabled=true;
+        const {error}=await supabase.rpc("uc_respond_friend_request_v1",{
+          p_request_id:request.id,
+          p_accept:false
+        });
+
+        if(error){
+          declineButton.disabled=false;
+          toast("Fehler: "+error.message);
+          return;
+        }
+
+        toast("Anfrage abgelehnt.");
+        await refreshFriends();
+      },"danger");
+
+      buttons.push(acceptButton,declineButton);
+    }else{
+      buttons.push(friendButton("Ausstehend",()=>{}));
+    }
+
+    requestsTarget.append(friendRow(
+      request.username,
+      request.direction==="incoming"?"Eingehende Anfrage":"Ausgehende Anfrage",
+      buttons
+    ));
+  });
+}
+
+/* FREUNDE-EVENTS */
+$("save-friend-username").addEventListener("click",()=>{
+  saveFriendUsername("friend-username","friend-profile-status");
+});
+$("save-friend-username-edit").addEventListener("click",()=>{
+  saveFriendUsername("friend-username-edit","friend-edit-status");
+});
+$("friend-search-button").addEventListener("click",searchFriends);
+$("refresh-friends").addEventListener("click",refreshFriends);
+$("friend-search").addEventListener("keydown",event=>{
+  if(event.key==="Enter")searchFriends();
+});
+$("friend-username").addEventListener("keydown",event=>{
+  if(event.key==="Enter")saveFriendUsername("friend-username","friend-profile-status");
+});
+$("friend-username-edit").addEventListener("keydown",event=>{
+  if(event.key==="Enter")saveFriendUsername("friend-username-edit","friend-edit-status");
+});
+
 /* AUTH SESSION */
 async function sessionChanged(session){
   currentUser=session?.user||null;
+  ownFriendProfile=null;
+  friendRefreshSequence++;
+
   $("logged-out").classList.toggle("hidden",!!currentUser);
   $("logged-in").classList.toggle("hidden",!currentUser);
+  setFriendsVisibility();
+
   if(currentUser){
     $("account-email").textContent=currentUser.email||"Angemeldet";
     cloudStatus("angemeldet",true);
     await loadCloud();
+    await loadOwnFriendProfile();
   }else{
     cloudStatus("nicht angemeldet",false);
+    $("sync-info").textContent="Nicht angemeldet.";
   }
+
   await checkDeveloper();
   await loadPublicNews();
 }
@@ -723,12 +1156,21 @@ function initCloud(){
     $("auth-message").textContent="Internetverbindung prüfen und Seite neu laden.";
     loadPublicNews();return;
   }
+
   supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-  supabase.auth.onAuthStateChange((event,session)=>{setTimeout(()=>sessionChanged(session),0)});
+
+  supabase.auth.onAuthStateChange((event,session)=>{
+    setTimeout(()=>sessionChanged(session),0);
+  });
+
   supabase.auth.getSession().then(({data,error})=>{
-    if(error){cloudStatus("Anmeldung nicht verfügbar",false);loadPublicNews();return}
+    if(error){
+      cloudStatus("Anmeldung nicht verfügbar",false);
+      loadPublicNews();return;
+    }
     sessionChanged(data.session);
   });
+
   loadPublicNews();
 }
 
@@ -760,8 +1202,15 @@ $("logout-button").onclick=async()=>{
   if(!supabase)return;
   const {error}=await supabase.auth.signOut();
   if(error){toast("Abmelden fehlgeschlagen: "+error.message);return}
-  currentUser=null;isDeveloper=false;$("sync-info").textContent="Abgemeldet.";
-  $("developer-nav").classList.add("hidden");showPage("dashboard");toast("Du wurdest abgemeldet.");
+  currentUser=null;
+  ownFriendProfile=null;
+  isDeveloper=false;
+  friendRefreshSequence++;
+  $("sync-info").textContent="Abgemeldet.";
+  $("developer-nav").classList.add("hidden");
+  setFriendsVisibility();
+  showPage("dashboard");
+  toast("Du wurdest abgemeldet.");
 };
 $("sync-button").onclick=syncCloud;
 
@@ -793,6 +1242,7 @@ $("import-file").onchange=async event=>{
 /* START */
 loadDesign();
 render();
+setFriendsVisibility();
 initCloud();
 
 })();
