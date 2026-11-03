@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -226,7 +227,7 @@ input[type=range]{padding:0;accent-color:var(--accent)}
   <div class="nav-label">MENÜ</div>
   <nav>
     <button class="active" data-page="dashboard" data-title="Dashboard"><svg class="ico"><use href="#i-home"/></svg>Dashboard</button>
-    <button data-page="games" data-title="Games"><svg class="ico"><use href="#i-game"/></svg>Games</button>
+    <button data-page="play" data-title="Play"><svg class="ico"><use href="#i-game"/></svg>Play</button>
     <button data-page="servers" data-title="Server"><svg class="ico"><use href="#i-server"/></svg>Server</button>
     <button data-page="news" data-title="News"><svg class="ico"><use href="#i-news"/></svg>News</button>
     <button data-page="profile" data-title="Profile"><svg class="ico"><use href="#i-user"/></svg>Profile</button>
@@ -278,10 +279,37 @@ input[type=range]{padding:0;accent-color:var(--accent)}
   </div>
 </section>
 
-<section id="games" class="page">
+<!-- PLAY -->
+<section id="play" class="page">
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">UNIVERSALCLIENT GAMING</div>
+      <h1>Minecraft</h1>
+      <p>Wähle deine Edition und starte dein Spiel.</p>
+    </div>
+    <svg class="hero-logo" viewBox="0 0 24 24" aria-label="Minecraft">
+      <use href="#i-minecraft"/>
+    </svg>
+  </div>
+
   <div class="grid">
-    <div class="card game-card"><div class="game-art"><svg><use href="#i-minecraft"/></svg></div><div><h2>Minecraft Bedrock</h2><p class="muted">Minecraft über den installierten Client öffnen.</p><button class="primary" id="minecraft">Minecraft öffnen</button></div></div>
-    <div class="card game-card"><div class="game-art"><svg><use href="#i-game"/></svg></div><div><h2>Minecraft Java</h2><p class="muted">Starte Java über deinen installierten Minecraft Launcher.</p><span class="muted">Launcher wird separat geöffnet.</span></div></div>
+    <div class="card game-card">
+      <div class="game-art"><svg><use href="#i-minecraft"/></svg></div>
+      <div>
+        <h2>Java Edition</h2>
+        <p class="muted">Die Java Edition ist momentan noch nicht verfügbar.</p>
+        <button disabled>Demnächst verfügbar</button>
+      </div>
+    </div>
+
+    <div class="card game-card">
+      <div class="game-art"><svg><use href="#i-minecraft"/></svg></div>
+      <div>
+        <h2>Bedrock Edition</h2>
+        <p class="muted">Starte Minecraft Bedrock auf deinem Gerät.</p>
+        <button class="primary" id="minecraft">▶ PLAY</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -624,8 +652,10 @@ $("save-profile").addEventListener("click",()=>{
   render();log("Profil hinzugefügt: "+name);toast("Profil gespeichert!");
 });
 
-/* GAMES */
-$("minecraft").addEventListener("click",()=>{window.location.href="minecraft://"});
+/* MINECRAFT BEDROCK STARTEN */
+$("minecraft").addEventListener("click",()=>{
+  window.location.href="minecraft://";
+});
 
 /* DESIGN */
 const colorIds=["bg-color","side-color","card-color","accent-color","text-color","border-color"];
