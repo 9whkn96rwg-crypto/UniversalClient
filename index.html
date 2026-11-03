@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -141,6 +140,49 @@ input[type=range]{padding:0;accent-color:var(--accent)}
   background:linear-gradient(145deg,#124d7c,#101d3a);border:1px solid #2875a5;color:#72ddff
 }
 .game-art svg{width:43px;height:43px}
+
+/* TEXTURE PACK DOWNLOAD */
+.texture-pack-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:19px;
+  margin-bottom:17px;
+  border:1px solid #087fba;
+  border-radius:17px;
+  background:linear-gradient(110deg,#0c2544,#0b1930);
+  box-shadow:0 0 20px #08cfff12;
+}
+.texture-pack-info{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-width:0;
+}
+.texture-pack-icon{
+  width:52px;
+  height:52px;
+  display:grid;
+  place-items:center;
+  flex:none;
+  border-radius:13px;
+  color:#39d7ff;
+  background:#087ebd25;
+  border:1px solid #17699a;
+}
+.texture-pack-icon svg{width:27px;height:27px}
+.texture-pack-card h2{margin:0 0 4px}
+.texture-pack-card p{margin:0;color:var(--muted);font-size:13px}
+.texture-pack-card .primary{
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  white-space:nowrap;
+}
+
 .auth-card{max-width:560px}
 .status{font-size:13px;color:var(--muted);margin-top:10px}
 .hidden{display:none!important}
@@ -196,6 +238,8 @@ input[type=range]{padding:0;accent-color:var(--accent)}
   .friend-result{align-items:flex-start;flex-direction:column}
   .friend-result-actions{width:100%;justify-content:flex-start}
   .friend-result-actions button{flex:1}
+  .texture-pack-card{align-items:stretch;flex-direction:column}
+  .texture-pack-card .primary{width:100%}
 }
 </style>
 </head>
@@ -292,6 +336,28 @@ input[type=range]{padding:0;accent-color:var(--accent)}
     </svg>
   </div>
 
+  <!-- TEXTURE PACK DOWNLOAD -->
+  <div class="texture-pack-card">
+    <div class="texture-pack-info">
+      <div class="texture-pack-icon">
+        <svg><use href="#i-minecraft"/></svg>
+      </div>
+      <div>
+        <h2>UniversalClient Texture Pack</h2>
+        <p>Hol dir den passenden UniversalClient-Look für Minecraft Bedrock.</p>
+        <p style="margin-top:5px">Minecraft Bedrock · .mcpack</p>
+      </div>
+    </div>
+    <a
+      class="primary"
+      href="https://github.com/9whkn96rwg-crypto/UniversalClient/raw/refs/heads/main/UniversalClient_Pack.mcpack"
+      download
+    >
+      ↓ Texture Pack laden
+    </a>
+  </div>
+
+  <!-- EDITIONEN -->
   <div class="grid">
     <div class="card game-card">
       <div class="game-art"><svg><use href="#i-minecraft"/></svg></div>
